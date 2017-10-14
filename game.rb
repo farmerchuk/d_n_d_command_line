@@ -1,63 +1,75 @@
-# Classes needed
+# game.rb
 
-Player # individual
-PlayerList # list of players and methods for advancing turns
-PlayerAction # keeps info on player's choice and associated message
-Area # keeps description and info about how locations are connected
-Location #keeps description and info about people, items, etc.
-
+require_relative 'lib/player_list'
+require_relative 'lib/player'
 
 # Game logic
 
-def initialize
-  @players
-  @player
-  @area
-  @location
-end
+class DND
+  def initialize
+    @players = PlayerList.new
+    player1 = Player.new('Jason', 10, :area1)
+    player2 = Player.new('Chris', 10, :area1)
+    player3 = Player.new('Louise', 10, :area1)
+    @players.add(player1)
+    @players.add(player2)
+    @players.add(player3)
 
+    @current_player = nil
+    @area = nil
+    @location = nil
+  end
 
-def run
-  dm_describes_scene # => nil
+  def run
+    # create_players
+    # dm_describes_scene # => nil
 
-  loop do
-    dm_selects_player_turn # => nil
-    dm_describes_scene # => nil
-    player_selects_action # => nil
-    execute_player_action # => nil
+    loop do
+      dm_selects_player_turn # => nil
+      # dm_describes_scene # => nil
+      player_selects_action # => nil
+      execute_player_action # => nil
+    end
+  end
+
+  private
+
+  attr_accessor :players, :current_player
+
+  def dm_describes_scene # => nil
+    current_player.location.describe # => String
+    location.describe_connected_locations # => String
+  end
+
+  def dm_selects_player_turn # => nil
+    self.current_player = players.choose_player # => Player
+  end
+
+  def player_selects_action # => nil
+    current_player.choose_action
+  end
+
+  def execute_player_action # => nil
+    case current_player.action # => nil
+    when :move
+      # code
+    when :examine
+      current_player.location.describe
+    when :search
+      current_player.location.describe_hidden
+    when :alert
+      current_player.alert!
+    when :skill
+      # code
+    when :item
+      # code
+    when :rest
+      current_player.rest!
+    when :engage
+      #code
+    end
+    current_player.action = nil
   end
 end
 
-def dm_describes_scene # => nil
-  player.location.describe # => String
-  location.describe_connected_locations # => String
-end
-
-def dm_selects_player_turn # => nil
-  player = players.pick_list
-end
-
-def player_selects_action # => nil
-  player.action = player.pick_action # => PlayerAction
-end
-
-def execute_player_action # => nil
-  case player.action.choice # => nil
-  when :move
-    player.location = player.action.message
-  when :examine
-    player.location.describe
-  when :search
-    player.location.describe_hidden
-  when :alert
-    player.alert!
-  when :skill
-    player.use_skill(player.action.message)
-  when :item
-    player.use_item(player.action.message)
-  when :rest
-    player.rest!
-  when :engage
-    player.location.entities(player.action.message)
-  end
-end
+DND.new.run
