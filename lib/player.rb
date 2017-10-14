@@ -1,6 +1,8 @@
 # player.rb
 
 class Player
+  ACTIONS = [:move, :examine, :search, :alert, :skill, :item, :rest, :engage]
+
   attr_reader :name, :hitpoints
   attr_accessor :location, :action
 
@@ -10,6 +12,19 @@ class Player
     @action = nil
     @location = location
     @alert = false
+  end
+
+  def choose_action # => nil
+    puts 'Please select an action:'
+    ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
+    choice = nil
+    loop do
+      choice = gets.chomp.to_i
+      break if (0..(ACTIONS.size - 1)).include?(choice)
+      puts 'Sorry, that is not a valid choice...'
+    end
+    self.action = ACTIONS[choice]
+    nil
   end
 
   def alert!
@@ -32,18 +47,12 @@ class Player
     self.hitpoints += 2
   end
 
+  def to_s
+    name
+  end
+
   private
 
   attr_accessor :alert
   attr_writer :hitpoints
 end
-
-player1 = Player.new('Jason', 10, :area1)
-p player1.name
-p player1.location
-p player1.action
-p player1.alert?
-p player1.alert!
-p player1.alert?
-p player1.rest!
-p player1.hitpoints
