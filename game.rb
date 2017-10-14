@@ -1,4 +1,5 @@
 # Classes needed
+
 Player # individual
 PlayerList # list of players and methods for advancing turns
 PlayerAction # keeps info on player's choice and associated message
@@ -11,7 +12,6 @@ Location #keeps description and info about people, items, etc.
 def initialize
   @players
   @player
-  @player_action
   @area
   @location
 end
@@ -37,27 +37,27 @@ def dm_selects_player_turn # => nil
   player = players.pick_list
 end
 
-def player_selects_action # => PlayerAction
-  player_action = player.pick_action
+def player_selects_action # => nil
+  player.action = player.pick_action # => PlayerAction
 end
 
 def execute_player_action # => nil
-  case player_action.choice # => nil
+  case player.action.choice # => nil
   when :move
-    player.location = player_action.message
+    player.location = player.action.message
   when :examine
     player.location.describe
   when :search
-    player.location.describe_hidden_locations
+    player.location.describe_hidden
   when :alert
     player.alert!
   when :skill
-    player.use_skill(player_action.message)
+    player.use_skill(player.action.message)
   when :item
-    player.use_item(player_action.message)
+    player.use_item(player.action.message)
   when :rest
     player.rest!
   when :engage
-    player.location.entities(player_action.message)
+    player.location.entities(player.action.message)
   end
 end
