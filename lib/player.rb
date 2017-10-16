@@ -27,6 +27,10 @@ class Player
     nil
   end
 
+  def end_turn
+    self.action = nil
+  end
+
   def alert!
     self.alert = true
   end

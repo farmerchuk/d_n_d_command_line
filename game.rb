@@ -25,7 +25,7 @@ class DND
       dm_selects_player_turn # => nil
       # dm_describes_scene # => nil
       player_selects_action # => nil
-      event_handler # => nil
+      # event_handler # => nil
     end
   end
 
@@ -46,10 +46,8 @@ class DND
   end
 
   def event_handler # => nil
-    if current_player.point_of_interest.has(current_player.action) # => nil
-      Event.new(current_player).run
-    end
-    current_player.action = nil
+    Event.new(current_player).run
+    current_player.end_turn
   end
 end
 
