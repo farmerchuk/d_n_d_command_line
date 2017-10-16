@@ -14,7 +14,6 @@ class DND
     @players.add(player1)
     @players.add(player2)
     @players.add(player3)
-
     @current_player = nil
   end
 
@@ -26,7 +25,7 @@ class DND
       dm_selects_player_turn # => nil
       # dm_describes_scene # => nil
       player_selects_action # => nil
-      execute_player_action # => nil
+      event_handler # => nil
     end
   end
 
@@ -36,7 +35,6 @@ class DND
 
   def dm_describes_scene # => nil
     current_player.point_of_interest.describe # => String
-    current_player.point_of_interest.describe_connected_points_of_interest # => String
   end
 
   def dm_selects_player_turn # => nil
@@ -47,24 +45,9 @@ class DND
     current_player.choose_action
   end
 
-  def execute_player_action # => nil
-    case current_player.action # => nil
-    when :move
-      # code
-    when :examine
-      current_player.point_of_interest.describe
-    when :search
-      current_player.point_of_interest.describe_hidden
-    when :alert
-      current_player.alert!
-    when :skill
-      # code
-    when :item
-      # code
-    when :rest
-      current_player.rest!
-    when :engage
-      #code
+  def event_handler # => nil
+    if current_player.point_of_interest.has(current_player.action) # => nil
+      Event.new(current_player).run
     end
     current_player.action = nil
   end
