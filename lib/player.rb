@@ -4,13 +4,13 @@ class Player
   ACTIONS = [:move, :examine, :search, :alert, :skill, :item, :rest, :engage]
 
   attr_reader :name, :hitpoints
-  attr_accessor :location, :action
+  attr_accessor :point_of_interest, :action
 
-  def initialize(name, hitpoints, location)
+  def initialize(name, hitpoints, point_of_interest)
     @name = name
     @hitpoints = hitpoints
     @action = nil
-    @location = location
+    @point_of_interest = point_of_interest
     @alert = false
   end
 

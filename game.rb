@@ -16,8 +16,6 @@ class DND
     @players.add(player3)
 
     @current_player = nil
-    @area = nil
-    @location = nil
   end
 
   def run
@@ -37,8 +35,8 @@ class DND
   attr_accessor :players, :current_player
 
   def dm_describes_scene # => nil
-    current_player.location.describe # => String
-    location.describe_connected_locations # => String
+    current_player.point_of_interest.describe # => String
+    current_player.point_of_interest.describe_connected_points_of_interest # => String
   end
 
   def dm_selects_player_turn # => nil
@@ -54,9 +52,9 @@ class DND
     when :move
       # code
     when :examine
-      current_player.location.describe
+      current_player.point_of_interest.describe
     when :search
-      current_player.location.describe_hidden
+      current_player.point_of_interest.describe_hidden
     when :alert
       current_player.alert!
     when :skill
