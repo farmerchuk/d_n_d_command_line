@@ -10,10 +10,6 @@ class Area
     @locations = {}
   end
 
-  def get_location_from_id(id)
-    locations[id]
-  end
-
   def select
     locations.select { |loc_id, details| yield(loc_id, details) }
   end
