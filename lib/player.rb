@@ -19,7 +19,7 @@ class Player
     @alert = false
   end
 
-  def select_action # => nil
+  def select_action
     puts 'What action would the player like to take?'
     ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
     choice = nil
@@ -30,7 +30,6 @@ class Player
     end
     puts
     self.action = ACTIONS[choice]
-    nil
   end
 
   def end_turn

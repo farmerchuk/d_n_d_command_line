@@ -1,34 +1,48 @@
 # event_handler.rb
 
+require_relative 'helpers'
+
 class EventHandler
+  include Helpers::Format
+
+  attr_accessor :player
+
   def initialize(current_player)
     @player = current_player
-    @player_action = current_player.action
-    @player_location = player.location
-    @event = matching_event
   end
 
   def run
-    unless event
-      puts 'Ineffective action...'
-      puts
-    else
-      event.each_value do |details|
-        puts details['result']
-      end
-      puts
+    case player.action
+    when 'move' then player_move
+    when 'examine' then player_examine
+    when 'search' then player_search
+    when 'alert' then player_alert
+    when 'skill' then player_use_skill
+    when 'item' then player_use_item
+    when 'rest' then player_rest
+    when 'engage' then player_engage
     end
   end
 
-  private
-
-  attr_reader :player, :player_action, :player_location, :event
-
-  def matching_event
-    events = player_location.events
-    event = events.select do |_, details|
-      details['trigger'] == player_action
+  def player_move
+    paths = player.area.select do |loc_id, location|
+      player.location.paths.include?(location.id)
     end
-    event.empty? ? nil : event
+
+    puts 'Where would the player like to move to?'
+    paths.each_with_index do |(loc_id, location), idx|
+      puts "#{idx}. #{location}"
+    end
+
+    choice = nil
+    loop do
+      choice = prompt.to_i
+      break if (0..(paths.size - 1)).include?(choice)
+      puts 'Sorry, that is not a valid choice...'
+    end
+
+    new_location = paths.each_with_index do |(loc_id, location), idx|
+      player.location = location if idx == choice
+    end
   end
 end

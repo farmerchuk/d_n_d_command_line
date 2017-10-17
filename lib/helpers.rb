@@ -11,7 +11,8 @@ module Helpers
     end
 
     def continue
-      print 'Hit any key to continue...'
+      puts
+      print 'Hit return to continue...'
       gets
     end
   end

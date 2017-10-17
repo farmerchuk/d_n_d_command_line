@@ -66,6 +66,7 @@ class DND
           new_loc.id = loc_id
           new_loc.area_id = area_id
           new_loc.description = loc_details['description']
+          new_loc.display_name = loc_details['display_name']
           new_loc.paths = loc_details['paths'].split(' ')
 
           events = event_data.select do |ev_id, ev_details|

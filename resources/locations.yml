@@ -5,24 +5,29 @@
 area_1_west_exit:
   area: area_1_goblin_ambush
   paths: 'area_1_dead_horses area_1_north_embankment area_1_south_embankment'
-  description: "You are current at the western exit."
+  display_name: Western exit
+  description: You are currently at the western exit.
 
 area_1_east_exit:
   area: area_1_goblin_ambush
   paths: 'area_1_dead_horses area_1_north_embankment area_1_south_embankment'
-  description: "You are current at the eastern exit."
+  display_name: Eastern exit
+  description: You are currently at the eastern exit.
 
 area_1_north_embankment:
   area: area_1_goblin_ambush
   paths: 'area_1_dead_horses area_1_west_exit area_1_east_exit'
-  description: "You are current at the northern embankment."
+  display_name: Northern embankment
+  description: You are currently at the northern embankment.
 
 area_1_south_embankment:
   area: area_1_goblin_ambush
   paths: 'area_1_dead_horses area_1_west_exit area_1_east_exit'
-  description: "You are current at the southern embankment."
+  display_name: Southern embankment
+  description: You are currently at the southern embankment.
 
 area_1_dead_horses:
   area: area_1_goblin_ambush
   paths: 'area_1_north_embankment area_1_south_embankment area_1_west_exit area_1_east_exit'
-  description: "You are current where the dead horses are."
+  display_name: Dead horses
+  description: You are currently where the dead horses are.
