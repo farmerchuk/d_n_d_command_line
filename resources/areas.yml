@@ -1,6 +1,7 @@
-goblin_ambush: "You've been on the Triboar Trail for about half a day. As\n
-               you come around a bend, you spot two dead horses sprawled\n
-               about fifty feet ahead of you, blocking the path. Each has\n
-               several black-feathered arrows sticking out of it. The woods\n
-               press close to the trail here, with a steep embankment and\n
-               dense thickets on either side."
+goblin_ambush: |
+  You've been on the Triboar Trail for about half a day. As
+  you come around a bend, you spot two dead horses sprawled
+  about fifty feet ahead of you, blocking the path. Each has
+  several black-feathered arrows sticking out of it. The woods
+  press close to the trail here, with a steep embankment and
+  dense thickets on either side.
