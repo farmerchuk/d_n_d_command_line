@@ -1,0 +1,70 @@
+# ie. areas['goblin_ambush'].locations['west_exit'].events['move'] => nil
+
+west_exit:
+  area: goblin_ambush
+  paths: 'dead_horses north_embankment south_embankment'
+  description: "This is the western exit."
+  events:
+    move:
+    examine:
+    search:
+    alert:
+    skill:
+    item:
+    rest:
+    engage:
+
+east_exit:
+  area: goblin_ambush
+  paths: 'dead_horses north_embankment south_embankment'
+  description: "This is the eastern exit."
+  events:
+    move:
+    examine:
+    search:
+    alert:
+    skill:
+    item:
+    rest:
+    engage:
+
+north_embankment:
+  area: goblin_ambush
+  paths: 'dead_horses west_exit east_exit'
+  description: "This is the northern embankment."
+  events:
+    move:
+    examine:
+    search:
+    alert:
+    skill:
+    item:
+    rest:
+    engage:
+
+south_embankment:
+  area: goblin_ambush
+  paths: 'dead_horses west_exit east_exit'
+  description: "This is the southern embankment."
+  events:
+    move:
+    examine:
+    search:
+    alert:
+    skill:
+    item:
+    rest:
+    engage:
+
+dead_horses:
+  area: goblin_ambush
+  paths: 'north_embankment south_embankment west_exit east_exit'
+  description: "This is where the dead horses are."
+  events:
+    move:
+    examine:
+    search:
+    alert:
+    skill:
+    item:
+    rest:

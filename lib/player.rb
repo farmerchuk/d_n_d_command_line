@@ -3,13 +3,14 @@
 class Player
   ACTIONS = [:move, :examine, :search, :alert, :skill, :item, :rest, :engage]
 
-  attr_accessor :name, :hitpoints, :initiative, :point_of_interest, :action
+  attr_accessor :name, :hitpoints, :initiative, :area, :location, :action
 
   def initialize
     @name = nil
     @hitpoints = nil
     @initiative = nil
-    @point_of_interest = nil
+    @area = nil
+    @location = nil
     @action = nil
     @alert = false
   end
@@ -48,7 +49,7 @@ class Player
   end
 
   def rest!
-    
+
   end
 
   def to_s

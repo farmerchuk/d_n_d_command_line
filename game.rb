@@ -3,6 +3,8 @@
 require_relative 'lib/player_list'
 require_relative 'lib/player'
 require_relative 'lib/area'
+require_relative 'lib/location'
+
 require 'yaml'
 
 require 'pry'
@@ -13,12 +15,13 @@ class DND
   def initialize
     @players = PlayerList.new
     @current_player = nil
-    @areas = []
+    @areas = {}
   end
 
   def run
     generate_areas
     create_players
+    set_players_in_starting_area_and_location
     set_current_player
     # dm_describes_scene # => nil
 
@@ -35,15 +38,26 @@ class DND
   attr_accessor :players, :current_player, :areas
 
   def generate_areas
-    area_data = YAML.load_file('resources/areas.yml')
-    areas = area_data.keys
-    areas.each do |area|
-      area_desc = area_data[area]['description']
-      pois = area_data[area]['points_of_interest']
-      pois.each do |poi, details|
-        p poi
-        p details
+    areas_data = YAML.load_file('resources/areas.yml')
+    locations_data = YAML.load_file('resources/locations.yml')
+
+    areas_data.each do |area_id, desc|
+      new_area = Area.new
+      new_area.id = area_id
+      new_area.description = desc
+
+      locations_data.each do |loc_id, details|
+        if details['area'] == area_id
+          new_loc = Location.new
+          new_loc.id = loc_id
+          new_loc.area_id = area_id
+          new_loc.description = details['description']
+          new_loc.events = details['events']
+          new_loc.paths = details['paths'].split(' ')
+          new_area.locations[loc_id] = new_loc
+        end
       end
+      areas[area_id] = new_area
     end
   end
 
@@ -81,12 +95,19 @@ class DND
     input == 'y' ? true : false
   end
 
+  def set_players_in_starting_area_and_location
+    players.each do |player|
+      player.area = areas['goblin_ambush']
+      player.location = areas['goblin_ambush'].locations['west_exit']
+    end
+  end
+
   def set_current_player
     self.current_player = players.highest_initiative
   end
 
   def dm_describes_scene # => nil
-    current_player.point_of_interest.describe # => String
+    current_player.location.describe # => String
   end
 
   def dm_selects_player_turn # => nil

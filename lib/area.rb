@@ -2,9 +2,12 @@
 # keeps description and info about how locations are connected
 
 class Area
-  attr_reader :points_of_interest
+  attr_accessor :id, :description
+  attr_reader :locations
 
   def initialize
-    @points_of_interest = []
+    @id = nil
+    @description = nil
+    @locations = {}
   end
 end
