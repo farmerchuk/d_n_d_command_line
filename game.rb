@@ -26,7 +26,6 @@ class DND
   def run
     welcome
     generate_areas
-    binding.pry
     create_players
     set_players_in_starting_area_and_location
     set_current_player
