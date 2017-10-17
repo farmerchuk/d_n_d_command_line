@@ -1,6 +1,10 @@
 # player.rb
 
+require_relative 'helpers'
+
 class Player
+  include Helpers::Format
+
   ACTIONS = [:move, :examine, :search, :alert, :skill, :item, :rest, :engage]
 
   attr_accessor :name, :hitpoints, :initiative, :area, :location, :action
@@ -16,14 +20,15 @@ class Player
   end
 
   def select_action # => nil
-    puts 'Please select an action:'
+    puts 'What action would the player like to take?'
     ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
     choice = nil
     loop do
-      choice = gets.chomp.to_i
+      choice = prompt.to_i
       break if (0..(ACTIONS.size - 1)).include?(choice)
       puts 'Sorry, that is not a valid choice...'
     end
+    puts
     self.action = ACTIONS[choice]
     nil
   end

@@ -3,7 +3,7 @@
 west_exit:
   area: goblin_ambush
   paths: 'dead_horses north_embankment south_embankment'
-  description: "This is the western exit."
+  description: "You are current at the western exit."
   events:
     move:
     examine:
@@ -17,7 +17,7 @@ west_exit:
 east_exit:
   area: goblin_ambush
   paths: 'dead_horses north_embankment south_embankment'
-  description: "This is the eastern exit."
+  description: "You are current at the eastern exit."
   events:
     move:
     examine:
@@ -31,7 +31,7 @@ east_exit:
 north_embankment:
   area: goblin_ambush
   paths: 'dead_horses west_exit east_exit'
-  description: "This is the northern embankment."
+  description: "You are current at the northern embankment."
   events:
     move:
     examine:
@@ -45,7 +45,7 @@ north_embankment:
 south_embankment:
   area: goblin_ambush
   paths: 'dead_horses west_exit east_exit'
-  description: "This is the southern embankment."
+  description: "You are current at the southern embankment."
   events:
     move:
     examine:
@@ -59,7 +59,7 @@ south_embankment:
 dead_horses:
   area: goblin_ambush
   paths: 'north_embankment south_embankment west_exit east_exit'
-  description: "This is where the dead horses are."
+  description: "You are current where the dead horses are."
   events:
     move:
     examine:

@@ -1,5 +1,6 @@
 # game.rb
 
+require_relative 'lib/helpers'
 require_relative 'lib/player_list'
 require_relative 'lib/player'
 require_relative 'lib/area'
@@ -12,6 +13,8 @@ require 'pry'
 # Game logic
 
 class DND
+  include Helpers::Format
+
   def initialize
     @players = PlayerList.new
     @current_player = nil
@@ -19,15 +22,16 @@ class DND
   end
 
   def run
+    welcome
     generate_areas
     create_players
     set_players_in_starting_area_and_location
     set_current_player
-    # dm_describes_scene # => nil
+    dm_describes_scene # => nil
 
     loop do
       dm_selects_player_turn # => nil
-      # dm_describes_scene # => nil
+      dm_describes_scene # => nil
       player_selects_action # => nil
       # event_handler # => nil
     end
@@ -36,6 +40,13 @@ class DND
   private
 
   attr_accessor :players, :current_player, :areas
+
+  def welcome
+    clear_screen
+    puts 'Dungeons & Dragons: The Lost Mine of Phandelver'
+    puts '-----------------------------------------------'
+    puts
+  end
 
   def generate_areas
     areas_data = YAML.load_file('resources/areas.yml')
@@ -66,6 +77,7 @@ class DND
       player = create_player
       players.add(player)
       break unless create_another_player?
+      puts
     end
   end
 
@@ -74,21 +86,21 @@ class DND
 
     name = nil
     loop do
-      print "What is the player's name: "
-      name = gets.chomp
+      puts "Add new player's name: "
+      name = prompt
       break unless name =~ /\W/ || name.size < 3
       puts 'Sorry, that is not a valid name...'
     end
     player.name = name
-
     player
   end
 
   def create_another_player?
     input = nil
+
     loop do
-      print 'Would you like to add another player? (y/n) '
-      input = gets.chomp
+      puts 'Would you like to add another player? (y/n) '
+      input = prompt
       break if ['y', 'n'].include?(input)
       puts 'Sorry, that is not a valid choice...'
     end
@@ -107,7 +119,15 @@ class DND
   end
 
   def dm_describes_scene # => nil
-    current_player.location.describe # => String
+    clear_screen
+    puts 'Area Description:'
+    puts '-----------------'
+    puts current_player.area.description
+    puts
+    puts 'Location Description:'
+    puts '---------------------'
+    puts current_player.location.description # => String
+    puts
   end
 
   def dm_selects_player_turn # => nil

@@ -1,5 +1,4 @@
 # area.rb
-# keeps description and info about how locations are connected
 
 class Area
   attr_accessor :id, :description

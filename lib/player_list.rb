@@ -1,6 +1,10 @@
 # player_list.rb
 
+require_relative 'helpers'
+
 class PlayerList
+  include Helpers::Format
+
   def initialize
     @players = []
   end
@@ -16,14 +20,15 @@ class PlayerList
   end
 
   def select_player # => Player
-    puts 'Please select a player:'
+    puts 'Which player would like to take an action?'
     list_all_players
     choice = nil
     loop do
-      choice = gets.chomp.to_i
+      choice = prompt.to_i
       break if (0..players.size - 1).include?(choice)
       puts 'Sorry, that is not a valid choice...'
     end
+    puts
     players[choice]
   end
 
