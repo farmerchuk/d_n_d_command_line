@@ -3,18 +3,18 @@
 class Player
   ACTIONS = [:move, :examine, :search, :alert, :skill, :item, :rest, :engage]
 
-  attr_reader :name, :hitpoints
-  attr_accessor :point_of_interest, :action
+  attr_accessor :name, :hitpoints, :initiative, :point_of_interest, :action
 
-  def initialize(name, hitpoints, point_of_interest)
-    @name = name
-    @hitpoints = hitpoints
+  def initialize
+    @name = nil
+    @hitpoints = nil
+    @initiative = nil
+    @point_of_interest = nil
     @action = nil
-    @point_of_interest = point_of_interest
     @alert = false
   end
 
-  def choose_action # => nil
+  def select_action # => nil
     puts 'Please select an action:'
     ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
     choice = nil
@@ -48,7 +48,7 @@ class Player
   end
 
   def rest!
-    self.hitpoints += 2
+    
   end
 
   def to_s

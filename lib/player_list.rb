@@ -10,7 +10,7 @@ class PlayerList
     players << player
   end
 
-  def choose_player # => Player
+  def select_player # => Player
     puts 'Please select a player:'
     list_all_players
     choice = nil
@@ -20,6 +20,11 @@ class PlayerList
       puts 'Sorry, that is not a valid choice...'
     end
     players[choice]
+  end
+
+  def highest_initiative
+    raise StandardError('PlayerList empty') if players.empty?
+    players.sort_by { |player| player.initiative }.last
   end
 
   private
