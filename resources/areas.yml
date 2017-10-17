@@ -1,4 +1,8 @@
-goblin_ambush: |
+# Area ids must be unique
+
+# Area 1: Goblin Ambush
+
+area_1_goblin_ambush: |
   You've been on the Triboar Trail for about half a day. As
   you come around a bend, you spot two dead horses sprawled
   about fifty feet ahead of you, blocking the path. Each has

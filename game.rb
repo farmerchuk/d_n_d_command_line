@@ -16,6 +16,7 @@ class DND
   include Helpers::Format
 
   def initialize
+    @start = YAML.load_file('resources/initialize.yml')
     @players = PlayerList.new
     @current_player = nil
     @areas = {}
@@ -27,19 +28,19 @@ class DND
     create_players
     set_players_in_starting_area_and_location
     set_current_player
-    dm_describes_scene # => nil
+    dm_describes_scene
 
     loop do
-      dm_selects_player_turn # => nil
-      dm_describes_scene # => nil
-      player_selects_action # => nil
-      # event_handler # => nil
+      dm_selects_player_turn
+      dm_describes_scene
+      player_selects_action
+      # event_handler
     end
   end
 
   private
 
-  attr_accessor :players, :current_player, :areas
+  attr_accessor :start, :players, :current_player, :areas
 
   def welcome
     clear_screen
@@ -51,20 +52,28 @@ class DND
   def generate_areas
     areas_data = YAML.load_file('resources/areas.yml')
     locations_data = YAML.load_file('resources/locations.yml')
+    event_data = YAML.load_file('resources/events.yml')
 
     areas_data.each do |area_id, desc|
       new_area = Area.new
       new_area.id = area_id
       new_area.description = desc
 
-      locations_data.each do |loc_id, details|
-        if details['area'] == area_id
+      locations_data.each do |loc_id, loc_details|
+        if loc_details['area'] == area_id
           new_loc = Location.new
           new_loc.id = loc_id
           new_loc.area_id = area_id
-          new_loc.description = details['description']
-          new_loc.events = details['events']
-          new_loc.paths = details['paths'].split(' ')
+          new_loc.description = loc_details['description']
+          new_loc.paths = loc_details['paths'].split(' ')
+
+          events = event_data.select do |ev_id, ev_details|
+            ev_details['location'] == loc_id
+          end
+          events.each do |ev_id, ev_details|
+            new_loc.events[ev_id] = ev_details
+          end
+
           new_area.locations[loc_id] = new_loc
         end
       end
@@ -109,8 +118,8 @@ class DND
 
   def set_players_in_starting_area_and_location
     players.each do |player|
-      player.area = areas['goblin_ambush']
-      player.location = areas['goblin_ambush'].locations['west_exit']
+      player.area = areas[start['area']]
+      player.location = areas[start['area']].locations[start['location']]
     end
   end
 
@@ -118,7 +127,7 @@ class DND
     self.current_player = players.highest_initiative
   end
 
-  def dm_describes_scene # => nil
+  def dm_describes_scene
     clear_screen
     puts 'Area Description:'
     puts '-----------------'
@@ -126,20 +135,20 @@ class DND
     puts
     puts 'Location Description:'
     puts '---------------------'
-    puts current_player.location.description # => String
+    puts current_player.location.description
     puts
   end
 
-  def dm_selects_player_turn # => nil
-    self.current_player = players.select_player # => Player
+  def dm_selects_player_turn
+    self.current_player = players.select_player
   end
 
-  def player_selects_action # => nil
+  def player_selects_action
     current_player.select_action
   end
 
-  def event_handler # => nil
-    Event.new(current_player).run
+  def event_handler
+    Event.new.run
     current_player.end_turn
   end
 end

@@ -1,0 +1,9 @@
+event_1:
+  location: area_1_dead_horses
+  trigger: examine
+  result: You are attacked!
+
+event_2:
+  location: area_1_dead_horses
+  trigger: search
+  result: You find gold!
