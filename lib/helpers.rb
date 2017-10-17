@@ -9,5 +9,10 @@ module Helpers
       print '> '
       gets.chomp
     end
+
+    def continue
+      print 'Hit any key to continue...'
+      gets
+    end
   end
 end
