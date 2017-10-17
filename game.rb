@@ -2,6 +2,8 @@
 
 require_relative 'lib/player_list'
 require_relative 'lib/player'
+require_relative 'lib/area'
+require 'yaml'
 
 require 'pry'
 
@@ -11,9 +13,11 @@ class DND
   def initialize
     @players = PlayerList.new
     @current_player = nil
+    @areas = []
   end
 
   def run
+    generate_areas
     create_players
     set_current_player
     # dm_describes_scene # => nil
@@ -28,7 +32,20 @@ class DND
 
   private
 
-  attr_accessor :players, :current_player
+  attr_accessor :players, :current_player, :areas
+
+  def generate_areas
+    area_data = YAML.load_file('resources/areas.yml')
+    areas = area_data.keys
+    areas.each do |area|
+      area_desc = area_data[area]['description']
+      pois = area_data[area]['points_of_interest']
+      pois.each do |poi, details|
+        p poi
+        p details
+      end
+    end
+  end
 
   def create_players
     loop do

@@ -2,7 +2,9 @@
 # keeps description and info about how locations are connected
 
 class Area
+  attr_reader :points_of_interest
+
   def initialize
-    @paths = {} # ie. { poi1: [poi2, poi3], ... }
+    @points_of_interest = []
   end
 end

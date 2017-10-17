@@ -1,0 +1,73 @@
+goblin_ambush:
+  description: "You've been on the Triboar Trail for about half a day. As\n
+               you come around a bend, you spot two dead horses sprawled\n
+               about fifty feet ahead of you, blocking the path. Each has\n
+               several black-feathered arrows sticking out of it. The woods\n
+               press close to the trail here, with a steep embankment and\n
+               dense thickets on either side."
+
+  points_of_interest:
+    west_exit:
+      paths: 'dead_horses north_embankment south_embankment'
+      description: "This is the western exit."
+      events:
+        move:
+        examine:
+        search:
+        alert:
+        skill:
+        item:
+        rest:
+        engage:
+
+    east_exit:
+      paths: 'dead_horses north_embankment south_embankment'
+      description: "This is the eastern exit."
+      events:
+        move:
+        examine:
+        search:
+        alert:
+        skill:
+        item:
+        rest:
+        engage:
+
+    north_embankment:
+      paths: 'dead_horses west_exit east_exit'
+      description: "This is the northern embankment."
+      events:
+        move:
+        examine:
+        search:
+        alert:
+        skill:
+        item:
+        rest:
+        engage:
+
+    south_embankment:
+      paths: 'dead_horses west_exit east_exit'
+      description: "This is the southern embankment."
+      events:
+        move:
+        examine:
+        search:
+        alert:
+        skill:
+        item:
+        rest:
+        engage:
+
+    dead_horses:
+      paths: 'north_embankment south_embankment west_exit east_exit'
+      description: "This is where the dead horses are."
+      events:
+        move:
+        examine:
+        search:
+        alert:
+        skill:
+        item:
+        rest:
+        engage:
