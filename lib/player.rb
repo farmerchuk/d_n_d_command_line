@@ -5,7 +5,7 @@ require_relative 'helpers'
 class Player
   include Helpers::Format
 
-  ACTIONS = [:move, :examine, :search, :alert, :skill, :item, :rest, :engage]
+  ACTIONS = %w[move examine search alert skill item rest engage]
 
   attr_accessor :name, :hitpoints, :initiative, :area, :location, :action
 

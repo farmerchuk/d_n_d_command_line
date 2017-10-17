@@ -1,9 +1,19 @@
 event_1:
+  location: area_1_west_exit
+  trigger: examine
+  result: The road is dirty.
+
+event_2:
+  location: area_1_west_exit
+  trigger: search
+  result: You see nothing of interest.
+
+event_3:
   location: area_1_dead_horses
   trigger: examine
   result: You are attacked!
 
-event_2:
+event_4:
   location: area_1_dead_horses
   trigger: search
   result: You find gold!

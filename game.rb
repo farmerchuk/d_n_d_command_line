@@ -5,6 +5,7 @@ require_relative 'lib/player_list'
 require_relative 'lib/player'
 require_relative 'lib/area'
 require_relative 'lib/location'
+require_relative 'lib/event_handler'
 
 require 'yaml'
 
@@ -28,13 +29,13 @@ class DND
     create_players
     set_players_in_starting_area_and_location
     set_current_player
-    dm_describes_scene
 
     loop do
+      dm_describes_scene
       dm_selects_player_turn
       dm_describes_scene
       player_selects_action
-      # event_handler
+      resolve_player_turn
     end
   end
 
@@ -133,7 +134,11 @@ class DND
     puts '-----------------'
     puts current_player.area.description
     puts
-    puts 'Location Description:'
+    puts 'Current Player Turn:'
+    puts '--------------------'
+    puts current_player
+    puts
+    puts 'Current Location:'
     puts '---------------------'
     puts current_player.location.description
     puts
@@ -147,9 +152,10 @@ class DND
     current_player.select_action
   end
 
-  def event_handler
-    Event.new.run
+  def resolve_player_turn
+    EventHandler.new(current_player).run
     current_player.end_turn
+    continue
   end
 end
 
