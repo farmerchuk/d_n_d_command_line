@@ -171,7 +171,7 @@ class DND
   def resolve_player_turn
     EventHandler.new(current_player).run
     current_player.end_turn
-    continue
+    next_turn
   end
 end
 
