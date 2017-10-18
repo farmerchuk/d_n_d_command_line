@@ -130,8 +130,8 @@ class DND
       player.area = areas.select do |area|
         area.id == start['area']
       end.first
-      player.location = player.area.locations.select do |loc|
-        loc.id == start['location']
+      player.location = player.area.locations.select do |location|
+        location.id == start['location']
       end.first
     end
   end
@@ -143,15 +143,19 @@ class DND
   def dm_describes_scene
     clear_screen
     puts 'Area Description:'
-    puts '-----------------'
+    puts '------------------------------------'
     puts current_player.area.description
     puts
+    puts 'Player Locations'
+    puts '------------------------------------'
+    players.each { |player| puts "#{player} is at: #{player.location}" }
+    puts
     puts 'Current Player Turn:'
-    puts '--------------------'
+    puts '------------------------------------'
     puts current_player
     puts
-    puts 'Current Location:'
-    puts '---------------------'
+    puts 'Current Player Location Description:'
+    puts '------------------------------------'
     puts current_player.location.description
     puts
   end
