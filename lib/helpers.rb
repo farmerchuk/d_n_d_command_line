@@ -8,7 +8,6 @@ module Helpers
       puts
       print '> '
       gets.chomp
-      print
     end
 
     def next_turn
