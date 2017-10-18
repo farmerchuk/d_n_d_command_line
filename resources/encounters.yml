@@ -1,0 +1,7 @@
+# encounter.yml
+
+- id: area_1_enounter_1
+  type:
+  intro:
+  enemies:
+  treasure:

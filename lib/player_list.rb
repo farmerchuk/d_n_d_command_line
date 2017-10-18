@@ -33,7 +33,7 @@ class PlayerList
   end
 
   def highest_initiative
-    raise StandardError('PlayerList empty') if players.empty?
+    raise 'PlayerList empty' if players.empty?
     players.sort_by { |player| player.initiative }.last
   end
 

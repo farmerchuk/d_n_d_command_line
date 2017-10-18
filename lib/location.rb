@@ -8,7 +8,7 @@ class Location
     @area_id = nil #String
     @display_name = nil #String
     @description = nil # String
-    @events = {} # ie. { move: event_id_1, examine: event_id_2, ... }
+    @events = [] # events that can occur based on player action
     @paths = [] # available paths to other locations
   end
 

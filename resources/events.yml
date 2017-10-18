@@ -1,19 +1,28 @@
-event_1:
-  location: area_1_west_exit
+# events.yml
+
+- id: area_1_event_1
+  location_id: area_1_west_exit
   trigger: examine
-  result: The road is dirty.
+  description: The road is dirty.
+  encounter:
 
-event_2:
-  location: area_1_west_exit
+- id: area_1_event_2
+  location_id: area_1_west_exit
   trigger: search
-  result: You see nothing of interest.
+  description: You see nothing of interest.
+  encounter:
 
-event_3:
-  location: area_1_dead_horses
+
+- id: area_1_event_3
+  location_id: area_1_dead_horses
   trigger: examine
-  result: You are attacked!
+  description: |
+    The saddlebags have been looted. Nearby lies an empty
+    leather map case.
+  encounter: area_1_encounter_1
 
-event_4:
-  location: area_1_dead_horses
+- id: area_1_event_4
+  location_id: area_1_dead_horses
   trigger: search
-  result: You find gold!
+  description: You find gold!
+  encounter:

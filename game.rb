@@ -8,7 +8,6 @@ require_relative 'lib/location'
 require_relative 'lib/event_handler'
 
 require 'yaml'
-
 require 'pry'
 
 # Game logic
@@ -17,10 +16,9 @@ class DND
   include Helpers::Format
 
   def initialize
-    @start = YAML.load_file('resources/initialize.yml')
     @players = PlayerList.new
     @current_player = nil
-    @areas = {}
+    @areas = []
   end
 
   def run
@@ -41,7 +39,7 @@ class DND
 
   private
 
-  attr_accessor :start, :players, :current_player, :areas
+  attr_accessor :players, :current_player, :areas
 
   def welcome
     clear_screen
@@ -53,28 +51,28 @@ class DND
   def generate_areas
     areas_data = YAML.load_file('resources/areas.yml')
 
-    areas_data.each do |area_id, desc|
+    areas_data.each do |area|
       new_area = Area.new
-      new_area.id = area_id
-      new_area.description = desc
+      new_area.id = area['id']
+      new_area.description = area['description']
       add_location_data_to(new_area)
-      areas[area_id] = new_area
+      areas << new_area
     end
   end
 
   def add_location_data_to(area)
     locations_data = YAML.load_file('resources/locations.yml')
 
-    locations_data.each do |loc_id, loc_details|
-      if loc_details['area'] == area.id
+    locations_data.each do |location|
+      if location['area_id'] == area.id
         new_loc = Location.new
-        new_loc.id = loc_id
+        new_loc.id = location['id']
         new_loc.area_id = area.id
-        new_loc.description = loc_details['description']
-        new_loc.display_name = loc_details['display_name']
-        new_loc.paths = loc_details['paths'].split(' ')
+        new_loc.description = location['description']
+        new_loc.display_name = location['display_name']
+        new_loc.paths = location['paths'].split(' ')
         add_event_data_to(new_loc)
-        area.locations[loc_id] = new_loc
+        area << new_loc
       end
     end
   end
@@ -82,11 +80,11 @@ class DND
   def add_event_data_to(location)
     event_data = YAML.load_file('resources/events.yml')
 
-    events = event_data.select do |ev_id, ev_details|
-      ev_details['location'] == location.id
+    events = event_data.select do |event|
+      event['location_id'] == location.id
     end
-    events.each do |ev_id, ev_details|
-      location.events[ev_id] = ev_details
+    events.each do |event|
+      location.events << event
     end
   end
 
@@ -126,9 +124,15 @@ class DND
   end
 
   def set_players_in_starting_area_and_location
+    start = YAML.load_file('resources/initialize.yml')
+
     players.each do |player|
-      player.area = areas[start['area']]
-      player.location = areas[start['area']].locations[start['location']]
+      player.area = areas.select do |area|
+        area.id == start['area']
+      end.first
+      player.location = player.area.locations.select do |loc|
+        loc.id == start['location']
+      end.first
     end
   end
 

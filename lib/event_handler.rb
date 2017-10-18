@@ -12,6 +12,8 @@ class EventHandler
   end
 
   def run
+    # if no action matches player action, return
+
     case player.action
     when 'move' then player_move
     when 'examine' then player_examine
@@ -25,23 +27,23 @@ class EventHandler
   end
 
   def player_move
-    paths = player.area.select do |loc_id, location|
+    available_locations = player.area.select do |location|
       player.location.paths.include?(location.id)
     end
 
     puts 'Where would the player like to move to?'
-    paths.each_with_index do |(loc_id, location), idx|
+    available_locations.each_with_index do |location, idx|
       puts "#{idx}. #{location}"
     end
 
     choice = nil
     loop do
       choice = prompt.to_i
-      break if (0..(paths.size - 1)).include?(choice)
+      break if (0..(available_locations.size - 1)).include?(choice)
       puts 'Sorry, that is not a valid choice...'
     end
 
-    new_location = paths.each_with_index do |(loc_id, location), idx|
+    available_locations.each_with_index do |location, idx|
       player.location = location if idx == choice
     end
   end

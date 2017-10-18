@@ -1,11 +1,14 @@
+# areas.yml
+
 # Area ids must be unique
 
 # Area 1: Goblin Ambush
 
-area_1_goblin_ambush: |
-  You've been on the Triboar Trail for about half a day. As
-  you come around a bend, you spot two dead horses sprawled
-  about fifty feet ahead of you, blocking the path. Each has
-  several black-feathered arrows sticking out of it. The woods
-  press close to the trail here, with a steep embankment and
-  dense thickets on either side.
+- id: area_1_goblin_ambush
+  description: |
+    You've been on the Triboar Trail for about half a day. As
+    you come around a bend, you spot two dead horses sprawled
+    about fifty feet ahead of you, blocking the path. Each has
+    several black-feathered arrows sticking out of it. The woods
+    press close to the trail here, with a steep embankment and
+    dense thickets on either side.

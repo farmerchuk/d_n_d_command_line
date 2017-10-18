@@ -7,10 +7,14 @@ class Area
   def initialize
     @id = nil
     @description = nil
-    @locations = {}
+    @locations = []
+  end
+
+  def <<(location)
+    locations << location
   end
 
   def select
-    locations.select { |loc_id, details| yield(loc_id, details) }
+    locations.select { |location| yield(location) }
   end
 end
