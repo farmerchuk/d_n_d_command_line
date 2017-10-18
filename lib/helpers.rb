@@ -10,9 +10,9 @@ module Helpers
       gets.chomp
     end
 
-    def continue
+    def next_turn
       puts
-      print 'Hit return to continue...'
+      print 'Hit RETURN to advance to next turn...'
       gets
     end
   end
