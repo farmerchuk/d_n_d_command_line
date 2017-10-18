@@ -32,6 +32,8 @@ class DND
       dm_describes_scene
       dm_selects_player_turn
       dm_describes_scene
+      player_moves
+      dm_describes_scene
       player_selects_action
       resolve_player_turn
     end
@@ -158,6 +160,12 @@ class DND
     puts '------------------------------------'
     puts current_player.location.description
     puts
+  end
+
+  def player_moves
+    current_player.action = 'move'
+    EventHandler.new(current_player).run
+    current_player.end_turn
   end
 
   def dm_selects_player_turn
