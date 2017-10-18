@@ -35,11 +35,12 @@ class EventHandler
     available_locations.each_with_index do |location, idx|
       puts "#{idx}. #{location}"
     end
+    puts "#{available_locations.size}. Stay where you are"
 
     choice = nil
     loop do
       choice = prompt.to_i
-      break if (0..(available_locations.size - 1)).include?(choice)
+      break if (0..(available_locations.size)).include?(choice)
       puts 'Sorry, that is not a valid choice...'
     end
 
