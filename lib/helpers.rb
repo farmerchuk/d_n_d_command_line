@@ -21,5 +21,10 @@ module Helpers
       print "Hit RETURN to advance to next player's turn..."
       gets
     end
+
+    def ineffective_action_msg
+      puts
+      puts 'Nothing happens...'
+    end
   end
 end
