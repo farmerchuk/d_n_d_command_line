@@ -24,6 +24,8 @@ class EventHandler
     when 'rest' then player_rest
     when 'engage' then player_engage
     end
+
+    player.end_turn
   end
 
   def player_move

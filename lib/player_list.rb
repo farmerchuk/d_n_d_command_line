@@ -20,7 +20,7 @@ class PlayerList
   end
 
   def select_player # => Player
-    puts 'Which player would like to take an action?'
+    puts 'Which player would like to take a turn?'
     list_all_players
     choice = nil
     loop do

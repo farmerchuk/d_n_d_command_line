@@ -175,6 +175,8 @@ class DND
       player_moves
       resolve_player_turn
     end
+
+    prompt_for_next_turn
   end
 
   def player_choose_first_action
@@ -184,7 +186,6 @@ class DND
   def player_moves
     current_player.action = 'move'
     EventHandler.new(current_player).run
-    current_player.end_turn
   end
 
   def dm_selects_player_turn
@@ -197,8 +198,6 @@ class DND
 
   def resolve_player_turn
     EventHandler.new(current_player).run
-    current_player.end_turn
-    next_turn
   end
 end
 
