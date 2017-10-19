@@ -50,4 +50,39 @@ class EventHandler
       player.location = location if idx == choice
     end
   end
+
+  def player_examine
+    puts "Player examines the area"
+    prompt_continue
+  end
+
+  def player_search
+    puts "Player searches the area"
+    prompt_continue
+  end
+
+  def player_alert
+    puts "Player is on alert"
+    prompt_continue
+  end
+
+  def player_use_skill
+    puts "Player uses a skill"
+    prompt_continue
+  end
+
+  def player_use_item
+    puts "Player uses an item"
+    prompt_continue
+  end
+
+  def player_rest
+    puts "Player rests"
+    prompt_continue
+  end
+
+  def player_engage
+    puts "Player engages with something or someone"
+    prompt_continue
+  end
 end

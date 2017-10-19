@@ -10,6 +10,12 @@ module Helpers
       gets.chomp
     end
 
+    def prompt_continue
+      puts
+      print "Hit RETURN to continue..."
+      gets
+    end
+
     def prompt_for_next_turn
       puts
       print "Hit RETURN to advance to next player's turn..."
