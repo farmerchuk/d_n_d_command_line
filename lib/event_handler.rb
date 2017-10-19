@@ -20,15 +20,9 @@ class EventHandler
     elsif !event_matching_player_action?
       ineffective_action_msg
     else
-      case player.action
-      when 'examine' then player_examine
-      when 'search' then player_search
-      when 'alert' then player_alert
-      when 'skill' then player_use_skill
-      when 'item' then player_use_item
-      when 'rest' then player_rest
-      when 'engage' then player_engage
-      end
+      puts event['description']
+      resolve_player_action
+      prompt_continue
     end
 
     player.end_turn
@@ -40,6 +34,18 @@ class EventHandler
     events.select do |event|
       event['trigger'] == player.action
     end.first
+  end
+
+  def resolve_player_action
+    case player.action
+    when 'examine' then player_examine
+    when 'search' then player_search
+    when 'alert' then player_alert
+    when 'skill' then player_use_skill
+    when 'item' then player_use_item
+    when 'rest' then player_rest
+    when 'engage' then player_engage
+    end
   end
 
   def player_move
@@ -70,13 +76,11 @@ class EventHandler
   end
 
   def player_examine
-    puts event['description']
-    prompt_continue
+
   end
 
   def player_search
-    puts "Player searches the area"
-    prompt_continue
+
   end
 
   def player_alert
