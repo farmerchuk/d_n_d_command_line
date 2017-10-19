@@ -51,9 +51,19 @@ class EventHandler
     end
   end
 
+  def event_matching_player_action?
+    events = player.location.events
+    events.any? { |event| event['trigger'] == player.action }
+  end
+
   def player_examine
-    puts "Player examines the area"
-    prompt_continue
+    if event_matching_player_action?
+      event = player.location.events.select { |event| event['trigger'] == player.action }
+      puts event.first['description']
+      prompt_continue
+    else
+      ineffective_action_msg
+    end
   end
 
   def player_search
