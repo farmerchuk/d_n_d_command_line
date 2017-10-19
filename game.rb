@@ -164,7 +164,6 @@ class DND
 
     if current_player.action == 'move'
       player_moves
-      resolve_player_turn
       dm_describes_scene
       player_selects_action
       resolve_player_turn
@@ -173,7 +172,6 @@ class DND
       resolve_player_turn
       dm_describes_scene
       player_moves
-      resolve_player_turn
     end
 
     prompt_for_next_turn
