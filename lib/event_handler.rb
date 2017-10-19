@@ -5,11 +5,11 @@ require_relative 'helpers'
 class EventHandler
   include Helpers::Format
 
-  attr_accessor :player, :events
+  attr_accessor :player, :event
 
   def initialize(current_player)
     @player = current_player
-    @events = player.location.events
+    @event = set_event
   end
 
   def run
@@ -32,6 +32,14 @@ class EventHandler
     end
 
     player.end_turn
+  end
+
+  def set_event
+    events = player.location.events
+
+    events.select do |event|
+      event['trigger'] == player.action
+    end.first
   end
 
   def player_move
@@ -58,12 +66,11 @@ class EventHandler
   end
 
   def event_matching_player_action?
-    events.any? { |event| event['trigger'] == player.action }
+    !!event
   end
 
   def player_examine
-    event = events.select { |event| event['trigger'] == player.action }
-    puts event.first['description']
+    puts event['description']
     prompt_continue
   end
 
