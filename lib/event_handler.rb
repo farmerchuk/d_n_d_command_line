@@ -5,24 +5,30 @@ require_relative 'helpers'
 class EventHandler
   include Helpers::Format
 
-  attr_accessor :player
+  attr_accessor :player, :events
 
   def initialize(current_player)
     @player = current_player
+    @events = player.location.events
   end
 
   def run
     # if no action matches player action, return
 
-    case player.action
-    when 'move' then player_move
-    when 'examine' then player_examine
-    when 'search' then player_search
-    when 'alert' then player_alert
-    when 'skill' then player_use_skill
-    when 'item' then player_use_item
-    when 'rest' then player_rest
-    when 'engage' then player_engage
+    if player.action == 'move'
+      player_move
+    elsif !event_matching_player_action?
+      ineffective_action_msg
+    else
+      case player.action
+      when 'examine' then player_examine
+      when 'search' then player_search
+      when 'alert' then player_alert
+      when 'skill' then player_use_skill
+      when 'item' then player_use_item
+      when 'rest' then player_rest
+      when 'engage' then player_engage
+      end
     end
 
     player.end_turn
@@ -52,18 +58,13 @@ class EventHandler
   end
 
   def event_matching_player_action?
-    events = player.location.events
     events.any? { |event| event['trigger'] == player.action }
   end
 
   def player_examine
-    if event_matching_player_action?
-      event = player.location.events.select { |event| event['trigger'] == player.action }
-      puts event.first['description']
-      prompt_continue
-    else
-      ineffective_action_msg
-    end
+    event = events.select { |event| event['trigger'] == player.action }
+    puts event.first['description']
+    prompt_continue
   end
 
   def player_search
