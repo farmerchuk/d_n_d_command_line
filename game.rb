@@ -32,10 +32,7 @@ class DND
       dm_describes_scene
       dm_selects_player_turn
       dm_describes_scene
-      player_moves
-      dm_describes_scene
-      player_selects_action
-      resolve_player_turn
+      player_turn
     end
   end
 
@@ -160,6 +157,28 @@ class DND
     puts '------------------------------------'
     puts current_player.location.description
     puts
+  end
+
+  def player_turn
+    current_player.select_first_action
+
+    if current_player.action == 'move'
+      player_moves
+      resolve_player_turn
+      dm_describes_scene
+      player_selects_action
+      resolve_player_turn
+    else
+      player_selects_action
+      resolve_player_turn
+      dm_describes_scene
+      player_moves
+      resolve_player_turn
+    end
+  end
+
+  def player_choose_first_action
+    current_player.select_first_action
   end
 
   def player_moves
