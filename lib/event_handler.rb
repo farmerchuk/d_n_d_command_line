@@ -13,8 +13,6 @@ class EventHandler
   end
 
   def run
-    # if no action matches player action, return
-
     if player.action == 'move'
       player_move
     elsif !event_matching_player_action?
