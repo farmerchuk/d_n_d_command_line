@@ -5,9 +5,9 @@ class Event
 
   def initialize
     @id = nil
-    @location = nil
+    @location = nil # Location
     @trigger = nil
     @description = nil
-    @encounter = nil
+    @encounter = nil # Encounter
   end
 end

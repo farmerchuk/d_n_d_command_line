@@ -66,7 +66,7 @@ class DND
       if location['area_id'] == area.id
         new_loc = Location.new
         new_loc.id = location['id']
-        new_loc.area_id = area.id
+        new_loc.area = area
         new_loc.description = location['description']
         new_loc.display_name = location['display_name']
         new_loc.paths = location['paths'].split(' ')
