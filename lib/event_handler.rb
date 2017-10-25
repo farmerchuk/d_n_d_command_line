@@ -74,11 +74,11 @@ class EventHandler
   end
 
   def player_examine
-
+    # TBD
   end
 
   def player_search
-
+    # TBD
   end
 
   def player_alert

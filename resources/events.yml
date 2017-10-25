@@ -12,7 +12,6 @@
   description: You see nothing of interest.
   encounter:
 
-
 - id: area_1_event_3
   location_id: area_1_dead_horses
   trigger: examine

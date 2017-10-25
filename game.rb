@@ -25,7 +25,7 @@ class DND
     welcome
     generate_areas
     create_players
-    set_players_in_starting_area_and_location
+    stage_players
     set_current_player
 
     loop do
@@ -122,7 +122,7 @@ class DND
     input == 'y' ? true : false
   end
 
-  def set_players_in_starting_area_and_location
+  def stage_players
     start = YAML.load_file('resources/initialize.yml')
 
     players.each do |player|
