@@ -2,26 +2,26 @@
 
 - id: area_1_event_1
   location_id: area_1_west_exit
+  encounter_id:
   trigger: examine
   description: The road is dirty.
-  encounter:
 
 - id: area_1_event_2
   location_id: area_1_west_exit
+  encounter_id:
   trigger: search
   description: You see nothing of interest.
-  encounter:
 
 - id: area_1_event_3
   location_id: area_1_dead_horses
+  encounter_id: area_1_enounter_1
   trigger: examine
   description: |
     The saddlebags have been looted. Nearby lies an empty
     leather map case.
-  encounter: area_1_encounter_1
 
 - id: area_1_event_4
   location_id: area_1_dead_horses
+  encounter_id:
   trigger: search
   description: You find gold!
-  encounter:
