@@ -4,10 +4,10 @@ class Event
   attr_accessor :id, :location, :trigger, :description, :encounter
 
   def initialize
-    @id = nil
+    @id = nil # String
     @location = nil # Location
-    @trigger = nil
-    @description = nil
+    @trigger = nil # String
+    @description = nil # String
     @encounter = nil # Encounter
   end
 end

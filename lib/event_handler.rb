@@ -18,7 +18,7 @@ class EventHandler
     elsif !event_matching_player_action?
       ineffective_action_msg
     else
-      puts event['description']
+      puts event.description
       resolve_player_action
       prompt_continue
     end
@@ -30,7 +30,7 @@ class EventHandler
     events = player.location.events
 
     events.select do |event|
-      event['trigger'] == player.action
+      event.trigger == player.action
     end.first
   end
 

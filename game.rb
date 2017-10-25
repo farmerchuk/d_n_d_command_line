@@ -5,6 +5,7 @@ require_relative 'lib/player_list'
 require_relative 'lib/player'
 require_relative 'lib/area'
 require_relative 'lib/location'
+require_relative 'lib/event'
 require_relative 'lib/event_handler'
 
 require 'yaml'
@@ -79,11 +80,16 @@ class DND
   def add_event_data_to(location)
     event_data = YAML.load_file('resources/events.yml')
 
-    events = event_data.select do |event|
-      event['location_id'] == location.id
-    end
-    events.each do |event|
-      location.events << event
+    event_data.each do |event|
+      if event['location_id'] == location.id
+        new_event = Event.new
+        new_event.id = event['id']
+        new_event.location = location
+        new_event.description = event['description']
+        new_event.trigger = event['trigger']
+        new_event.encounter = event['encounter']
+        location.events << new_event
+      end
     end
   end
 

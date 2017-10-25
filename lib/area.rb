@@ -5,9 +5,9 @@ class Area
   attr_reader :locations
 
   def initialize
-    @id = nil
-    @description = nil
-    @locations = []
+    @id = nil # String
+    @description = nil # String
+    @locations = [] # Array of Locations
   end
 
   def <<(location)
