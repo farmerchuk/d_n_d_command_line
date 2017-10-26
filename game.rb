@@ -20,11 +20,14 @@ class DND
     @players = PlayerList.new
     @current_player = nil
     @areas = []
+    @locations = []
+    @events = []
+
+    build_resources
   end
 
   def run
     welcome
-    generate_areas
     create_players
     stage_players
     set_current_player
@@ -39,58 +42,107 @@ class DND
 
   private
 
-  attr_accessor :players, :current_player, :areas
+  attr_accessor :players, :current_player, :areas, :locations, :events
 
-  def welcome
-    clear_screen
-    puts 'Dungeons & Dragons: The Lost Mine of Phandelver'
-    puts '-----------------------------------------------'
-    puts
+  def build_resources
+    build_areas
+    build_locations
+    build_events
+
+    add_locations_to_areas
+    add_area_to_locations
+    add_paths_to_locations
+    add_location_to_events
+    add_encounter_to_events
   end
 
-  def generate_areas
+  def build_areas
     areas_data = YAML.load_file('resources/areas.yml')
 
     areas_data.each do |area|
       new_area = Area.new
       new_area.id = area['id']
       new_area.description = area['description']
-      add_location_data_to(new_area)
       areas << new_area
     end
   end
 
-  def add_location_data_to(area)
+  def build_locations
     locations_data = YAML.load_file('resources/locations.yml')
 
     locations_data.each do |location|
-      if location['area_id'] == area.id
-        new_loc = Location.new
-        new_loc.id = location['id']
-        new_loc.area = area
-        new_loc.description = location['description']
-        new_loc.display_name = location['display_name']
-        new_loc.paths = location['paths'].split(' ')
-        add_event_data_to(new_loc)
-        area << new_loc
+      new_loc = Location.new
+      new_loc.id = location['id']
+      new_loc.area_id = location['area_id']
+      new_loc.path_ids = location['path_ids'].split
+      new_loc.description = location['description']
+      new_loc.display_name = location['display_name']
+      locations << new_loc
+    end
+  end
+
+  def build_events
+    event_data = YAML.load_file('resources/events.yml')
+
+    event_data.each do |event|
+      new_event = Event.new
+      new_event.id = event['id']
+      new_event.location_id = event['location_id']
+      new_event.description = event['description']
+      new_event.trigger = event['trigger']
+      events << new_event
+    end
+  end
+
+  def add_locations_to_areas
+    areas.each do |area|
+      locations.each do |location|
+        if location.area_id == area.id
+          area.add_location(location)
+        end
       end
     end
   end
 
-  def add_event_data_to(location)
-    event_data = YAML.load_file('resources/events.yml')
-
-    event_data.each do |event|
-      if event['location_id'] == location.id
-        new_event = Event.new
-        new_event.id = event['id']
-        new_event.location = location
-        new_event.description = event['description']
-        new_event.trigger = event['trigger']
-        new_event.encounter = event['encounter']
-        location.events << new_event
+  def add_area_to_locations
+    locations.each do |location|
+      areas.each do |area|
+        if location.area_id == area.id
+          location.area = area
+        end
       end
     end
+  end
+
+  def add_paths_to_locations
+    locations.each do |location1|
+      locations.each do |location2|
+        if location1.path_ids.include?(location2.id)
+          location1.add_path(location2)
+        end
+      end
+    end
+  end
+
+  def add_location_to_events
+    events.each do |event|
+      locations.each do |location|
+        if event.location_id == location.id
+          event.location = location
+        end
+      end
+    end
+  end
+
+  def add_encounter_to_events
+    # TBD
+  end
+
+  def welcome
+    clear_screen
+    puts 'Dungeons & Dragons: The Lost Mine of Phandelver'
+    puts '-----------------------------------------------'
+    puts
   end
 
   def create_players
@@ -132,12 +184,16 @@ class DND
     start = YAML.load_file('resources/initialize.yml')
 
     players.each do |player|
-      player.area = areas.select do |area|
-        area.id == start['area']
-      end.first
-      player.location = player.area.locations.select do |location|
-        location.id == start['location']
-      end.first
+      areas.each do |area|
+        if area.id == start['area_id']
+         player.area = area
+        end
+      end
+      locations.each do |location|
+        if location.id == start['location_id']
+          player.location = location
+        end
+      end
     end
   end
 
@@ -153,7 +209,9 @@ class DND
     puts
     puts 'Player Locations'
     puts '------------------------------------'
-    players.each { |player| puts "#{player} is at: #{player.location}" }
+    players.each do |player|
+      puts "#{player} is at: #{player.location.display_name}"
+    end
     puts
     puts 'Current Player Turn:'
     puts '------------------------------------'
@@ -170,13 +228,11 @@ class DND
 
     if current_player.action == 'move'
       player_moves
-      dm_describes_scene
       player_selects_action
       resolve_player_turn
     else
       player_selects_action
       resolve_player_turn
-      dm_describes_scene
       player_moves
     end
 
@@ -189,7 +245,8 @@ class DND
 
   def player_moves
     current_player.action = 'move'
-    EventHandler.new(current_player).run
+    EventHandler.new(current_player, events).run
+    dm_describes_scene
   end
 
   def dm_selects_player_turn
@@ -201,7 +258,8 @@ class DND
   end
 
   def resolve_player_turn
-    EventHandler.new(current_player).run
+    EventHandler.new(current_player, events).run
+    dm_describes_scene
   end
 end
 

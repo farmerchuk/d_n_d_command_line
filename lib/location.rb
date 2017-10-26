@@ -1,18 +1,24 @@
 # location.rb
 
 class Location
-  attr_accessor :id, :area, :display_name, :description, :events, :paths
+  attr_accessor :id, :area, :area_id, :display_name, :description, :events,
+                :path_ids, :paths
 
   def initialize
     @id = nil # String
+    @area_id = nil # String
     @area = nil # Area
     @display_name = nil # String
     @description = nil # String
-    @events = [] # events that can occur based on player action
-    @paths = [] # available paths to other locations
+    @path_ids = [] # Array
+    @paths = [] # Array of Locations
+  end
+
+  def add_path(location)
+    paths << location
   end
 
   def to_s
-    display_name
+    id
   end
 end

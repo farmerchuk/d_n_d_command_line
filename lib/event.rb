@@ -1,13 +1,18 @@
 # event.rb
 
 class Event
-  attr_accessor :id, :location, :trigger, :description, :encounter
+  attr_accessor :id, :location_id, :location, :trigger, :description, :encounter
 
   def initialize
     @id = nil # String
+    @location_id # String
     @location = nil # Location
     @trigger = nil # String
     @description = nil # String
     @encounter = nil # Encounter
+  end
+
+  def to_s
+    id
   end
 end

@@ -5,18 +5,21 @@ require_relative 'helpers'
 class EventHandler
   include Helpers::Format
 
-  attr_accessor :player, :event
+  attr_accessor :player, :events, :event
 
-  def initialize(current_player)
+  def initialize(current_player, events)
     @player = current_player
+    @events = events
     @event = set_event
   end
 
   def run
     if player.action == 'move'
       player_move
+      prompt_continue
     elsif !event_matching_player_action?
       ineffective_action_msg
+      prompt_continue
     else
       puts event.description
       resolve_player_action
@@ -27,11 +30,12 @@ class EventHandler
   end
 
   def set_event
-    events = player.location.events
-
-    events.select do |event|
-      event.trigger == player.action
-    end.first
+    events.each do |event|
+      if event.trigger == player.action && event.location == player.location
+        return event
+      end
+    end
+    nil
   end
 
   def resolve_player_action
@@ -47,13 +51,11 @@ class EventHandler
   end
 
   def player_move
-    available_locations = player.area.select do |location|
-      player.location.paths.include?(location.id)
-    end
+    available_locations = player.location.paths
 
     puts 'Where would the player like to move to?'
     available_locations.each_with_index do |location, idx|
-      puts "#{idx}. #{location}"
+      puts "#{idx}. #{location.display_name}"
     end
     puts "#{available_locations.size}. Stay where you are"
 
@@ -67,6 +69,9 @@ class EventHandler
     available_locations.each_with_index do |location, idx|
       player.location = location if idx == choice
     end
+
+    puts
+    puts "#{player} has moved to #{player.location.display_name}"
   end
 
   def event_matching_player_action?

@@ -10,11 +10,15 @@ class Area
     @locations = [] # Array of Locations
   end
 
-  def <<(location)
+  def add_location(location)
     locations << location
   end
 
   def select
     locations.select { |location| yield(location) }
+  end
+
+  def to_s
+    id
   end
 end
