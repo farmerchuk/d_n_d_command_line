@@ -50,21 +50,26 @@ class EventHandler
 
   def player_move
     available_locations = player.location.paths
-
-    puts 'Where would the player like to move to?'
-    available_locations.each_with_index do |location, idx|
-      puts "#{idx}. #{location.display_name}"
-    end
-    puts "#{available_locations.size}. Stay where you are"
-
+    list_locations(available_locations)
     choice = choose_num(0..(available_locations.size))
-
-    available_locations.each_with_index do |location, idx|
-      player.location = location if idx == choice
-    end
+    set_player_location(available_locations, choice)
 
     puts
     puts "#{player} is now at the #{player.location.display_name}"
+  end
+
+  def list_locations(locations)
+    puts 'Where would the player like to move to?'
+    locations.each_with_index do |location, idx|
+      puts "#{idx}. #{location.display_name}"
+    end
+    puts "#{locations.size}. Stay where you are"
+  end
+
+  def set_player_location(locations, choice)
+    locations.each_with_index do |location, idx|
+      player.location = location if idx == choice
+    end
   end
 
   def event_matching_player_action?
