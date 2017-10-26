@@ -22,7 +22,7 @@ module Helpers
       gets
     end
 
-    def choose(option_range)
+    def choose_num(option_range)
       choice = nil
       loop do
         choice = prompt.to_i

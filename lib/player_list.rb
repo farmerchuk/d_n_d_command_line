@@ -22,7 +22,7 @@ class PlayerList
   def select_player # => Player
     puts 'Which player would like to take a turn?'
     list_all_players
-    choice = choose(0..players.size - 1)
+    choice = choose_num(0..players.size - 1)
     puts
     players[choice]
   end

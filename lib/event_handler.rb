@@ -57,7 +57,7 @@ class EventHandler
     end
     puts "#{available_locations.size}. Stay where you are"
 
-    choice = choose(0..(available_locations.size))
+    choice = choose_num(0..(available_locations.size))
 
     available_locations.each_with_index do |location, idx|
       player.location = location if idx == choice

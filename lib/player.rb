@@ -24,7 +24,7 @@ class Player
     puts "0. move"
     puts "1. other action"
 
-    choice = choose([0, 1])
+    choice = choose_num([0, 1])
     puts
     choice == 0 ? self.action = 'move' : nil
   end
@@ -33,7 +33,7 @@ class Player
     puts 'What action would the player like to take?'
     ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
 
-    choice = choose(0..(ACTIONS.size - 1))
+    choice = choose_num(0..(ACTIONS.size - 1))
     puts
     self.action = ACTIONS[choice]
   end
