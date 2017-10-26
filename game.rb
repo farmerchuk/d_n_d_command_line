@@ -139,8 +139,10 @@ class DND
   end
 
   def welcome
+    start = YAML.load_file('resources/initialize.yml')
+
     clear_screen
-    puts 'Dungeons & Dragons: The Lost Mine of Phandelver'
+    puts start['title']
     puts '-----------------------------------------------'
     puts
   end
