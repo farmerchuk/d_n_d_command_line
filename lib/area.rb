@@ -14,10 +14,6 @@ class Area
     locations << location
   end
 
-  def select
-    locations.select { |location| yield(location) }
-  end
-
   def to_s
     id
   end

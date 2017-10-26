@@ -23,7 +23,6 @@ module Helpers
     end
 
     def ineffective_action_msg
-      puts
       puts 'Nothing happens...'
     end
   end

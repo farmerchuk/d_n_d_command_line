@@ -71,7 +71,7 @@ class EventHandler
     end
 
     puts
-    puts "#{player} has moved to #{player.location.display_name}"
+    puts "#{player} is now at the #{player.location.display_name}"
   end
 
   def event_matching_player_action?
