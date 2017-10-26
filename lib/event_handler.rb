@@ -16,16 +16,14 @@ class EventHandler
   def run
     if player.action == 'move'
       player_move
-      prompt_continue
     elsif !event_matching_player_action?
       ineffective_action_msg
-      prompt_continue
     else
       puts event.description
       resolve_player_action
-      prompt_continue
     end
 
+    prompt_continue
     player.end_turn
   end
 
