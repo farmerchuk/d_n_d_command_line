@@ -19,25 +19,6 @@ class Player
     @alert = false
   end
 
-  def select_first_action
-    puts 'What action would the player like to take?'
-    puts "0. move"
-    puts "1. other action"
-
-    choice = choose_num([0, 1])
-    puts
-    choice == 0 ? self.action = 'move' : nil
-  end
-
-  def select_action
-    puts 'What action would the player like to take?'
-    ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
-
-    choice = choose_num(0..(ACTIONS.size - 1))
-    puts
-    self.action = ACTIONS[choice]
-  end
-
   def end_turn
     self.action = nil
   end

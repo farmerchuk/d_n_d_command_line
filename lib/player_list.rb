@@ -5,6 +5,8 @@ require_relative 'helpers'
 class PlayerList
   include Helpers::Format
 
+  attr_reader :players
+
   def initialize
     @players = []
   end
@@ -19,24 +21,20 @@ class PlayerList
     players << player
   end
 
-  def select_player # => Player
-    puts 'Which player would like to take a turn?'
-    list_all_players
-    choice = choose_num(0..players.size - 1)
-    puts
-    players[choice]
+  def size
+    players.size
+  end
+
+  def [](index)
+    players[index]
+  end
+
+  def list_all_players
+    players.each_with_index { |player, idx| puts "#{idx}. #{player}" }
   end
 
   def highest_initiative
     raise 'PlayerList empty' if players.empty?
     players.sort_by { |player| player.initiative }.last
-  end
-
-  private
-
-  attr_reader :players
-
-  def list_all_players
-    players.each_with_index { |player, idx| puts "#{idx}. #{player}" }
   end
 end

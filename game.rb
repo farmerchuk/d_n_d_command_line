@@ -224,7 +224,7 @@ class DND
   end
 
   def player_turn
-    current_player.select_first_action
+    player_choose_first_action
 
     if current_player.action == 'move'
       player_moves
@@ -240,7 +240,13 @@ class DND
   end
 
   def player_choose_first_action
-    current_player.select_first_action
+    puts 'What action would the player like to take?'
+    puts "0. move"
+    puts "1. other action"
+
+    choice = choose_num([0, 1])
+    puts
+    choice == 0 ? current_player.action = 'move' : nil
   end
 
   def player_moves
@@ -250,11 +256,19 @@ class DND
   end
 
   def dm_selects_player_turn
-    self.current_player = players.select_player
+    puts 'Which player would like to take a turn?'
+    players.list_all_players
+    choice = choose_num(0..players.size - 1)
+    puts
+    self.current_player = players[choice]
   end
 
   def player_selects_action
-    current_player.select_action
+    puts 'What action would the player like to take?'
+    Player::ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
+    choice = choose_num(0..(Player::ACTIONS.size - 1))
+    puts
+    current_player.action = Player::ACTIONS[choice]
   end
 
   def resolve_player_turn
