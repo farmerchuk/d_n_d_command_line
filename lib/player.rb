@@ -24,14 +24,8 @@ class Player
     puts "0. move"
     puts "1. other action"
 
-    choice = nil
-    loop do
-      choice = prompt.to_i
-      break if [0, 1].include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
+    choice = choose([0, 1])
     puts
-
     choice == 0 ? self.action = 'move' : nil
   end
 
@@ -39,12 +33,7 @@ class Player
     puts 'What action would the player like to take?'
     ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
 
-    choice = nil
-    loop do
-      choice = prompt.to_i
-      break if (0..(ACTIONS.size - 1)).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
+    choice = choose(0..(ACTIONS.size - 1))
     puts
     self.action = ACTIONS[choice]
   end

@@ -22,6 +22,16 @@ module Helpers
       gets
     end
 
+    def choose(option_range)
+      choice = nil
+      loop do
+        choice = prompt.to_i
+        break if (option_range).include?(choice)
+        puts 'Sorry, that is not a valid choice...'
+      end
+      choice
+    end
+
     def ineffective_action_msg
       puts 'Nothing happens...'
     end

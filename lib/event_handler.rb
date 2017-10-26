@@ -57,12 +57,7 @@ class EventHandler
     end
     puts "#{available_locations.size}. Stay where you are"
 
-    choice = nil
-    loop do
-      choice = prompt.to_i
-      break if (0..(available_locations.size)).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
+    choice = choose(0..(available_locations.size))
 
     available_locations.each_with_index do |location, idx|
       player.location = location if idx == choice

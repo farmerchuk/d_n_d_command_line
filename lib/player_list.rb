@@ -22,12 +22,7 @@ class PlayerList
   def select_player # => Player
     puts 'Which player would like to take a turn?'
     list_all_players
-    choice = nil
-    loop do
-      choice = prompt.to_i
-      break if (0..players.size - 1).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
+    choice = choose(0..players.size - 1)
     puts
     players[choice]
   end
