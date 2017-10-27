@@ -152,7 +152,6 @@ class DND
       player = create_player
       players.add(player)
       break unless create_another_player?
-      puts
     end
   end
 

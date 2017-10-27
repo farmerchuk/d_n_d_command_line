@@ -16,7 +16,7 @@ class EventHandler
   def run
     if player.action == 'move'
       player_move
-    elsif !event_matching_player_action?
+    elsif no_event_matching_player_action?
       ineffective_action_msg
     else
       resolve_player_action
@@ -70,8 +70,8 @@ class EventHandler
     end
   end
 
-  def event_matching_player_action?
-    !!event
+  def no_event_matching_player_action?
+    !event
   end
 
   def player_examine
