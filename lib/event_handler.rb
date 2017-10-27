@@ -14,14 +14,7 @@ class EventHandler
   end
 
   def run
-    if player.action == 'move'
-      player_move
-    elsif no_event_matching_player_action?
-      ineffective_action_msg
-    else
-      resolve_player_action
-    end
-
+    resolve_player_action
     prompt_continue
     player.end_turn
   end
@@ -37,6 +30,7 @@ class EventHandler
 
   def resolve_player_action
     case player.action
+    when 'move' then player_move
     when 'examine' then player_examine
     when 'search' then player_search
     when 'alert' then player_alert
@@ -45,6 +39,8 @@ class EventHandler
     when 'rest' then player_rest
     when 'engage' then player_engage
     end
+
+    no_event_msg if no_event_matching_player_action?
   end
 
   def player_move

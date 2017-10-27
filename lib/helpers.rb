@@ -34,7 +34,8 @@ module Helpers
       choice
     end
 
-    def ineffective_action_msg
+    def no_event_msg
+      puts
       puts 'Nothing happens...'
     end
   end

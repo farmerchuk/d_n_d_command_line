@@ -241,7 +241,7 @@ class DND
   end
 
   def player_choose_first_action
-    puts 'What action would the player like to take?'
+    puts 'What action would the player like to take first?'
     puts "0. move"
     puts "1. other action"
 
