@@ -19,7 +19,6 @@ class EventHandler
     elsif !event_matching_player_action?
       ineffective_action_msg
     else
-      puts event.description
       resolve_player_action
     end
 
@@ -54,7 +53,6 @@ class EventHandler
     choice = choose_num(0..(available_locations.size))
     set_player_location(available_locations, choice)
 
-    puts
     puts "#{player} is now at the #{player.location.display_name}"
   end
 
@@ -77,11 +75,11 @@ class EventHandler
   end
 
   def player_examine
-    # TBD
+    puts event.description
   end
 
   def player_search
-    # TBD
+    puts event.description
   end
 
   def player_alert

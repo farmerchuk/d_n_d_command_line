@@ -247,21 +247,18 @@ class DND
     puts "1. other action"
 
     choice = choose_num([0, 1])
-    puts
     choice == 0 ? current_player.action = 'move' : nil
   end
 
   def player_moves
     current_player.action = 'move'
-    EventHandler.new(current_player, events).run
-    dm_describes_scene
+    resolve_player_turn
   end
 
   def dm_selects_player_turn
     puts 'Which player would like to take a turn?'
     players.list_all_players
     choice = choose_num(0..players.size - 1)
-    puts
     self.current_player = players[choice]
   end
 
@@ -269,7 +266,6 @@ class DND
     puts 'What action would the player like to take?'
     Player::ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
     choice = choose_num(0..(Player::ACTIONS.size - 1))
-    puts
     current_player.action = Player::ACTIONS[choice]
   end
 

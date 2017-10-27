@@ -7,7 +7,9 @@ module Helpers
     def prompt
       puts
       print '> '
-      gets.chomp
+      input = gets.chomp
+      puts
+      input
     end
 
     def prompt_continue
