@@ -196,6 +196,7 @@ class DND
       break if ['y', 'n'].include?(input)
       puts 'Sorry, that is not a valid choice...'
     end
+    
     input == 'y' ? true : false
   end
 
