@@ -4,24 +4,24 @@
   location_id: area_1_west_exit
   encounter_id:
   trigger: examine
-  description: The road is dirty.
+  description: "The road is dirty."
 
 - id: area_1_event_2
   location_id: area_1_west_exit
   encounter_id:
   trigger: search
-  description: You see nothing of interest.
+  description: "You see nothing of interest."
 
 - id: area_1_event_3
   location_id: area_1_dead_horses
   encounter_id: area_1_enounter_1
   trigger: examine
   description: |
-    The saddlebags have been looted. Nearby lies an empty
-    leather map case.
+    "The saddlebags have been looted. Nearby lies an empty
+    leather map case."
 
 - id: area_1_event_4
   location_id: area_1_dead_horses
   encounter_id:
   trigger: search
-  description: You find gold!
+  description: "You find gold!"

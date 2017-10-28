@@ -74,7 +74,7 @@ class DND
       new_loc = Location.new
       new_loc.id = location['id']
       new_loc.area_id = location['area_id']
-      new_loc.path_ids = location['path_ids'].split
+      new_loc.path_ids = location['path_ids']
       new_loc.description = location['description']
       new_loc.display_name = location['display_name']
       locations << new_loc

@@ -4,30 +4,30 @@
 
 - id: area_1_west_exit
   area_id: area_1_goblin_ambush
-  path_ids: area_1_dead_horses area_1_north_embankment area_1_south_embankment
-  display_name: Western exit
-  description: You are currently at the western exit.
+  path_ids: [area_1_dead_horses, area_1_north_embankment, area_1_south_embankment]
+  display_name: "Western exit"
+  description: "You are currently at the western exit."
 
 - id: area_1_east_exit
   area_id: area_1_goblin_ambush
-  path_ids: area_1_dead_horses area_1_north_embankment area_1_south_embankment
-  display_name: Eastern exit
-  description: You are currently at the eastern exit.
+  path_ids: [area_1_dead_horses, area_1_north_embankment, area_1_south_embankment]
+  display_name: "Eastern exit"
+  description: "You are currently at the eastern exit."
 
 - id: area_1_north_embankment
   area_id: area_1_goblin_ambush
-  path_ids: area_1_dead_horses area_1_west_exit area_1_east_exit
-  display_name: Northern embankment
-  description: You are currently at the northern embankment.
+  path_ids: [area_1_dead_horses, area_1_west_exit, area_1_east_exit]
+  display_name: "Northern embankment"
+  description: "You are currently at the northern embankment."
 
 - id: area_1_south_embankment
   area_id: area_1_goblin_ambush
-  path_ids: area_1_dead_horses area_1_west_exit area_1_east_exit
-  display_name: Southern embankment
-  description: You are currently at the southern embankment.
+  path_ids: [area_1_dead_horses, area_1_west_exit, area_1_east_exit]
+  display_name: "Southern embankment"
+  description: "You are currently at the southern embankment."
 
 - id: area_1_dead_horses
   area_id: area_1_goblin_ambush
-  path_ids: area_1_north_embankment area_1_south_embankment area_1_west_exit area_1_east_exit
-  display_name: Dead horses
-  description: You are currently where the dead horses are.
+  path_ids: [area_1_north_embankment, area_1_south_embankment, area_1_west_exit, area_1_east_exit]
+  display_name: "Dead horses"
+  description: "You are currently where the dead horses are."
