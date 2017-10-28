@@ -29,8 +29,8 @@ class PlayerList
     players[index]
   end
 
-  def list_all_players
-    players.each_with_index { |player, idx| puts "#{idx}. #{player}" }
+  def to_a
+    players
   end
 
   def highest_initiative

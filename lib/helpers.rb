@@ -24,18 +24,31 @@ module Helpers
       gets
     end
 
-    def choose_num(option_range)
+    def choose_num(options)
       choice = nil
       loop do
         choice = prompt.to_i
-        break if (option_range).include?(choice)
+        break if (options).include?(choice)
         puts 'Sorry, that is not a valid choice...'
       end
       choice
     end
 
+    def choose_from_menu(options)
+      options.each_with_index do |el, idx|
+        puts "#{idx}. #{el}"
+      end
+
+      choice = nil
+      loop do
+        choice = prompt.to_i
+        break if (0..options.size - 1).include?(choice)
+        puts 'Sorry, that is not a valid choice...'
+      end
+      options[choice]
+    end
+
     def no_event_msg
-      puts
       puts 'Nothing happens...'
     end
   end

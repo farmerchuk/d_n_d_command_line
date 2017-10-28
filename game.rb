@@ -179,19 +179,11 @@ class DND
   end
 
   def add_role(player)
-    list_player_roles(player)
-    choice = choose_num(0..(PlayerRole::ROLES.size - 1))
-    role = PlayerRole::ROLES[choice]
+    puts "What role will #{player.name} be?"
+    role = choose_from_menu(PlayerRole::ROLES)
 
     case role
     when 'fighter' then player.role = Fighter.new
-    end
-  end
-
-  def list_player_roles(player)
-    puts "What role will #{player.name} be?"
-    PlayerRole::ROLES.each_with_index do |cls, idx|
-      puts "#{idx}. #{cls}"
     end
   end
 
@@ -268,11 +260,8 @@ class DND
 
   def player_choose_first_action
     puts 'What action would the player like to take first?'
-    puts "0. move"
-    puts "1. other action"
-
-    choice = choose_num([0, 1])
-    choice == 0 ? current_player.action = 'move' : nil
+    choice = choose_from_menu(['move', 'other action'])
+    choice == 'move' ? current_player.action = 'move' : nil
   end
 
   def player_moves
@@ -282,16 +271,12 @@ class DND
 
   def dm_selects_player_turn
     puts 'Which player would like to take a turn?'
-    players.list_all_players
-    choice = choose_num(0..players.size - 1)
-    self.current_player = players[choice]
+    self.current_player = choose_from_menu(players.to_a)
   end
 
   def player_selects_action
     puts 'What action would the player like to take?'
-    Player::ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
-    choice = choose_num(0..(Player::ACTIONS.size - 1))
-    current_player.action = Player::ACTIONS[choice]
+    current_player.action = choose_from_menu(Player::ACTIONS)
   end
 
   def resolve_player_turn
