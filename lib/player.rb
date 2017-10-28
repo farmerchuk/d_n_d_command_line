@@ -7,11 +7,12 @@ class Player
 
   ACTIONS = %w[move examine search alert skill item rest engage]
 
-  attr_accessor :name, :hitpoints, :initiative, :area, :location, :action
+  attr_accessor :name, :role, :initiative, :area, :location,
+                :action, :alert
 
   def initialize
     @name = nil
-    @hitpoints = nil
+    @role = nil
     @initiative = nil
     @area = nil
     @location = nil
@@ -46,9 +47,4 @@ class Player
   def to_s
     name
   end
-
-  private
-
-  attr_accessor :alert
-  attr_writer :hitpoints
 end

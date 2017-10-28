@@ -3,6 +3,7 @@
 require_relative 'lib/helpers'
 require_relative 'lib/player_list'
 require_relative 'lib/player'
+require_relative 'lib/player_role'
 require_relative 'lib/area'
 require_relative 'lib/location'
 require_relative 'lib/event'
@@ -158,15 +159,37 @@ class DND
   def create_player
     player = Player.new
 
+    add_name(player)
+    add_role(player)
+
+    player
+  end
+
+  def add_name(player)
     name = nil
+
     loop do
       puts "Add new player's name: "
       name = prompt
       break unless name =~ /\W/ || name.size < 3
       puts 'Sorry, that is not a valid name...'
     end
+
     player.name = name
-    player
+  end
+
+  def add_role(player)
+    list_player_roles(player)
+    choice = choose_num(0..(PlayerRole::ROLES.size - 1))
+
+    player.role = PlayerRole::ROLES[choice]
+  end
+
+  def list_player_roles(player)
+    puts "What role will #{player.name} be?"
+    PlayerRole::ROLES.each_with_index do |cls, idx|
+      puts "#{idx}. #{cls}"
+    end
   end
 
   def create_another_player?
@@ -216,7 +239,7 @@ class DND
     puts
     puts 'Current Player Turn:'
     puts '------------------------------------'
-    puts current_player
+    puts "#{current_player} (#{current_player.role})"
     puts
     puts 'Current Player Location Description:'
     puts '------------------------------------'
