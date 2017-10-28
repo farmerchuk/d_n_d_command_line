@@ -19,6 +19,6 @@ class Location
   end
 
   def to_s
-    id
+    display_name
   end
 end

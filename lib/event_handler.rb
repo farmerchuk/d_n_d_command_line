@@ -29,40 +29,29 @@ class EventHandler
   end
 
   def resolve_player_action
-    case player.action
+    case player.action # resolves actions
     when 'move' then player_move
-    when 'examine' then player_examine
-    when 'search' then player_search
-    when 'alert' then player_alert
+    when 'wait' then player_wait
     when 'skill' then player_use_skill
     when 'item' then player_use_item
     when 'rest' then player_rest
-    when 'engage' then player_engage
     end
 
-    no_event_msg if no_event_matching_player_action?
-  end
+    if no_event_matching_player_action?
+      no_event_msg
+    else
+      puts event.description
 
-  def player_move
-    available_locations = player.location.paths
-    list_locations(available_locations)
-    choice = choose_num(0..(available_locations.size))
-    set_player_location(available_locations, choice)
-
-    puts "#{player} is now at the #{player.location.display_name}"
-  end
-
-  def list_locations(locations)
-    puts 'Where would the player like to move to?'
-    locations.each_with_index do |location, idx|
-      puts "#{idx}. #{location.display_name}"
-    end
-    puts "#{locations.size}. Stay where you are"
-  end
-
-  def set_player_location(locations, choice)
-    locations.each_with_index do |location, idx|
-      player.location = location if idx == choice
+      case player.action # resolves events
+      when 'move' then move_event
+      when 'examine' then examine_event
+      when 'search' then search_event
+      when 'wait' then wait_event
+      when 'skill' then use_skill_event
+      when 'item' then use_item_event
+      when 'rest' then rest_event
+      when 'engage' then engage_event
+      end
     end
   end
 
@@ -70,36 +59,64 @@ class EventHandler
     !event
   end
 
-  def player_examine
-    puts event.description
+  def player_move
+    puts "Where would #{player.name} like to move to?"
+    available_locations = player.location.paths
+    player.location = choose_from_menu(available_locations)
+
+    puts "#{player} is now at the #{player.location.display_name}"
+    puts
   end
 
-  def player_search
-    puts event.description
-  end
-
-  def player_alert
-    puts "Player is on alert"
-    prompt_continue
+  def player_wait
+    puts "#{player} is on alert!"
+    puts
   end
 
   def player_use_skill
-    puts "Player uses a skill"
-    prompt_continue
+    puts "#{player} uses a skill."
+    puts
   end
 
   def player_use_item
-    puts "Player uses an item"
-    prompt_continue
+    puts "#{player} uses an item."
+    puts
   end
 
   def player_rest
-    puts "Player rests"
-    prompt_continue
+    puts "#{player} rests."
+    puts
   end
 
-  def player_engage
-    puts "Player engages with something or someone"
-    prompt_continue
+  def move_event
+
+  end
+
+  def examine_event
+
+  end
+
+  def search_event
+
+  end
+
+  def wait_event
+
+  end
+
+  def use_skill_event
+
+  end
+
+  def use_item_event
+
+  end
+
+  def rest_event
+
+  end
+
+  def engage_event
+
   end
 end

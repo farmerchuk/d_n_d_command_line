@@ -3,6 +3,7 @@
 require_relative 'lib/helpers'
 require_relative 'lib/player_list'
 require_relative 'lib/player'
+require_relative 'lib/player_role'
 require_relative 'lib/area'
 require_relative 'lib/location'
 require_relative 'lib/event'
@@ -158,15 +159,32 @@ class DND
   def create_player
     player = Player.new
 
+    add_name(player)
+    add_role(player)
+
+    player
+  end
+
+  def add_name(player)
     name = nil
+
     loop do
       puts "Add new player's name: "
       name = prompt
       break unless name =~ /\W/ || name.size < 3
       puts 'Sorry, that is not a valid name...'
     end
+
     player.name = name
-    player
+  end
+
+  def add_role(player)
+    puts "What role will #{player.name} be?"
+    role = choose_from_menu(PlayerRole::ROLES)
+
+    case role
+    when 'fighter' then player.role = Fighter.new
+    end
   end
 
   def create_another_player?
@@ -178,6 +196,7 @@ class DND
       break if ['y', 'n'].include?(input)
       puts 'Sorry, that is not a valid choice...'
     end
+    
     input == 'y' ? true : false
   end
 
@@ -216,7 +235,7 @@ class DND
     puts
     puts 'Current Player Turn:'
     puts '------------------------------------'
-    puts current_player
+    puts "#{current_player} (#{current_player.role})"
     puts
     puts 'Current Player Location Description:'
     puts '------------------------------------'
@@ -234,19 +253,16 @@ class DND
     else
       player_selects_action
       resolve_player_turn
-      player_moves
+      player_moves if player_also_move?
     end
 
     prompt_for_next_turn
   end
 
   def player_choose_first_action
-    puts 'What action would the player like to take first?'
-    puts "0. move"
-    puts "1. other action"
-
-    choice = choose_num([0, 1])
-    choice == 0 ? current_player.action = 'move' : nil
+    puts "What action would #{current_player.name} like to take first?"
+    choice = choose_from_menu(['move', 'other action'])
+    choice == 'move' ? current_player.action = 'move' : nil
   end
 
   def player_moves
@@ -254,18 +270,20 @@ class DND
     resolve_player_turn
   end
 
+  def player_also_move?
+    puts "Would #{current_player.name} also like to move?"
+    choice = choose_from_menu(['yes', 'no'])
+    choice == 'yes' ? true : false
+  end
+
   def dm_selects_player_turn
     puts 'Which player would like to take a turn?'
-    players.list_all_players
-    choice = choose_num(0..players.size - 1)
-    self.current_player = players[choice]
+    self.current_player = choose_from_menu(players.to_a)
   end
 
   def player_selects_action
-    puts 'What action would the player like to take?'
-    Player::ACTIONS.each_with_index { |opt, idx| puts "#{idx}. #{opt}" }
-    choice = choose_num(0..(Player::ACTIONS.size - 1))
-    current_player.action = Player::ACTIONS[choice]
+    puts "What action would #{current_player.name} like to take?"
+    current_player.action = choose_from_menu(Player::ACTIONS)
   end
 
   def resolve_player_turn
