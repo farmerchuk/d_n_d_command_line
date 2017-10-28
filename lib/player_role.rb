@@ -89,7 +89,7 @@ class Role
   end
 end
 
-class RoleFighter < PlayerRole
+class Fighter < PlayerRole
   def initialize
     @str = 14
     @dex = 16
