@@ -252,14 +252,14 @@ class DND
     else
       player_selects_action
       resolve_player_turn
-      player_moves
+      player_moves if player_also_move?
     end
 
     prompt_for_next_turn
   end
 
   def player_choose_first_action
-    puts 'What action would the player like to take first?'
+    puts "What action would #{current_player.name} like to take first?"
     choice = choose_from_menu(['move', 'other action'])
     choice == 'move' ? current_player.action = 'move' : nil
   end
@@ -269,13 +269,19 @@ class DND
     resolve_player_turn
   end
 
+  def player_also_move?
+    puts "Would #{current_player.name} also like to move?"
+    choice = choose_from_menu(['yes', 'no'])
+    choice == 'yes' ? true : false
+  end
+
   def dm_selects_player_turn
     puts 'Which player would like to take a turn?'
     self.current_player = choose_from_menu(players.to_a)
   end
 
   def player_selects_action
-    puts 'What action would the player like to take?'
+    puts "What action would #{current_player.name} like to take?"
     current_player.action = choose_from_menu(Player::ACTIONS)
   end
 
