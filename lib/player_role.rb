@@ -91,6 +91,12 @@ end
 
 class RoleFighter < PlayerRole
   def initialize
+    @str = 14
+    @dex = 16
+    @con = 15
+    @int = 11
+    @wis = 13
+    @cha = 9
     @hit_die = 10
     @current_hp = max_hp
   end
