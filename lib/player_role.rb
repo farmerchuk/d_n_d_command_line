@@ -1,6 +1,6 @@
 # player_role.rb
 
-class Role
+class PlayerRole
   ROLES = %w[fighter]
 
   ABILITY_MODS = { 1 => -5, 2 => -4, 3 => -4, 4 => -3, 5 => -3,
@@ -16,12 +16,11 @@ class Role
                          13 => 5, 14 => 5, 15 => 5, 16 => 5,
                          17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
-  attr_accessor :str, :dex, :con, :int, :wis, :cha
-                :race, :level, :hit_die, :current_hp
+  attr_accessor :str, :dex, :con, :int, :wis, :cha,
+                :level, :hit_die, :current_hp
 
-  def initialize(race)
+  def initialize
     @level = 1
-    @race = race
   end
 
   def str_mod
@@ -86,6 +85,10 @@ class Role
 
   def wis_passive
     10 + wis_mod
+  end
+
+  def to_s
+    self.class.to_s
   end
 end
 

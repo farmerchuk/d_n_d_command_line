@@ -181,8 +181,11 @@ class DND
   def add_role(player)
     list_player_roles(player)
     choice = choose_num(0..(PlayerRole::ROLES.size - 1))
+    role = PlayerRole::ROLES[choice]
 
-    player.role = PlayerRole::ROLES[choice]
+    case role
+    when 'fighter' then player.role = Fighter.new
+    end
   end
 
   def list_player_roles(player)
