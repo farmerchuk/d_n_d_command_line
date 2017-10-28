@@ -5,11 +5,11 @@ require_relative 'helpers'
 class Player
   include Helpers::Format
 
-  ACTIONS = %w[move examine search alert skill item rest engage]
+  ACTIONS = %w[move examine search wait skill item rest engage]
 
   attr_accessor :name, :role, :alignment,
                 :area, :location,
-                :action, :alert
+                :action, :wait
 
   def initialize
     @name = nil
@@ -18,19 +18,19 @@ class Player
     @area = nil
     @location = nil
     @action = nil
-    @alert = false
+    @wait = false
   end
 
   def end_turn
     self.action = nil
   end
 
-  def alert!
-    self.alert = true
+  def wait!
+    self.wait = true
   end
 
-  def alert?
-    alert
+  def wait?
+    wait
   end
 
   def use_skill(skill)

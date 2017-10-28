@@ -29,24 +29,34 @@ class EventHandler
   end
 
   def resolve_player_action
-    player_move if player.action == 'move'
+    case player.action # resolves actions
+    when 'move' then player_move
+    when 'wait' then player_wait
+    when 'skill' then player_use_skill
+    when 'item' then player_use_item
+    when 'rest' then player_rest
+    end
 
     if no_event_matching_player_action?
       no_event_msg
     else
       puts event.description
 
-      case player.action
+      case player.action # resolves events
       when 'move' then move_event
       when 'examine' then examine_event
       when 'search' then search_event
-      when 'alert' then alert_event
+      when 'wait' then wait_event
       when 'skill' then use_skill_event
       when 'item' then use_item_event
       when 'rest' then rest_event
       when 'engage' then engage_event
       end
     end
+  end
+
+  def no_event_matching_player_action?
+    !event
   end
 
   def player_move
@@ -58,8 +68,24 @@ class EventHandler
     puts
   end
 
-  def no_event_matching_player_action?
-    !event
+  def player_wait
+    puts "#{player} is on alert!"
+    puts
+  end
+
+  def player_use_skill
+    puts "#{player} uses a skill."
+    puts
+  end
+
+  def player_use_item
+    puts "#{player} uses an item."
+    puts
+  end
+
+  def player_rest
+    puts "#{player} rests."
+    puts
   end
 
   def move_event
@@ -74,23 +100,23 @@ class EventHandler
 
   end
 
-  def alert_event
-    puts "Player is on alert"
+  def wait_event
+
   end
 
   def use_skill_event
-    puts "Player uses a skill"
+
   end
 
   def use_item_event
-    puts "Player uses an item"
+
   end
 
   def rest_event
-    puts "Player rests"
+
   end
 
   def engage_event
-    puts "Player engages with something or someone"
+
   end
 end
