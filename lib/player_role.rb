@@ -108,11 +108,11 @@ class Fighter < PlayerRole
     10 + con_mod
   end
 
-  def sav_str
+  def str_sav
     str_mod + prof_bonus
   end
 
-  def sav_con
+  def con_sav
     con_mod + prof_bonus
   end
 end
