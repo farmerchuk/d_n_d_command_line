@@ -163,7 +163,7 @@ class DND
     add_name(player)
     add_role(player)
     add_race(player)
-
+    
     player
   end
 

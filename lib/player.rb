@@ -22,6 +22,30 @@ class Player
     @wait = false
   end
 
+  def str
+    race.str + role.str
+  end
+
+  def dex
+    race.dex + role.dex
+  end
+
+  def con
+    race.con + role.con
+  end
+
+  def int
+    race.int + role.int
+  end
+
+  def wis
+    race.wis + role.wis
+  end
+
+  def cha
+    race.con + role.con
+  end
+
   def end_turn
     self.action = nil
   end
