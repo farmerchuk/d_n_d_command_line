@@ -4,6 +4,7 @@ require_relative 'lib/helpers'
 require_relative 'lib/player_list'
 require_relative 'lib/player'
 require_relative 'lib/player_role'
+require_relative 'lib/player_race'
 require_relative 'lib/area'
 require_relative 'lib/location'
 require_relative 'lib/event'
@@ -161,6 +162,7 @@ class DND
 
     add_name(player)
     add_role(player)
+    add_race(player)
 
     player
   end
@@ -187,6 +189,15 @@ class DND
     end
   end
 
+  def add_race(player)
+    puts "What race will #{player.name} be?"
+    role = choose_from_menu(PlayerRace::RACES)
+
+    case role
+    when 'human' then player.race = Human.new
+    end
+  end
+
   def create_another_player?
     input = nil
 
@@ -196,7 +207,7 @@ class DND
       break if ['y', 'n'].include?(input)
       puts 'Sorry, that is not a valid choice...'
     end
-    
+
     input == 'y' ? true : false
   end
 
@@ -235,7 +246,7 @@ class DND
     puts
     puts 'Current Player Turn:'
     puts '------------------------------------'
-    puts "#{current_player} (#{current_player.role})"
+    puts "#{current_player} (#{current_player.race} #{current_player.role})"
     puts
     puts 'Current Player Location Description:'
     puts '------------------------------------'
