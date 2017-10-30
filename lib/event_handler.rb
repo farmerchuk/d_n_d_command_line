@@ -4,6 +4,9 @@ require_relative 'helpers'
 
 class EventHandler
   include Helpers::Format
+  include Helpers::Menus
+  include Helpers::Prompts
+  include Helpers::Messages
 
   attr_accessor :player, :events, :event
 

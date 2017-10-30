@@ -1,3 +1,5 @@
+# helpers.rb
+
 module Helpers
   module Format
     def clear_screen
@@ -11,7 +13,9 @@ module Helpers
       puts
       input
     end
+  end
 
+  module Prompts
     def prompt_continue
       puts
       print "Hit RETURN to continue..."
@@ -23,17 +27,16 @@ module Helpers
       print "Hit RETURN to advance to next player's turn..."
       gets
     end
+  end
 
-    def choose_num(options)
-      choice = nil
-      loop do
-        choice = prompt.to_i
-        break if (options).include?(choice)
-        puts 'Sorry, that is not a valid choice...'
-      end
-      choice
+  module Messages
+    def no_event_msg
+      puts 'Nothing happens...'
     end
+  end
 
+
+  module Menus
     def choose_from_menu(options)
       options.each_with_index do |el, idx|
         puts "#{idx}. #{el}"
@@ -47,11 +50,9 @@ module Helpers
       end
       options[choice]
     end
+  end
 
-    def no_event_msg
-      puts 'Nothing happens...'
-    end
-
+  module Dice
     def roll_d20
       rand(20) + 1
     end

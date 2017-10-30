@@ -17,6 +17,8 @@ require 'pry'
 
 class DND
   include Helpers::Format
+  include Helpers::Menus
+  include Helpers::Prompts
 
   def initialize
     @players = PlayerList.new
