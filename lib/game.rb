@@ -1,14 +1,14 @@
 # game.rb
 
-require_relative 'lib/helpers'
-require_relative 'lib/player_list'
-require_relative 'lib/player'
-require_relative 'lib/player_role'
-require_relative 'lib/player_race'
-require_relative 'lib/area'
-require_relative 'lib/location'
-require_relative 'lib/event'
-require_relative 'lib/event_handler'
+require_relative 'helpers'
+require_relative 'player_list'
+require_relative 'player'
+require_relative 'player_role'
+require_relative 'player_race'
+require_relative 'area'
+require_relative 'location'
+require_relative 'event'
+require_relative 'event_handler'
 
 require 'yaml'
 require 'pry'
