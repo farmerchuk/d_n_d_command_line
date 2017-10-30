@@ -196,6 +196,11 @@ class DND
 
     case role
     when 'human' then player.race = Human.new
+    when 'dwarf' then player.race = Dwarf.new
+    when 'elf' then player.race = Elf.new
+    when 'half-elf' then player.race = HalfElf.new
+    when 'halfling' then player.race = Halfling.new
+    when 'gnome' then player.race = Gnome.new
     end
   end
 
