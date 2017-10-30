@@ -35,6 +35,6 @@ class PlayerList
 
   def highest_initiative
     raise 'PlayerList empty' if players.empty?
-    players.sort_by { |player| player.role.initiative }.last
+    players.sort_by { |player| player.initiative }.last
   end
 end

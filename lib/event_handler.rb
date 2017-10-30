@@ -16,7 +16,7 @@ class EventHandler
   def run
     resolve_player_action
     prompt_continue
-    player.end_turn
+    player.end_action
   end
 
   def set_event

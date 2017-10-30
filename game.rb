@@ -163,7 +163,8 @@ class DND
     add_name(player)
     add_role(player)
     add_race(player)
-    
+    player.set_current_hp_to_max
+
     player
   end
 
@@ -255,6 +256,7 @@ class DND
   end
 
   def player_turn
+    current_player.start_turn
     player_choose_first_action
 
     if current_player.action == 'move'

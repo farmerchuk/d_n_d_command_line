@@ -51,5 +51,9 @@ module Helpers
     def no_event_msg
       puts 'Nothing happens...'
     end
+
+    def roll_d20
+      rand(20) + 1
+    end
   end
 end
