@@ -61,7 +61,7 @@ class DND
   end
 
   def build_areas
-    areas_data = YAML.load_file('resources/areas.yml')
+    areas_data = YAML.load_file('assets/yaml/areas.yml')
 
     areas_data.each do |area|
       new_area = Area.new
@@ -72,7 +72,7 @@ class DND
   end
 
   def build_locations
-    locations_data = YAML.load_file('resources/locations.yml')
+    locations_data = YAML.load_file('assets/yaml/locations.yml')
 
     locations_data.each do |location|
       new_loc = Location.new
@@ -86,7 +86,7 @@ class DND
   end
 
   def build_events
-    event_data = YAML.load_file('resources/events.yml')
+    event_data = YAML.load_file('assets/yaml/events.yml')
 
     event_data.each do |event|
       new_event = Event.new
@@ -143,7 +143,7 @@ class DND
   end
 
   def welcome
-    start = YAML.load_file('resources/initialize.yml')
+    start = YAML.load_file('assets/yaml/initialize.yml')
 
     clear_screen
     puts start['title']
@@ -220,7 +220,7 @@ class DND
   end
 
   def stage_players
-    start = YAML.load_file('resources/initialize.yml')
+    start = YAML.load_file('assets/yaml/initialize.yml')
 
     players.each do |player|
       areas.each do |area|
