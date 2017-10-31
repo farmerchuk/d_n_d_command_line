@@ -5,6 +5,7 @@ require_relative 'player_list'
 require_relative 'player'
 require_relative 'player_role'
 require_relative 'player_race'
+require_relative 'backpack'
 require_relative 'area'
 require_relative 'location'
 require_relative 'event'
@@ -94,6 +95,7 @@ class DND
       new_event.location_id = event['location_id']
       new_event.description = event['description']
       new_event.trigger = event['trigger']
+      new_event.script = event['script']
       events << new_event
     end
   end
@@ -153,16 +155,17 @@ class DND
 
   def create_players
     purse = CoinPurse.new(100)
+    backpack = Backpack.new
 
     loop do
-      player = create_player(purse)
+      player = create_player(purse, backpack)
       players.add(player)
       break unless create_another_player?
     end
   end
 
-  def create_player(purse)
-    player = Player.new(purse)
+  def create_player(purse, backpack)
+    player = Player.new(purse, backpack)
 
     add_name(player)
     add_role(player)

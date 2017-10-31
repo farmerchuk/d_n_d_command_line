@@ -8,12 +8,13 @@ class EventHandler
   include Helpers::Prompts
   include Helpers::Messages
 
-  attr_accessor :player, :events, :event
+  attr_accessor :player, :events, :event, :script
 
   def initialize(current_player, events)
     @player = current_player
     @events = events
     @event = set_event
+    @script = set_script
   end
 
   def run
@@ -31,7 +32,18 @@ class EventHandler
     nil
   end
 
+  def set_script
+    return nil unless event
+    event.script ? event.script : nil
+  end
+
   def resolve_player_action
+    execute_player_action
+    execute_event_description
+    execute_event_script
+  end
+
+  def execute_player_action
     case player.action # resolves actions
     when 'move' then player_move
     when 'wait' then player_wait
@@ -39,27 +51,19 @@ class EventHandler
     when 'item' then player_use_item
     when 'rest' then player_rest
     end
+  end
 
-    if no_event_matching_player_action?
-      no_event_msg
-    else
+  def execute_event_description
+    if event
       puts event.description
-
-      case player.action # resolves events
-      when 'move' then move_event
-      when 'examine' then examine_event
-      when 'search' then search_event
-      when 'wait' then wait_event
-      when 'skill' then use_skill_event
-      when 'item' then use_item_event
-      when 'rest' then rest_event
-      when 'engage' then engage_event
-      end
+    else
+      puts no_event_msg
     end
   end
 
-  def no_event_matching_player_action?
-    !event
+  def execute_event_script
+    eval(script) if script
+    binding.pry
   end
 
   def player_move
@@ -89,37 +93,5 @@ class EventHandler
   def player_rest
     puts "#{player} rests."
     puts
-  end
-
-  def move_event
-
-  end
-
-  def examine_event
-
-  end
-
-  def search_event
-
-  end
-
-  def wait_event
-
-  end
-
-  def use_skill_event
-
-  end
-
-  def use_item_event
-
-  end
-
-  def rest_event
-
-  end
-
-  def engage_event
-
   end
 end

@@ -1,5 +1,9 @@
 # events.yml
 
+# Scripting notes:
+# The instance variable '@player' can be accessed by invoking
+# the instance method 'player'.
+
 - id: area_1_event_1
   location_id: area_1_west_exit
   encounter_id:
@@ -24,4 +28,6 @@
   location_id: area_1_dead_horses
   encounter_id:
   trigger: search
-  description: "You find gold!"
+  description: "You find 10 gold!"
+  script: |
+    player.purse.add_gold(10)
