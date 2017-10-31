@@ -1,6 +1,7 @@
 # player.rb
 
 require_relative 'helpers'
+require_relative 'coin_purse'
 
 class Player
   include Helpers::Dice
@@ -23,9 +24,10 @@ class Player
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location,
                 :action, :wait,
-                :current_hp
+                :current_hp,
+                :purse
 
-  def initialize
+  def initialize(purse)
     @name = nil
     @race = nil
     @role = nil
@@ -35,6 +37,7 @@ class Player
     @action = nil
     @wait = false
     @current_hp = nil
+    @purse = purse
   end
 
   # proficiency

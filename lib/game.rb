@@ -152,15 +152,17 @@ class DND
   end
 
   def create_players
+    purse = CoinPurse.new(100)
+
     loop do
-      player = create_player
+      player = create_player(purse)
       players.add(player)
       break unless create_another_player?
     end
   end
 
-  def create_player
-    player = Player.new
+  def create_player(purse)
+    player = Player.new(purse)
 
     add_name(player)
     add_role(player)
