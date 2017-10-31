@@ -35,7 +35,7 @@ class DND
     create_players
     stage_players
     set_current_player
-
+    binding.pry
     loop do
       dm_describes_scene
       dm_selects_player_turn

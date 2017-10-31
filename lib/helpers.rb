@@ -13,6 +13,13 @@ module Helpers
       puts
       input
     end
+
+    def num_with_commas(int)
+      ary = int.to_s.reverse.chars
+      ary.each_slice(3).with_object([]) do |slice, new_ary|
+        new_ary << slice.join("")
+      end.join(',').reverse
+    end
   end
 
   module Prompts
