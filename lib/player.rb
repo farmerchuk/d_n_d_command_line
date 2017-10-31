@@ -27,7 +27,7 @@ class Player
                 :current_hp,
                 :purse
 
-  def initialize
+  def initialize(purse)
     @name = nil
     @race = nil
     @role = nil
@@ -37,7 +37,7 @@ class Player
     @action = nil
     @wait = false
     @current_hp = nil
-    @purse = CoinPurse.new(5250)
+    @purse = purse
   end
 
   # proficiency
