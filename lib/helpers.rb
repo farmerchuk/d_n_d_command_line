@@ -56,5 +56,25 @@ module Helpers
     def roll_d20
       rand(20) + 1
     end
+
+    def roll_d12
+      rand(12) + 1
+    end
+
+    def roll_d10
+      rand(10) + 1
+    end
+
+    def roll_d8
+      rand(8) + 1
+    end
+
+    def roll_d6
+      rand(6) + 1
+    end
+
+    def roll_d4
+      rand(4) + 1
+    end
   end
 end
