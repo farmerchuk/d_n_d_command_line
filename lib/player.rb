@@ -107,51 +107,25 @@ class Player
     ABILITY_MODS[cha] + bonus
   end
 
-  # saving throw modifiers
+  # checks (challenges and saving throws)
 
-  def str_sav_mod
-    str_mod
-  end
-
-  def dex_sav_mod
-    dex_mod
-  end
-
-  def con_sav_mod
-    con_mod
-  end
-
-  def int_sav_mod
-    int_mod
-  end
-
-  def wis_sav_mod
-    wis_mod
-  end
-
-  def cha_sav_mod
-    cha_mod
-  end
-
-  # checks
-
-  def str_check
+  def roll_str_check
     roll_d20 + str_mod
   end
 
-  def dex_check
+  def roll_dex_check
     roll_d20 + dex_mod
   end
 
-  def con_check
+  def roll_con_check
     roll_d20 + con_mod
   end
 
-  def wis_check
+  def roll_wis_check
     roll_d20 + wis_mod
   end
 
-  def cha_check
+  def roll_cha_check
     roll_d20 + cha_mod
   end
 
@@ -164,7 +138,9 @@ class Player
   # other stats
 
   def max_hp
-    10 + con_mod
+    lv_1_hp = role.hit_die + con_mod
+    lv_x_hp = (role.hit_die / 2 + 1 + con_mod) * (role.level - 1)
+    lv_1_hp + lv_x_hp
   end
 
   def armor_class
@@ -173,6 +149,15 @@ class Player
 
   def initiative
     dex_mod
+  end
+
+  def roll_attack(weapon)
+    weapon_type = weapon.type
+
+    case weapon_type
+    when 'melee' then roll_d20 + str_mod
+    when 'ranged' then roll_d20 + dex_mod
+    end
   end
 
   # actions
