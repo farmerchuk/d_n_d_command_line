@@ -1,0 +1,56 @@
+# armors.yml
+
+# id: basic_leather
+# type: light
+# display_name: "Basic leather"
+# description: "Nothing special."
+# cost: 10
+# armor_class: 11
+# str_required: 0
+# stealth_penalty: false
+# dex_bonus: true
+# dex_bonus_max: nil (always nil, unless present)
+# script: |
+#   <code ...>
+
+# basic
+
+- id: basic_cloth
+  type: light
+  display_name: "Basic cloth"
+  cost: 1
+  armor_class: 10
+  str_required: 0
+  stealth_penalty: false
+  dex_bonus: true
+  dex_bonus_max: nil
+
+- id: basic_leather
+  type: light
+  display_name: "Basic leather"
+  cost: 10
+  armor_class: 11
+  str_required: 0
+  stealth_penalty: false
+  dex_bonus: true
+  dex_bonus_max: nil
+
+- id: basic_chainmail
+  type: heavy
+  display_name: "Basic chainmail"
+  cost: 75
+  armor_class: 16
+  str_required: 13
+  stealth_penalty: true
+  dex_bonus: false
+  dex_bonus_max: nil
+
+- id: basic_shield
+  type: shield
+  display_name: "Basic shield"
+  cost: 10
+  armor_class: 2
+  str_required: 0
+  stealth_penalty: false
+  dex_bonus: false
+  dex_bonus_max: nil

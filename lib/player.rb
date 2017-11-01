@@ -25,9 +25,9 @@ class Player
                 :area, :location,
                 :action, :wait,
                 :current_hp,
-                :purse
+                :purse, :backpack
 
-  def initialize(purse)
+  def initialize
     @name = nil
     @race = nil
     @role = nil
@@ -37,7 +37,8 @@ class Player
     @action = nil
     @wait = false
     @current_hp = nil
-    @purse = purse
+    @purse = nil
+    @backpack = nil
   end
 
   # proficiency
@@ -147,7 +148,7 @@ class Player
   end
 
   def armor_class
-    10 + dex_mod
+    # armor rating + dex mod (if applicable) + shield
   end
 
   def initiative

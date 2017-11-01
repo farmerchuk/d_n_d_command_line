@@ -11,16 +11,16 @@ class CoinPurse
     @gold = int
   end
 
-  def add_gold(int)
-    self.gold += int.to_i
+  def +(int)
+    self.gold += int
   end
 
-  def sub_gold(int)
+  def -(int)
     raise ArgumentError if gold - int < 0
-    self.gold -= int.to_i
+    self.gold -= int
   end
 
-  def balance
+  def to_s
     num_with_commas(gold)
   end
 end

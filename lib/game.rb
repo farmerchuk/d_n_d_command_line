@@ -5,6 +5,9 @@ require_relative 'player_list'
 require_relative 'player'
 require_relative 'player_role'
 require_relative 'player_race'
+require_relative 'backpack'
+require_relative 'coin_purse'
+require_relative 'equipment'
 require_relative 'area'
 require_relative 'location'
 require_relative 'event'
@@ -19,6 +22,7 @@ class DND
   include Helpers::Format
   include Helpers::Menus
   include Helpers::Prompts
+  include Helpers::Data
 
   def initialize
     @players = PlayerList.new
@@ -26,6 +30,10 @@ class DND
     @areas = []
     @locations = []
     @events = []
+    @armors = []
+    @weapons = []
+    @gears = []
+    @tools = []
 
     build_resources
   end
@@ -33,6 +41,7 @@ class DND
   def run
     welcome
     create_players
+    initialize_player_equipment
     stage_players
     set_current_player
 
@@ -46,12 +55,15 @@ class DND
 
   private
 
-  attr_accessor :players, :current_player, :areas, :locations, :events
+  attr_accessor :players, :current_player, :areas, :locations, :events,
+                :armors, :weapons, :gears, :tools
 
   def build_resources
     build_areas
     build_locations
     build_events
+    build_weapons
+    build_armors
 
     add_locations_to_areas
     add_area_to_locations
@@ -94,7 +106,44 @@ class DND
       new_event.location_id = event['location_id']
       new_event.description = event['description']
       new_event.trigger = event['trigger']
+      new_event.script = event['script']
       events << new_event
+    end
+  end
+
+  def build_weapons
+    weapon_data = YAML.load_file('../assets/yaml/weapons.yml')
+
+    weapon_data.each do |weapon|
+      new_weapon = Weapon.new
+      new_weapon.id = weapon['id']
+      new_weapon.type = weapon['type']
+      new_weapon.display_name = weapon['display_name']
+      new_weapon.description = weapon['description']
+      new_weapon.cost = weapon['cost']
+      new_weapon.damage_die = weapon['damage_die']
+      new_weapon.script = weapon['script']
+      weapons << new_weapon
+    end
+  end
+
+  def build_armors
+    armor_data = YAML.load_file('../assets/yaml/armors.yml')
+
+    armor_data.each do |armor|
+      new_armor = Armor.new
+      new_armor.id = armor['id']
+      new_armor.type = armor['type']
+      new_armor.display_name = armor['display_name']
+      new_armor.description = armor['description']
+      new_armor.cost = armor['cost']
+      new_armor.armor_class = armor['armor_class']
+      new_armor.str_required = armor['str_required']
+      new_armor.stealth_penalty = armor['stealth_penalty']
+      new_armor.dex_bonus = armor['dex_bonus']
+      new_armor.dex_bonus_max = armor['dex_bonus_max']
+      new_armor.script = armor['script']
+      armors << new_armor
     end
   end
 
@@ -143,26 +192,24 @@ class DND
   end
 
   def welcome
-    start = YAML.load_file('../assets/yaml/initialize.yml')
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     clear_screen
-    puts start['title']
+    puts initialize_data['title']
     puts '-----------------------------------------------'
     puts
   end
 
   def create_players
-    purse = CoinPurse.new(100)
-
     loop do
-      player = create_player(purse)
+      player = create_player
       players.add(player)
       break unless create_another_player?
     end
   end
 
-  def create_player(purse)
-    player = Player.new(purse)
+  def create_player
+    player = Player.new
 
     add_name(player)
     add_role(player)
@@ -221,17 +268,45 @@ class DND
     input == 'y' ? true : false
   end
 
+  def initialize_player_equipment
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
+
+    purse = CoinPurse.new(initialize_data['party_gold'])
+    backpack = Backpack.new
+
+    add_starting_equipment_to_backpack(backpack, initialize_data)
+    add_equipment_to_players(purse, backpack)
+  end
+
+  def add_starting_equipment_to_backpack(backpack, initialize_data)
+    players.each do |player|
+      role = player.role.to_s.downcase
+      role_equipment = initialize_data['party_equipment'][role]
+      weapon = role_equipment['weapon']
+      armor = role_equipment['armor']
+      backpack.add(retrieve(weapon, weapons))
+      backpack.add(retrieve(armor, armors))
+    end
+  end
+
+  def add_equipment_to_players(purse, backpack)
+    players.each do |player|
+      player.purse = purse
+      player.backpack = backpack
+    end
+  end
+
   def stage_players
-    start = YAML.load_file('../assets/yaml/initialize.yml')
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     players.each do |player|
       areas.each do |area|
-        if area.id == start['area_id']
+        if area.id == initialize_data['area_id']
          player.area = area
         end
       end
       locations.each do |location|
-        if location.id == start['location_id']
+        if location.id == initialize_data['location_id']
           player.location = location
         end
       end
