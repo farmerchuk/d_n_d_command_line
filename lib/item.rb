@@ -1,5 +1,0 @@
-# item
-
-class Item
-  
-end

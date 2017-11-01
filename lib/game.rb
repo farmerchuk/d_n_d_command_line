@@ -6,6 +6,7 @@ require_relative 'player'
 require_relative 'player_role'
 require_relative 'player_race'
 require_relative 'backpack'
+require_relative 'equipment'
 require_relative 'area'
 require_relative 'location'
 require_relative 'event'
@@ -154,7 +155,9 @@ class DND
   end
 
   def create_players
-    purse = CoinPurse.new(100)
+    start = YAML.load_file('../assets/yaml/initialize.yml')
+
+    purse = CoinPurse.new(start['party_gold'])
     backpack = Backpack.new
 
     loop do

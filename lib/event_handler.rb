@@ -44,7 +44,7 @@ class EventHandler
   end
 
   def execute_player_action
-    case player.action # resolves actions
+    case player.action
     when 'move' then player_move
     when 'wait' then player_wait
     when 'skill' then player_use_skill
@@ -63,7 +63,6 @@ class EventHandler
 
   def execute_event_script
     eval(script) if script
-    binding.pry
   end
 
   def player_move
