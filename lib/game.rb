@@ -377,10 +377,21 @@ class DND
     choice = choose_from_menu(MainMenu::OPTIONS)
 
     case choice
-    when 'view party equipment' then
+    when 'view party equipment' then dm_chose_view_party_equipment
     when 'view player profiles' then
     when 'choose player turn' then dm_chose_player_turn
     end
+  end
+
+  def dm_chose_view_party_equipment
+    current_player.backpack.view
+    prompt_continue
+  end
+
+  def dm_chose_view_player_profiles
+    # choose player
+    # player.view
+    # prompt_continue
   end
 
   def dm_chose_player_turn
