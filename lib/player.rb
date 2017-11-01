@@ -25,7 +25,7 @@ class Player
                 :area, :location,
                 :action, :wait,
                 :current_hp,
-                :purse, :backpack
+                :backpack
 
   def initialize
     @name = nil
@@ -37,7 +37,6 @@ class Player
     @action = nil
     @wait = false
     @current_hp = nil
-    @purse = nil
     @backpack = nil
   end
 

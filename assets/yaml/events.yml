@@ -30,4 +30,4 @@
   trigger: search
   description: "You find 10 gold!"
   script: |
-    player.purse + 10
+    player.backpack.purse + 10

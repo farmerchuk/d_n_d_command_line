@@ -6,12 +6,14 @@ class Backpack
   include Helpers::Format
 
   attr_reader :armors, :weapons, :gears, :tools
+  attr_accessor :purse
 
   def initialize
     @armors = []
     @weapons = []
     @gears = []
     @tools = []
+    @purse = nil
   end
 
   def add(equipment)
@@ -32,31 +34,47 @@ class Backpack
     sort_equipment
     clear_screen
 
-    puts 'Party Equipment:'
-    puts '------------------------------------'
+    puts "Party Equipment:                             Gold: #{purse}"
+    puts '-----------------------------------------------------------------'
     puts
-    puts 'Weapons:'
+    puts 'WEAPONS'
+    puts '-----------------------------------------------------------------'
+    puts 'name                     type      damage    equipped by'
     puts
     weapons.each do |weapon|
-      puts weapon.display_name
+      print weapon.display_name.ljust(25)
+      print weapon.type.ljust(10)
+      print weapon.damage_die.ljust(10)
+      puts weapon.equipped_by.ljust(20)
     end
     puts
-    puts 'Armor:'
+    puts 'ARMOR'
+    puts '-----------------------------------------------------------------'
+    puts 'name                     type      AC        equipped by'
     puts
     armors.each do |armor|
-      puts armor.display_name
+      print armor.display_name.ljust(25)
+      print armor.type.ljust(10)
+      print armor.armor_class.to_s.ljust(10)
+      puts armor.equipped_by.ljust(20)
     end
     puts
-    puts 'Gear:'
+    puts 'GEAR'
+    puts '-----------------------------------------------------------------'
+    puts 'name                     type'
     puts
     gears.each do |gear|
-      puts gear.display_name
+      print gear.display_name.ljust(25)
+      puts gear.type.ljust(10)
     end
     puts
-    puts 'Tools:'
+    puts 'TOOLS'
+    puts '-----------------------------------------------------------------'
+    puts 'name                     type'
     puts
     tools.each do |tool|
-      puts tool.display_name
+      print tool.display_name.ljust(25)
+      puts tool.type.ljust(10)
     end
   end
 
