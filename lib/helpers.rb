@@ -84,4 +84,12 @@ module Helpers
       rand(4) + 1
     end
   end
+
+  module Data
+    def retrieve(id, array)
+      selected = array.select { |el| el.id == id }
+      raise StandardError, 'Multiple ids' if selected.size > 1
+      selected.first
+    end
+  end
 end

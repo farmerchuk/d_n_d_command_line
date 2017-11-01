@@ -148,7 +148,7 @@ class Player
   end
 
   def armor_class
-    10 + dex_mod
+    # armor rating + dex mod (if applicable) + shield
   end
 
   def initiative

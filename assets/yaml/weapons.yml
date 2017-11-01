@@ -3,32 +3,52 @@
 # id: basic_greatsword
 # type: melee
 # display_name: greatsword
-# description: "A basic greatsword."
+# description: "Nothing special."
 # cost: 50
 # damage_die: 2d6
 # script: |
 #   <code...>
 
-- id: starter_greatsword
+# basic
+
+- id: basic_greatsword
   type: melee
   display_name: "Basic greatsword"
   cost: 50
   damage_die: 2d6
 
-- id: starter_longbow
+- id: basic_longbow
   type: ranged
   display_name: "Basic longbow"
   cost: 50
   damage_die: 1d8
 
-- id: starter_dagger
+- id: basic_dagger
   type: melee
   display_name: "Basic dagger"
   cost: 2
   damage_die: 1d4
 
-- id: starter_quarterstaff
+- id: basic_quarterstaff
   type: melee
   display_name: "Basic quarterstaff"
   cost: 2
   damage_die: 1d6
+
+- id: basic_shortsword
+  type: melee
+  display_name: "Basic shortsword"
+  cost: 10
+  damage_die: 1d6
+
+- id: basic_shortbow
+  type: ranged
+  display_name: "Basic shortbow"
+  cost: 25
+  damage_die: 1d6
+
+- id: basic_warhammer
+  type: melee
+  display_name: "Basic warhammer"
+  cost: 15
+  damage_die: 1d8

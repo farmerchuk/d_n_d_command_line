@@ -20,7 +20,7 @@ class Backpack
     elsif equipment.instance_of?(Tool)
       tools << equipment
     else
-      raise ArgumentError
+      raise ArgumentError, 'No matching equipment handler'
     end
   end
 end

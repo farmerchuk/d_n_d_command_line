@@ -21,6 +21,7 @@ class DND
   include Helpers::Format
   include Helpers::Menus
   include Helpers::Prompts
+  include Helpers::Data
 
   def initialize
     @players = PlayerList.new
@@ -28,9 +29,9 @@ class DND
     @areas = []
     @locations = []
     @events = []
-    @armor = []
+    @armors = []
     @weapons = []
-    @gear = []
+    @gears = []
     @tools = []
 
     build_resources
@@ -39,10 +40,10 @@ class DND
   def run
     welcome
     create_players
-    initialize_player_gear
+    initialize_player_equipment
     stage_players
     set_current_player
-binding.pry
+
     loop do
       dm_describes_scene
       dm_selects_player_turn
@@ -54,13 +55,14 @@ binding.pry
   private
 
   attr_accessor :players, :current_player, :areas, :locations, :events,
-                :armor, :weapons, :gear, :tools
+                :armors, :weapons, :gears, :tools
 
   def build_resources
     build_areas
     build_locations
     build_events
     build_weapons
+    build_armors
 
     add_locations_to_areas
     add_area_to_locations
@@ -124,6 +126,26 @@ binding.pry
     end
   end
 
+  def build_armors
+    armor_data = YAML.load_file('../assets/yaml/armors.yml')
+
+    armor_data.each do |armor|
+      new_armor = Armor.new
+      new_armor.id = armor['id']
+      new_armor.type = armor['type']
+      new_armor.display_name = armor['display_name']
+      new_armor.description = armor['description']
+      new_armor.cost = armor['cost']
+      new_armor.armor_class = armor['armor_class']
+      new_armor.str_required = armor['str_required']
+      new_armor.stealth_penalty = armor['stealth_penalty']
+      new_armor.dex_bonus = armor['dex_bonus']
+      new_armor.dex_bonus_max = armor['dex_bonus_max']
+      new_armor.script = armor['script']
+      armors << new_armor
+    end
+  end
+
   def add_locations_to_areas
     areas.each do |area|
       locations.each do |location|
@@ -169,10 +191,10 @@ binding.pry
   end
 
   def welcome
-    start = YAML.load_file('../assets/yaml/initialize.yml')
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     clear_screen
-    puts start['title']
+    puts initialize_data['title']
     puts '-----------------------------------------------'
     puts
   end
@@ -245,19 +267,28 @@ binding.pry
     input == 'y' ? true : false
   end
 
-  def initialize_player_gear
-    start = YAML.load_file('../assets/yaml/initialize.yml')
+  def initialize_player_equipment
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
-    purse = CoinPurse.new(start['party_gold'])
+    purse = CoinPurse.new(initialize_data['party_gold'])
     backpack = Backpack.new
 
-    starting_weapons = weapons.select do |weapon|
-      weapon.id.match(/starter/)
-    end
-    starting_weapons.each do |weapon|
-      backpack.add(weapon)
-    end
+    add_starting_equipment_to_backpack(backpack, initialize_data)
+    add_equipment_to_players(purse, backpack)
+  end
 
+  def add_starting_equipment_to_backpack(backpack, initialize_data)
+    players.each do |player|
+      role = player.role.to_s.downcase
+      role_equipment = initialize_data['party_equipment'][role]
+      weapon = role_equipment['weapon']
+      armor = role_equipment['armor']
+      backpack.add(retrieve(weapon, weapons))
+      backpack.add(retrieve(armor, armors))
+    end
+  end
+
+  def add_equipment_to_players(purse, backpack)
     players.each do |player|
       player.purse = purse
       player.backpack = backpack
@@ -265,16 +296,16 @@ binding.pry
   end
 
   def stage_players
-    start = YAML.load_file('../assets/yaml/initialize.yml')
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     players.each do |player|
       areas.each do |area|
-        if area.id == start['area_id']
+        if area.id == initialize_data['area_id']
          player.area = area
         end
       end
       locations.each do |location|
-        if location.id == start['location_id']
+        if location.id == initialize_data['location_id']
           player.location = location
         end
       end
