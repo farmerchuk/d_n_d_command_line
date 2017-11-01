@@ -28,6 +28,10 @@ class DND
     @areas = []
     @locations = []
     @events = []
+    @armor = []
+    @weapons = []
+    @gear = []
+    @tools = []
 
     build_resources
   end
@@ -35,9 +39,10 @@ class DND
   def run
     welcome
     create_players
+    initialize_player_gear
     stage_players
     set_current_player
-
+binding.pry
     loop do
       dm_describes_scene
       dm_selects_player_turn
@@ -48,12 +53,14 @@ class DND
 
   private
 
-  attr_accessor :players, :current_player, :areas, :locations, :events
+  attr_accessor :players, :current_player, :areas, :locations, :events,
+                :armor, :weapons, :gear, :tools
 
   def build_resources
     build_areas
     build_locations
     build_events
+    build_weapons
 
     add_locations_to_areas
     add_area_to_locations
@@ -98,6 +105,22 @@ class DND
       new_event.trigger = event['trigger']
       new_event.script = event['script']
       events << new_event
+    end
+  end
+
+  def build_weapons
+    weapon_data = YAML.load_file('../assets/yaml/weapons.yml')
+
+    weapon_data.each do |weapon|
+      new_weapon = Weapon.new
+      new_weapon.id = weapon['id']
+      new_weapon.type = weapon['type']
+      new_weapon.display_name = weapon['display_name']
+      new_weapon.description = weapon['description']
+      new_weapon.cost = weapon['cost']
+      new_weapon.damage_die = weapon['damage_die']
+      new_weapon.script = weapon['script']
+      weapons << new_weapon
     end
   end
 
@@ -155,20 +178,15 @@ class DND
   end
 
   def create_players
-    start = YAML.load_file('../assets/yaml/initialize.yml')
-
-    purse = CoinPurse.new(start['party_gold'])
-    backpack = Backpack.new
-
     loop do
-      player = create_player(purse, backpack)
+      player = create_player
       players.add(player)
       break unless create_another_player?
     end
   end
 
-  def create_player(purse, backpack)
-    player = Player.new(purse, backpack)
+  def create_player
+    player = Player.new
 
     add_name(player)
     add_role(player)
@@ -225,6 +243,25 @@ class DND
     end
 
     input == 'y' ? true : false
+  end
+
+  def initialize_player_gear
+    start = YAML.load_file('../assets/yaml/initialize.yml')
+
+    purse = CoinPurse.new(start['party_gold'])
+    backpack = Backpack.new
+
+    starting_weapons = weapons.select do |weapon|
+      weapon.id.match(/starter/)
+    end
+    starting_weapons.each do |weapon|
+      backpack.add(weapon)
+    end
+
+    players.each do |player|
+      player.purse = purse
+      player.backpack = backpack
+    end
   end
 
   def stage_players

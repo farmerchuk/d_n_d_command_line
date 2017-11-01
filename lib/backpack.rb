@@ -1,8 +1,5 @@
 # backpack.rb
 
-require_relative 'equipment'
-require 'pry'
-
 class Backpack
   attr_reader :armor, :weapons, :gear, :tools
 
@@ -27,15 +24,3 @@ class Backpack
     end
   end
 end
-
-backpack = Backpack.new
-weapon = Weapon.new
-armor = Armor.new
-tool = Tool.new
-gear = Gear.new
-
-backpack.add(weapon)
-backpack.add(weapon)
-backpack.add(armor)
-backpack.add(gear)
-backpack.add(tool)

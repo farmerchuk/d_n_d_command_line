@@ -25,9 +25,9 @@ class Player
                 :area, :location,
                 :action, :wait,
                 :current_hp,
-                :purse
+                :purse, :backpack
 
-  def initialize(purse, backpack)
+  def initialize
     @name = nil
     @race = nil
     @role = nil
@@ -37,8 +37,8 @@ class Player
     @action = nil
     @wait = false
     @current_hp = nil
-    @purse = purse
-    @backpack = backpack
+    @purse = nil
+    @backpack = nil
   end
 
   # proficiency

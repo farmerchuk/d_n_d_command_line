@@ -1,0 +1,34 @@
+# weapons.yml
+
+# id: basic_greatsword
+# type: melee
+# display_name: greatsword
+# description: "A basic greatsword."
+# cost: 50
+# damage_die: 2d6
+# script: |
+#   <code...>
+
+- id: starter_greatsword
+  type: melee
+  display_name: "Basic greatsword"
+  cost: 50
+  damage_die: 2d6
+
+- id: starter_longbow
+  type: ranged
+  display_name: "Basic longbow"
+  cost: 50
+  damage_die: 1d8
+
+- id: starter_dagger
+  type: melee
+  display_name: "Basic dagger"
+  cost: 2
+  damage_die: 1d4
+
+- id: starter_quarterstaff
+  type: melee
+  display_name: "Basic quarterstaff"
+  cost: 2
+  damage_die: 1d6
