@@ -1,6 +1,7 @@
 # game.rb
 
 require_relative 'helpers'
+require_relative 'main_menu'
 require_relative 'player_list'
 require_relative 'player'
 require_relative 'player_role'
@@ -47,9 +48,7 @@ class DND
 
     loop do
       dm_describes_scene
-      dm_selects_player_turn
-      dm_describes_scene
-      player_turn
+      dm_selects_from_main_menu
     end
   end
 
@@ -371,6 +370,23 @@ class DND
     puts "Would #{current_player.name} also like to move?"
     choice = choose_from_menu(['yes', 'no'])
     choice == 'yes' ? true : false
+  end
+
+  def dm_selects_from_main_menu
+    puts 'Select an option:'
+    choice = choose_from_menu(MainMenu::OPTIONS)
+
+    case choice
+    when 'view party equipment' then
+    when 'view player profiles' then
+    when 'choose player turn' then dm_chose_player_turn
+    end
+  end
+
+  def dm_chose_player_turn
+    dm_selects_player_turn
+    dm_describes_scene
+    player_turn
   end
 
   def dm_selects_player_turn
