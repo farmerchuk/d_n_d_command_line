@@ -34,7 +34,7 @@ class Backpack
     sort_equipment
     clear_screen
 
-    puts "Party Equipment:                             Gold: #{purse}"
+    puts "Party Equipment:                             GOLD: #{purse}"
     puts '-----------------------------------------------------------------'
     puts
     puts 'WEAPONS'

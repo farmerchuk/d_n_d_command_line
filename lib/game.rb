@@ -324,7 +324,7 @@ class DND
     puts '-----------------------------------------------------------------'
     puts current_player.area.description
     puts
-    puts 'Player Locations'
+    puts 'Player Locations:'
     puts '-----------------------------------------------------------------'
     players.each do |player|
       puts "#{player} is at: #{player.location.display_name}"
@@ -380,7 +380,7 @@ class DND
 
     case choice
     when 'view party equipment' then dm_chose_view_party_equipment
-    when 'view player profiles' then
+    when 'view player profiles' then dm_chose_view_player_profiles
     when 'choose player turn' then dm_chose_player_turn
     end
   end
@@ -391,9 +391,11 @@ class DND
   end
 
   def dm_chose_view_player_profiles
-    # choose player
-    # player.view
-    # prompt_continue
+    puts 'Which player?'
+    player = choose_from_menu(players.to_a)
+
+    player.view
+    prompt_continue
   end
 
   def dm_chose_player_turn
