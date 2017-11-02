@@ -3,5 +3,6 @@
 class MainMenu
   OPTIONS = ['view party equipment',
              'view player profiles',
-             'choose player turn' ]
+             'choose player turn',
+             'save and quit']
 end

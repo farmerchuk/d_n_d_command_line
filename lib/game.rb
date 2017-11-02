@@ -363,6 +363,7 @@ class DND
     when 'view party equipment' then dm_chose_view_party_equipment
     when 'view player profiles' then dm_chose_view_player_profiles
     when 'choose player turn' then dm_chose_player_turn
+    when 'save and quit' then dm_chose_save_and_quit
     end
   end
 
@@ -383,6 +384,10 @@ class DND
     dm_selects_player_turn
     dm_describes_scene
     player_turn
+  end
+
+  def dm_chose_save_and_quit
+    exit
   end
 
   def dm_selects_player_turn
