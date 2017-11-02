@@ -58,7 +58,7 @@ class EventHandler
     if event
       puts event.description
     else
-      puts no_event_msg
+      puts no_event_msg unless player.action == 'equip'
     end
   end
 
