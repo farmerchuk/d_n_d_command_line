@@ -239,6 +239,9 @@ class DND
 
     case role
     when 'fighter' then player.role = Fighter.new
+    when 'rogue' then player.role = Rogue.new
+    when 'cleric' then player.role = Cleric.new
+    when 'wizard' then player.role = Wizard.new
     end
   end
 

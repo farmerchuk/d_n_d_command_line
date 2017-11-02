@@ -31,7 +31,7 @@ class Backpack
   end
 
   def view
-    sort_equipment
+    sort_equipment!
     clear_screen
 
     puts "Party Equipment:                             GOLD: #{purse}"
@@ -80,10 +80,10 @@ class Backpack
 
   private
 
-  def sort_equipment
-    armors.sort_by { |armor| armor.type }
-    weapons.sort_by { |weapon| weapon.type }
-    gears.sort_by { |gear| gear.type }
-    tools.sort_by { |tool| tool.type }
+  def sort_equipment!
+    armors.sort_by! { |armor| armor.type }
+    weapons.sort_by! { |weapon| weapon.type }
+    gears.sort_by! { |gear| gear.type }
+    tools.sort_by! { |tool| tool.type }
   end
 end

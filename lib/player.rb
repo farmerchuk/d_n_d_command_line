@@ -212,7 +212,7 @@ class Player
     puts
     puts 'GENERAL INFO'
     puts '-----------------------------------------------------------------'
-    puts "NAME: #{name.ljust(29)}ROLE:       #{role}"
+    puts "NAME: #{name.ljust(29)}ROLE:      #{role}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
     puts 'CONDITION'

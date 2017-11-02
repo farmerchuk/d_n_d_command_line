@@ -9,3 +9,12 @@ party_equipment:
   fighter:
     weapon: basic_greatsword
     armor: basic_leather
+  rogue:
+    weapon: basic_dagger
+    armor: basic_leather
+  cleric:
+    weapon: basic_warhammer
+    armor: basic_chainmail
+  wizard:
+    weapon: basic_quarterstaff
+    armor: basic_cloth
