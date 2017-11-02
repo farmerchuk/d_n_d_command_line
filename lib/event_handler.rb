@@ -96,6 +96,25 @@ class EventHandler
   end
 
   def player_equip
-    player.backpack.view_equippable
+    available_equipment = player.backpack.all_unequipped_equipment
+
+    if available_equipment.empty?
+      no_equippable_msg
+    else
+      player.backpack.view_equippable
+
+      puts "Select the item to equip:"
+      choice = choose_from_menu(available_equipment)
+
+      if choice.instance_of?(Weapon)
+        player.unequip(player.equipped_weapon)
+      elsif choice.instance_of?(Armor)
+        player.unequip(player.equipped_armor)
+      elsif choice.instance_of?(Shield)
+        player.unequip(player.equipped_shield)
+      end
+
+      player.equip(choice.id)
+    end
   end
 end

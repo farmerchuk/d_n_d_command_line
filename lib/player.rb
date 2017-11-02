@@ -234,6 +234,10 @@ class Player
     end
   end
 
+  def unequip(equipment)
+    equipment.checkin_equipment
+  end
+
   def to_s
     name
   end
