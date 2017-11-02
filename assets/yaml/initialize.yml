@@ -15,6 +15,7 @@ party_equipment:
   cleric:
     weapon: basic_warhammer
     armor: basic_chainmail
+    shield: basic_shield
   wizard:
     weapon: basic_quarterstaff
     armor: basic_cloth

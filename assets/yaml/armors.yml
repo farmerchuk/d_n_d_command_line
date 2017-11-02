@@ -39,7 +39,7 @@
   armor_class: 16
   str_required: 13
   stealth_penalty: true
-  dex_bonus_max: nil
+  dex_bonus_max: 0
 
 - id: basic_shield
   type: shield

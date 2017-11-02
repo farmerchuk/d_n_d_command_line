@@ -227,10 +227,10 @@ class Player
 
     if item.instance_of?(Weapon)
       self.equipped_weapon = item
-    elsif item.instance_of?(Armor)
-      self.equipped_armor = item
     elsif item.instance_of?(Armor) && item.type == 'shield'
       self.equipped_shield = item
+    elsif item.instance_of?(Armor)
+      self.equipped_armor = item
     end
   end
 
@@ -263,7 +263,7 @@ class Player
          "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
     puts
     puts
-    puts "ABILITY ROLL MODIFIERS                 PROF BONUS: #{prof_bonus}"
+    puts "ABILITY ROLL MODIFIERS                  PROF BONUS: #{prof_bonus}"
     puts '-----------------------------------------------------------------'
     puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
          "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +
@@ -277,7 +277,7 @@ class Player
     puts "#{equipped_weapon.display_in_profile}" if equipped_weapon
     puts
     puts
-    puts "EQUIPPED ARMOR                           TOTAL AC: #{armor_class}"
+    puts "EQUIPPED ARMOR                          TOTAL AC: #{armor_class}"
     puts '-----------------------------------------------------------------'
     puts 'name                     type           AC'
     puts '----                     ----           --'

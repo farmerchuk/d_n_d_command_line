@@ -250,8 +250,10 @@ class DND
       role_equipment = initialize_data['party_equipment'][role]
       weapon_id = role_equipment['weapon']
       armor_id = role_equipment['armor']
-      backpack.add(Equipment.build_weapon(weapon_id))
-      backpack.add(Equipment.build_armor(armor_id))
+      shield_id = role_equipment['shield']
+      backpack.add(Equipment.build_weapon(weapon_id)) if weapon_id
+      backpack.add(Equipment.build_armor(armor_id)) if armor_id
+      backpack.add(Equipment.build_armor(shield_id)) if shield_id
     end
   end
 
@@ -267,10 +269,12 @@ class DND
     players.each do |player|
       role = player.role.to_s.downcase
       role_equipment = initialize_data['party_equipment'][role]
-      weapon = role_equipment['weapon']
-      armor = role_equipment['armor']
-      player.equip(weapon)
-      player.equip(armor)
+      weapon_id = role_equipment['weapon']
+      armor_id = role_equipment['armor']
+      shield_id = role_equipment['shield']
+      player.equip(weapon_id) if weapon_id
+      player.equip(armor_id) if armor_id
+      player.equip(shield_id) if shield_id
     end
   end
 
