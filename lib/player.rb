@@ -5,6 +5,7 @@ require_relative 'coin_purse'
 
 class Player
   include Helpers::Dice
+  include Helpers::Format
 
   ABILITY_MODS = { 1 => -5, 2 => -4, 3 => -4, 4 => -3, 5 => -3,
                    6 => -2, 7 => -2, 8 => -1, 9 => -1, 10 => 0,
@@ -25,20 +26,19 @@ class Player
                 :area, :location,
                 :action, :wait,
                 :current_hp,
-                :purse, :backpack
+                :backpack
 
   def initialize
-    @name = nil
-    @race = nil
-    @role = nil
-    @alignment = nil
-    @area = nil
-    @location = nil
-    @action = nil
-    @wait = false
-    @current_hp = nil
-    @purse = nil
-    @backpack = nil
+    @name = nil # String
+    @race = nil # Race
+    @role = nil # Role
+    @alignment = nil # TBD
+    @area = nil # Area
+    @location = nil # Location
+    @action = nil # String
+    @wait = false # Boolean
+    @current_hp = nil # Integer
+    @backpack = nil # Backpack
   end
 
   # proficiency
@@ -202,5 +202,43 @@ class Player
 
   def to_s
     name
+  end
+
+  def view
+    clear_screen
+
+    puts "Player Profile:"
+    puts '-----------------------------------------------------------------'
+    puts
+    puts 'GENERAL INFO'
+    puts '-----------------------------------------------------------------'
+    puts "NAME: #{name.ljust(29)}ROLE:       #{role}"
+    puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
+    puts
+    puts 'CONDITION'
+    puts '-----------------------------------------------------------------'
+    puts "CURRENT HIT POINTS: #{current_hp}"
+    puts "MAXIMUM HIT POINTS: #{max_hp}"
+    puts
+    puts 'ABILITY SCORES'
+    puts '-----------------------------------------------------------------'
+    puts "STR: #{str.to_s.ljust(5)}DEX: #{dex.to_s.ljust(5)}" +
+         "CON: #{con.to_s.ljust(5)}INT: #{int.to_s.ljust(5)}" +
+         "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
+    puts
+    puts "ABILITY ROLL MODIFIERS                 PROF BONUS: #{prof_bonus}"
+    puts '-----------------------------------------------------------------'
+    puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
+         "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +
+         "WIS: #{wis_mod.to_s.ljust(5)}CHA: #{cha_mod.to_s.ljust(5)}"
+    puts
+    puts 'EQUIPPED WEAPON'
+    puts '-----------------------------------------------------------------'
+    puts 'name                     type      damage'
+    puts
+    puts "EQUIPPED ARMOR                                 AC: #{armor_class}"
+    puts '-----------------------------------------------------------------'
+    puts 'name                     type      damage'
+    puts
   end
 end

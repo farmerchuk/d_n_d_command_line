@@ -31,7 +31,7 @@ module Helpers
 
     def prompt_for_next_turn
       puts
-      print "Hit RETURN to advance to next player's turn..."
+      print "Hit RETURN to advance to next turn..."
       gets
     end
   end

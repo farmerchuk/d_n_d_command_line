@@ -1,6 +1,7 @@
 # game.rb
 
 require_relative 'helpers'
+require_relative 'main_menu'
 require_relative 'player_list'
 require_relative 'player'
 require_relative 'player_role'
@@ -47,9 +48,7 @@ class DND
 
     loop do
       dm_describes_scene
-      dm_selects_player_turn
-      dm_describes_scene
-      player_turn
+      dm_selects_from_main_menu
     end
   end
 
@@ -122,6 +121,7 @@ class DND
       new_weapon.description = weapon['description']
       new_weapon.cost = weapon['cost']
       new_weapon.damage_die = weapon['damage_die']
+      new_weapon.equipped_by = ''
       new_weapon.script = weapon['script']
       weapons << new_weapon
     end
@@ -142,6 +142,7 @@ class DND
       new_armor.stealth_penalty = armor['stealth_penalty']
       new_armor.dex_bonus = armor['dex_bonus']
       new_armor.dex_bonus_max = armor['dex_bonus_max']
+      new_armor.equipped_by = ''
       new_armor.script = armor['script']
       armors << new_armor
     end
@@ -196,7 +197,7 @@ class DND
 
     clear_screen
     puts initialize_data['title']
-    puts '-----------------------------------------------'
+    puts '-----------------------------------------------------------------'
     puts
   end
 
@@ -274,8 +275,9 @@ class DND
     purse = CoinPurse.new(initialize_data['party_gold'])
     backpack = Backpack.new
 
+    backpack.purse = purse
     add_starting_equipment_to_backpack(backpack, initialize_data)
-    add_equipment_to_players(purse, backpack)
+    add_equipment_to_players(backpack)
   end
 
   def add_starting_equipment_to_backpack(backpack, initialize_data)
@@ -289,9 +291,8 @@ class DND
     end
   end
 
-  def add_equipment_to_players(purse, backpack)
+  def add_equipment_to_players(backpack)
     players.each do |player|
-      player.purse = purse
       player.backpack = backpack
     end
   end
@@ -320,21 +321,21 @@ class DND
   def dm_describes_scene
     clear_screen
     puts 'Area Description:'
-    puts '------------------------------------'
+    puts '-----------------------------------------------------------------'
     puts current_player.area.description
     puts
-    puts 'Player Locations'
-    puts '------------------------------------'
+    puts 'Player Locations:'
+    puts '-----------------------------------------------------------------'
     players.each do |player|
       puts "#{player} is at: #{player.location.display_name}"
     end
     puts
     puts 'Current Player Turn:'
-    puts '------------------------------------'
+    puts '-----------------------------------------------------------------'
     puts "#{current_player} (#{current_player.race} #{current_player.role})"
     puts
     puts 'Current Player Location Description:'
-    puts '------------------------------------'
+    puts '-----------------------------------------------------------------'
     puts current_player.location.description
     puts
   end
@@ -371,6 +372,36 @@ class DND
     puts "Would #{current_player.name} also like to move?"
     choice = choose_from_menu(['yes', 'no'])
     choice == 'yes' ? true : false
+  end
+
+  def dm_selects_from_main_menu
+    puts 'Select an option:'
+    choice = choose_from_menu(MainMenu::OPTIONS)
+
+    case choice
+    when 'view party equipment' then dm_chose_view_party_equipment
+    when 'view player profiles' then dm_chose_view_player_profiles
+    when 'choose player turn' then dm_chose_player_turn
+    end
+  end
+
+  def dm_chose_view_party_equipment
+    current_player.backpack.view
+    prompt_continue
+  end
+
+  def dm_chose_view_player_profiles
+    puts 'Which player?'
+    player = choose_from_menu(players.to_a)
+
+    player.view
+    prompt_continue
+  end
+
+  def dm_chose_player_turn
+    dm_selects_player_turn
+    dm_describes_scene
+    player_turn
   end
 
   def dm_selects_player_turn
