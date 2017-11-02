@@ -8,7 +8,6 @@
 # armor_class: 11
 # str_required: 0
 # stealth_penalty: false
-# dex_bonus: true
 # dex_bonus_max: nil (always nil, unless present)
 # script: |
 #   <code ...>
@@ -22,7 +21,6 @@
   armor_class: 10
   str_required: 0
   stealth_penalty: false
-  dex_bonus: true
   dex_bonus_max: nil
 
 - id: basic_leather
@@ -32,7 +30,6 @@
   armor_class: 11
   str_required: 0
   stealth_penalty: false
-  dex_bonus: true
   dex_bonus_max: nil
 
 - id: basic_chainmail
@@ -42,7 +39,6 @@
   armor_class: 16
   str_required: 13
   stealth_penalty: true
-  dex_bonus: false
   dex_bonus_max: nil
 
 - id: basic_shield
@@ -52,5 +48,4 @@
   armor_class: 2
   str_required: 0
   stealth_penalty: false
-  dex_bonus: false
   dex_bonus_max: nil

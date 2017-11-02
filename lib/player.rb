@@ -153,7 +153,21 @@ class Player
   end
 
   def armor_class
-    # armor rating + dex mod (if applicable) + shield
+    ac_of_equipment + ac_dex_bonus
+  end
+
+  def ac_of_equipment
+    armor = equipped_armor ? equipped_armor.armor_class : 10
+    shield = equipped_shield ? equipped_shield.armor_class : 0
+    armor + shield
+  end
+
+  def ac_dex_bonus
+    if equipped_armor.dex_bonus_max == nil
+      dex_mod
+    else
+      equipped_armor.dex_bonus_max
+    end
   end
 
   def initiative

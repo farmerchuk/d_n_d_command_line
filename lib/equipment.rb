@@ -32,8 +32,8 @@ class Equipment
     new_armor.armor_class = armor['armor_class']
     new_armor.str_required = armor['str_required']
     new_armor.stealth_penalty = armor['stealth_penalty']
-    new_armor.dex_bonus = armor['dex_bonus']
-    new_armor.dex_bonus_max = armor['dex_bonus_max']
+    new_armor.dex_bonus_max =
+      armor['dex_bonus_max'] == 'nil' ? nil : armor['dex_bonus_max']
     new_armor.script = armor['script']
     new_armor
   end
@@ -57,14 +57,13 @@ class Armor < Equipment
   TYPES = %w[light medium heavy shield]
 
   attr_accessor :armor_class, :str_required, :stealth_penalty,
-                :dex_bonus, :dex_bonus_max
+                :dex_bonus_max
 
   def initialize
     super
     @armor_class = nil # Integer
     @str_required = nil # Integer
     @stealth_penalty = nil # Boolean
-    @dex_bonus = nil # Boolean
     @dex_bonus_max = nil # Integer
   end
 
