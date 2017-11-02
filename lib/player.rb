@@ -6,6 +6,7 @@ require_relative 'coin_purse'
 class Player
   include Helpers::Dice
   include Helpers::Format
+  include Helpers::Data
 
   ABILITY_MODS = { 1 => -5, 2 => -4, 3 => -4, 4 => -3, 5 => -3,
                    6 => -2, 7 => -2, 8 => -1, 9 => -1, 10 => 0,
@@ -26,7 +27,8 @@ class Player
                 :area, :location,
                 :action, :wait,
                 :current_hp,
-                :backpack
+                :backpack,
+                :equipped_weapon, :equipped_armor, :equipped_shield
 
   def initialize
     @name = nil # String
@@ -39,6 +41,9 @@ class Player
     @wait = false # Boolean
     @current_hp = nil # Integer
     @backpack = nil # Backpack
+    @equipped_weapon = nil # Weapon
+    @equipped_armor = nil # Armor
+    @equipped_shield = nil # Armor
   end
 
   # proficiency
@@ -200,6 +205,21 @@ class Player
     self.current_hp = max_hp
   end
 
+  def equip(equipment_id)
+    item = retrieve(equipment_id, backpack.all_unequipped_equipment)
+    raise StandardError, 'No equipment matching id' if item.nil?
+
+    item.checkout_equipment_by(self)
+
+    if item.instance_of?(Weapon)
+      self.equipped_weapon = item
+    elsif item.instance_of?(Armor)
+      self.equipped_armor = item
+    elsif item.instance_of?(Armor) && item.type == 'shield'
+      self.equipped_shield = item
+    end
+  end
+
   def to_s
     name
   end
@@ -238,14 +258,17 @@ class Player
     puts
     puts 'EQUIPPED WEAPON'
     puts '-----------------------------------------------------------------'
-    puts 'name                     type      damage'
-    puts '----                     ----      ------'
+    puts 'name                     type           damage'
+    puts '----                     ----           ------'
+    puts "#{equipped_weapon.display_in_profile}" if equipped_weapon
     puts
     puts
-    puts "EQUIPPED ARMOR                                 AC: #{armor_class}"
+    puts "EQUIPPED ARMOR                           TOTAL AC: #{armor_class}"
     puts '-----------------------------------------------------------------'
-    puts 'name                     type      damage'
-    puts '----                     ----      ------'
+    puts 'name                     type           AC'
+    puts '----                     ----           --'
+    puts "#{equipped_armor.display_in_profile}" if equipped_armor
+    puts "#{equipped_shield.display_in_profile}" if equipped_shield
     puts
   end
 end

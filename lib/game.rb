@@ -61,8 +61,6 @@ class DND
     build_areas
     build_locations
     build_events
-    build_weapons
-    build_armors
 
     add_locations_to_areas
     add_area_to_locations
@@ -107,44 +105,6 @@ class DND
       new_event.trigger = event['trigger']
       new_event.script = event['script']
       events << new_event
-    end
-  end
-
-  def build_weapons
-    weapon_data = YAML.load_file('../assets/yaml/weapons.yml')
-
-    weapon_data.each do |weapon|
-      new_weapon = Weapon.new
-      new_weapon.id = weapon['id']
-      new_weapon.type = weapon['type']
-      new_weapon.display_name = weapon['display_name']
-      new_weapon.description = weapon['description']
-      new_weapon.cost = weapon['cost']
-      new_weapon.damage_die = weapon['damage_die']
-      new_weapon.equipped_by = ''
-      new_weapon.script = weapon['script']
-      weapons << new_weapon
-    end
-  end
-
-  def build_armors
-    armor_data = YAML.load_file('../assets/yaml/armors.yml')
-
-    armor_data.each do |armor|
-      new_armor = Armor.new
-      new_armor.id = armor['id']
-      new_armor.type = armor['type']
-      new_armor.display_name = armor['display_name']
-      new_armor.description = armor['description']
-      new_armor.cost = armor['cost']
-      new_armor.armor_class = armor['armor_class']
-      new_armor.str_required = armor['str_required']
-      new_armor.stealth_penalty = armor['stealth_penalty']
-      new_armor.dex_bonus = armor['dex_bonus']
-      new_armor.dex_bonus_max = armor['dex_bonus_max']
-      new_armor.equipped_by = ''
-      new_armor.script = armor['script']
-      armors << new_armor
     end
   end
 
@@ -277,26 +237,40 @@ class DND
 
     purse = CoinPurse.new(initialize_data['party_gold'])
     backpack = Backpack.new
-
     backpack.purse = purse
+
     add_starting_equipment_to_backpack(backpack, initialize_data)
     add_equipment_to_players(backpack)
+    equip_players(backpack)
   end
 
   def add_starting_equipment_to_backpack(backpack, initialize_data)
     players.each do |player|
       role = player.role.to_s.downcase
       role_equipment = initialize_data['party_equipment'][role]
-      weapon = role_equipment['weapon']
-      armor = role_equipment['armor']
-      backpack.add(retrieve(weapon, weapons))
-      backpack.add(retrieve(armor, armors))
+      weapon_id = role_equipment['weapon']
+      armor_id = role_equipment['armor']
+      backpack.add(Equipment.build_weapon(weapon_id))
+      backpack.add(Equipment.build_armor(armor_id))
     end
   end
 
   def add_equipment_to_players(backpack)
     players.each do |player|
       player.backpack = backpack
+    end
+  end
+
+  def equip_players(backpack)
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
+
+    players.each do |player|
+      role = player.role.to_s.downcase
+      role_equipment = initialize_data['party_equipment'][role]
+      weapon = role_equipment['weapon']
+      armor = role_equipment['armor']
+      player.equip(weapon)
+      player.equip(armor)
     end
   end
 

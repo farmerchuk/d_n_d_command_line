@@ -30,6 +30,14 @@ class Backpack
     end
   end
 
+  def all_equipment
+    armors + weapons + gears + tools
+  end
+
+  def all_unequipped_equipment
+    all_equipment.select { |equipment| equipment.equipped_by.nil? }
+  end
+
   def view
     sort_equipment!
     clear_screen
@@ -45,7 +53,7 @@ class Backpack
       print weapon.display_name.ljust(25)
       print weapon.type.ljust(10)
       print weapon.damage_die.ljust(10)
-      puts weapon.equipped_by.ljust(20)
+      puts weapon.equipped_by.name.ljust(20) if weapon.equipped_by
     end
     puts
     puts
@@ -57,7 +65,7 @@ class Backpack
       print armor.display_name.ljust(25)
       print armor.type.ljust(10)
       print armor.armor_class.to_s.ljust(10)
-      puts armor.equipped_by.ljust(20)
+      puts armor.equipped_by.name.ljust(20) if armor.equipped_by
     end
     puts
     puts
@@ -79,6 +87,7 @@ class Backpack
       print tool.display_name.ljust(25)
       puts tool.type.ljust(10)
     end
+    puts
   end
 
   private
