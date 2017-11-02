@@ -51,6 +51,10 @@ class Equipment
   def checkout_equipment_by(player)
     self.equipped_by = player
   end
+
+  def classifier
+    self.class.to_s
+  end
 end
 
 class Armor < Equipment

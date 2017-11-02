@@ -50,6 +50,7 @@ class EventHandler
     when 'skill' then player_use_skill
     when 'item' then player_use_item
     when 'rest' then player_rest
+    when 'equip' then player_equip
     end
   end
 
@@ -92,5 +93,9 @@ class EventHandler
   def player_rest
     puts "#{player} rests."
     puts
+  end
+
+  def player_equip
+    player.backpack.view_equippable
   end
 end

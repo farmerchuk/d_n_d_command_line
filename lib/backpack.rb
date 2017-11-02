@@ -31,7 +31,8 @@ class Backpack
   end
 
   def all_equipment
-    armors + weapons + gears + tools
+    all = armors + weapons + gears + tools
+    all.sort_by! { |equipment| equipment.classifier }
   end
 
   def all_unequipped_equipment
@@ -39,7 +40,7 @@ class Backpack
   end
 
   def view
-    sort_equipment!
+    sort_all_equipment_by_type!
     clear_screen
 
     puts "Party Equipment:                             GOLD: #{purse}"
@@ -50,10 +51,10 @@ class Backpack
     puts 'name                     type      damage    equipped by'
     puts '----                     ----      ------    -----------'
     weapons.each do |weapon|
-      print weapon.display_name.ljust(25)
-      print weapon.type.ljust(10)
-      print weapon.damage_die.ljust(10)
-      puts weapon.equipped_by.name.ljust(20) if weapon.equipped_by
+      puts "#{weapon.display_name.ljust(25)}" +
+           "#{weapon.type.ljust(10)}" +
+           "#{weapon.damage_die.ljust(10)}" +
+           "#{weapon.equipped_by.name.ljust(20) if weapon.equipped_by}"
     end
     puts
     puts
@@ -62,10 +63,10 @@ class Backpack
     puts 'name                     type      AC        equipped by'
     puts '----                     ----      --        -----------'
     armors.each do |armor|
-      print armor.display_name.ljust(25)
-      print armor.type.ljust(10)
-      print armor.armor_class.to_s.ljust(10)
-      puts armor.equipped_by.name.ljust(20) if armor.equipped_by
+      puts "#{armor.display_name.ljust(25)}" +
+           "#{armor.type.ljust(10)}" +
+           "#{armor.armor_class.to_s.ljust(10)}" +
+           "#{armor.equipped_by.name.ljust(20) if armor.equipped_by}"
     end
     puts
     puts
@@ -90,9 +91,31 @@ class Backpack
     puts
   end
 
+  def view_equippable
+    clear_screen
+
+    puts "Available Equipment:"
+    puts '-----------------------------------------------------------------'
+    puts
+    puts 'WEAPONS'
+    puts '-----------------------------------------------------------------'
+    puts 'opt  name                     class             details'
+    puts '---  ----                     -----             -------'
+    all_unequipped_equipment.each_with_index do |eq, idx|
+      puts "#{(idx.to_s + '.').ljust(5)}#{eq.display_name.ljust(25)}" +
+            "#{eq.classifier.ljust(18)}" +
+      if eq.instance_of?(Weapon)
+        "#{eq.damage_die.ljust(8)}damage"
+      elsif eq.instance_of?(Armor)
+        "#{eq.armor_class.to_s.ljust(8)}AC"
+      end
+    end
+    puts
+  end
+
   private
 
-  def sort_equipment!
+  def sort_all_equipment_by_type!
     armors.sort_by! { |armor| armor.type }
     weapons.sort_by! { |weapon| weapon.type }
     gears.sort_by! { |gear| gear.type }
