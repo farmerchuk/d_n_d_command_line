@@ -51,6 +51,18 @@ class Equipment
   def checkout_equipment_by(player)
     self.equipped_by = player
   end
+
+  def checkin_equipment
+    self.equipped_by = nil
+  end
+
+  def classifier
+    self.class.to_s
+  end
+
+  def to_s
+    display_name
+  end
 end
 
 class Armor < Equipment

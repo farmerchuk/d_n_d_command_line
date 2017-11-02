@@ -40,6 +40,10 @@ module Helpers
     def no_event_msg
       puts 'Nothing happens...'
     end
+
+    def no_equippable_msg
+      puts 'Sorry, all equipment is currently in use...'
+    end
   end
 
 

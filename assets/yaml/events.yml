@@ -28,6 +28,8 @@
   location_id: area_1_dead_horses
   encounter_id:
   trigger: search
-  description: "You find 10 gold!"
+  description: "You find 10 gold with a sword and shield!"
   script: |
     player.backpack.purse + 10
+    player.backpack.add(Equipment.build_weapon('basic_shortsword'))
+    player.backpack.add(Equipment.build_armor('basic_shield'))

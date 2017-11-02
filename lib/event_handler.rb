@@ -50,6 +50,7 @@ class EventHandler
     when 'skill' then player_use_skill
     when 'item' then player_use_item
     when 'rest' then player_rest
+    when 'equip' then player_equip
     end
   end
 
@@ -57,7 +58,7 @@ class EventHandler
     if event
       puts event.description
     else
-      puts no_event_msg
+      puts no_event_msg unless player.action == 'equip'
     end
   end
 
@@ -92,5 +93,28 @@ class EventHandler
   def player_rest
     puts "#{player} rests."
     puts
+  end
+
+  def player_equip
+    available_equipment = player.backpack.all_unequipped_equipment
+
+    if available_equipment.empty?
+      no_equippable_msg
+    else
+      player.backpack.view_equippable
+
+      puts "Select the item to equip:"
+      choice = choose_from_menu(available_equipment)
+
+      if choice.instance_of?(Weapon)
+        player.unequip(player.equipped_weapon)
+      elsif choice.instance_of?(Armor)
+        player.unequip(player.equipped_armor)
+      elsif choice.instance_of?(Shield)
+        player.unequip(player.equipped_shield)
+      end
+
+      player.equip(choice.id)
+    end
   end
 end
