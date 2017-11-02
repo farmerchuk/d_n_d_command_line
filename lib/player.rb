@@ -215,10 +215,12 @@ class Player
     puts "NAME: #{name.ljust(29)}ROLE:      #{role}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
+    puts
     puts 'CONDITION'
     puts '-----------------------------------------------------------------'
     puts "CURRENT HIT POINTS: #{current_hp}"
     puts "MAXIMUM HIT POINTS: #{max_hp}"
+    puts
     puts
     puts 'ABILITY SCORES'
     puts '-----------------------------------------------------------------'
@@ -226,19 +228,24 @@ class Player
          "CON: #{con.to_s.ljust(5)}INT: #{int.to_s.ljust(5)}" +
          "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
     puts
+    puts
     puts "ABILITY ROLL MODIFIERS                 PROF BONUS: #{prof_bonus}"
     puts '-----------------------------------------------------------------'
     puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
          "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +
          "WIS: #{wis_mod.to_s.ljust(5)}CHA: #{cha_mod.to_s.ljust(5)}"
     puts
+    puts
     puts 'EQUIPPED WEAPON'
     puts '-----------------------------------------------------------------'
     puts 'name                     type      damage'
+    puts '----                     ----      ------'
+    puts
     puts
     puts "EQUIPPED ARMOR                                 AC: #{armor_class}"
     puts '-----------------------------------------------------------------'
     puts 'name                     type      damage'
+    puts '----                     ----      ------'
     puts
   end
 end

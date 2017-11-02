@@ -40,7 +40,7 @@ class Backpack
     puts 'WEAPONS'
     puts '-----------------------------------------------------------------'
     puts 'name                     type      damage    equipped by'
-    puts
+    puts '----                     ----      ------    -----------'
     weapons.each do |weapon|
       print weapon.display_name.ljust(25)
       print weapon.type.ljust(10)
@@ -48,10 +48,11 @@ class Backpack
       puts weapon.equipped_by.ljust(20)
     end
     puts
+    puts
     puts 'ARMOR'
     puts '-----------------------------------------------------------------'
     puts 'name                     type      AC        equipped by'
-    puts
+    puts '----                     ----      --        -----------'
     armors.each do |armor|
       print armor.display_name.ljust(25)
       print armor.type.ljust(10)
@@ -59,19 +60,21 @@ class Backpack
       puts armor.equipped_by.ljust(20)
     end
     puts
+    puts
     puts 'GEAR'
     puts '-----------------------------------------------------------------'
     puts 'name                     type'
-    puts
+    puts '----                     ----'
     gears.each do |gear|
       print gear.display_name.ljust(25)
       puts gear.type.ljust(10)
     end
     puts
+    puts
     puts 'TOOLS'
     puts '-----------------------------------------------------------------'
     puts 'name                     type'
-    puts
+    puts '----                     ----'
     tools.each do |tool|
       print tool.display_name.ljust(25)
       puts tool.type.ljust(10)
