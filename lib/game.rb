@@ -31,10 +31,6 @@ class DND
     @areas = []
     @locations = []
     @events = []
-    @armors = []
-    @weapons = []
-    @gears = []
-    @tools = []
 
     build_resources
   end
@@ -54,8 +50,7 @@ class DND
 
   private
 
-  attr_accessor :players, :current_player, :areas, :locations, :events,
-                :armors, :weapons, :gears, :tools
+  attr_accessor :players, :current_player, :areas, :locations, :events
 
   def build_resources
     build_areas
