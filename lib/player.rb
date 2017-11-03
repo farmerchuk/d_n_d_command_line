@@ -267,7 +267,9 @@ class Player
          "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
     puts
     puts
-    puts "ABILITY ROLL MODIFIERS                  PROF BONUS: #{prof_bonus}"
+    puts "ABILITY ROLL MODIFIERS                  PROF BONUS: " +
+         "+#{prof_bonus} #{role.proficiency[0].upcase} & " +
+         "#{role.proficiency[1].upcase}"
     puts '-----------------------------------------------------------------'
     puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
          "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +

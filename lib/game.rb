@@ -296,23 +296,30 @@ class DND
 
   def dm_describes_scene
     clear_screen
-    puts 'Area Description:'
+    puts 'AREA DESCRIPTION:'
     puts '-----------------------------------------------------------------'
     puts current_player.area.description
     puts
-    puts 'Player Locations:'
+    puts
+    puts "CURRENT PLAYER: #{current_player}"
+    puts '-----------------------------------------------------------------'
+    puts "Location: The #{current_player.location.display_name}"
+    puts
+    puts current_player.location.description
+    puts
+    puts
+    puts 'ALL PLAYERS QUICK SUMMARY:'
     puts '-----------------------------------------------------------------'
     players.each do |player|
-      puts "#{player} is at: #{player.location.display_name}"
+      puts "#{player} " +
+           "(#{player.race} #{player.role} / " +
+           "#{player.current_hp} HP) " +
+           "is at the #{player.location.display_name}"
     end
     puts
-    puts 'Current Player Turn:'
-    puts '-----------------------------------------------------------------'
-    puts "#{current_player} (#{current_player.race} #{current_player.role})"
     puts
-    puts 'Current Player Location Description:'
+    puts 'GAME COMMANDS'
     puts '-----------------------------------------------------------------'
-    puts current_player.location.description
     puts
   end
 

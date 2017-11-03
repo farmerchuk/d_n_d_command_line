@@ -6,28 +6,49 @@
   area_id: area_1_goblin_ambush
   path_ids: [area_1_dead_horses, area_1_north_embankment, area_1_south_embankment]
   display_name: "Western exit"
-  description: "You are currently at the western exit."
+  description: |
+    An unremarkable stretch of road. You arrived from the west. No need
+    to go back that way just now. To the east you see the dead horses.
+    To the north and south you see steep embankments and
+    dense thickets beyond.
 
 - id: area_1_east_exit
   area_id: area_1_goblin_ambush
   path_ids: [area_1_dead_horses, area_1_north_embankment, area_1_south_embankment]
   display_name: "Eastern exit"
-  description: "You are currently at the eastern exit."
+  description: |
+    Here the trail is rough and rutted. Clearly the Triboar trail sees
+    a lot of travel. To the west you see the dead horses. To to east
+    the trail stretchs on inland to the towns of Phandalin, and
+    beyond that, Conyberry. To the north and south you see steep
+    embankments and dense thickets beyond.
 
 - id: area_1_north_embankment
   area_id: area_1_goblin_ambush
   path_ids: [area_1_dead_horses, area_1_west_exit, area_1_east_exit]
   display_name: "Northern embankment"
-  description: "You are currently at the northern embankment."
+  description: |
+    The woods press close here and it's difficult to see further
+    than a few yards into the thickets. To the south you see
+    the dead horses. To the west and east the Triboar trail
+    stretches on.
 
 - id: area_1_south_embankment
   area_id: area_1_goblin_ambush
   path_ids: [area_1_dead_horses, area_1_west_exit, area_1_east_exit]
   display_name: "Southern embankment"
-  description: "You are currently at the southern embankment."
+  description: |
+    The woods press close here and it's difficult to see further
+    than a few yards into the thickets. To the north you see
+    the dead horses. To the west and east the Triboar trail
+    continues on.
 
 - id: area_1_dead_horses
   area_id: area_1_goblin_ambush
   path_ids: [area_1_north_embankment, area_1_south_embankment, area_1_west_exit, area_1_east_exit]
   display_name: "Dead horses"
-  description: "You are currently where the dead horses are."
+  description: |
+    The horses appear to have been dead for about a day. It's clear
+    that the arrows killed the horses. To the east and west the
+    Triboar trail continues on. To the north and south you see
+    steep embankment and dense thickets beyond.
