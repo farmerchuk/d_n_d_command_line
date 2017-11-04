@@ -23,6 +23,8 @@
   description: |
     The saddlebags have been looted. Nearby lies an empty
     leather map case.
+  script: |
+    EncounterHandler.new('area_1_enounter_1').run
 
 - id: area_1_event_4
   location_id: area_1_dead_horses

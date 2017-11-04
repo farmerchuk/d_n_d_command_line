@@ -1,6 +1,7 @@
 # event_handler.rb
 
 require_relative 'helpers'
+require_relative 'encounter_handler'
 
 class EventHandler
   include Helpers::Format
