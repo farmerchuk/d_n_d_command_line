@@ -5,15 +5,16 @@ require_relative 'battle'
 require 'pry'
 
 class BattleHandler
-  attr_reader :battle
+  attr_reader :battle, :players
 
-  def initialize(engagement_id)
+  def initialize(engagement_id, players)
     battles_info = YAML.load_file('../assets/yaml/battles.yml')
     @battle = get_battle(engagement_id, battles_info)
+    @players = players
   end
 
   def run
-    
+    binding.pry
   end
 
   private
