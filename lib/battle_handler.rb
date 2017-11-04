@@ -9,8 +9,11 @@ class BattleHandler
 
   def initialize(engagement_id, players)
     battles_info = YAML.load_file('../assets/yaml/battles.yml')
+    
     @battle = get_battle(engagement_id, battles_info)
     @players = players
+
+    battle.build_enemies
   end
 
   def run
