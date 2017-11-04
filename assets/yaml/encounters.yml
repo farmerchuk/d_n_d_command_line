@@ -1,5 +1,6 @@
 # encounter.yml
 
-- id: area_1_enounter_1
-  sequence_ids:
-    - 4_goblins 
+- id: area_1_encounter_1
+  engagement_ids:
+    - battle_4_goblins
+    - conversation_goblin

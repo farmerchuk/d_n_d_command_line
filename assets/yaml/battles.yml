@@ -1,0 +1,13 @@
+# battles.yml
+
+- id: battle_4_goblins
+  description: |
+    As you're examining the dead horses, your party is suddenly
+    attacked by four vicious goblins. Two burst from the thickets
+    beyond the northern embankment and two from the thickets
+    beyond the southern embankment.
+  enemy_ids:
+    - goblin
+    - goblin
+    - goblin
+    - goblin
