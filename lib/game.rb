@@ -403,7 +403,7 @@ class DND
   end
 
   def resolve_player_turn
-    EventHandler.new(players, current_player, events).run
+    EventHandler.new(players, current_player, locations, events).run
     dm_describes_scene
   end
 end

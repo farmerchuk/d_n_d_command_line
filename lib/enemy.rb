@@ -3,27 +3,56 @@
 require_relative 'helpers'
 
 class Enemy
-  include Helpers::DICE
+  include Helpers::Dice
 
-  attr_accessor :id, :name, :location, :max_hp, :current_hp, :armor_class,
-                :str_mod, :dex_mod, :con_mod, :int_mod, :wis_mod, :cha_mod,
-                :melee_attack_bonus, :ranged_attack_bonus
+  attr_accessor :id, :name, :description, :location, :max_hp, :current_hp,
+                :armor_class, :melee_attack_bonus, :ranged_attack_bonus,
+                :melee_attack_dmg, :ranged_attack_dmg
+
+  attr_writer   :str_mod, :dex_mod, :con_mod, :int_mod, :wis_mod, :cha_mod
 
   def initialize
     @id = nil # String
     @name = nil # String
+    @description = nil # String
     @location = nil # Location
     @max_hp = nil # Integer
     @current_hp = nil # Integer
     @armor_class = nil # Integer
-    @str_mod = nil # Integer
-    @dex_mod = nil # Integer
-    @con_mod = nil # Integer
-    @int_mod = nil # Integer
-    @wis_mod = nil # Integer
-    @cha_mod = nil # Integer
-    @melee_attack_bonus = nil # String
-    @ranged_attack_bonus = nil # String
+    @str_mod = nil # String
+    @dex_mod = nil # String
+    @con_mod = nil # String
+    @int_mod = nil # String
+    @wis_mod = nil # String
+    @cha_mod = nil # String
+    @melee_attack_bonus = nil # Integer
+    @ranged_attack_bonus = nil # Integer
+    @melee_attack_dmg = nil # String
+    @ranged_attack_dmg = nil # String
+  end
+
+  def str_mod
+    @str_mod.to_i
+  end
+
+  def dex_mod
+    @dex_mod.to_i
+  end
+
+  def con_mod
+    @con_mod.to_i
+  end
+
+  def int_mod
+    @int_mod.to_i
+  end
+
+  def wis_mod
+    @wis_mod.to_i
+  end
+
+  def cha_mod
+    @cha_mod.to_i
   end
 
   # attack rolls
@@ -34,6 +63,16 @@ class Enemy
 
   def roll_ranged_attack
     roll_d20 + ranged_attack_bonus
+  end
+
+  # damage rolls
+
+  def roll_melee_dmg
+    roll_dice(melee_attack_dmg)
+  end
+
+  def roll_ranged_dmg
+    roll_dice(ranged_attack_dmg)
   end
 
   # checks (challenges and saving throws)
@@ -56,5 +95,9 @@ class Enemy
 
   def roll_cha_check
     roll_d20 + cha_mod
+  end
+
+  def initiative
+    roll_dex_check
   end
 end

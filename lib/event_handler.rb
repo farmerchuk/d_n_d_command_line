@@ -9,11 +9,12 @@ class EventHandler
   include Helpers::Prompts
   include Helpers::Messages
 
-  attr_accessor :players, :player, :events, :event, :script
+  attr_accessor :players, :player, :locations, :events, :event, :script
 
-  def initialize(players, current_player, events)
+  def initialize(players, current_player, locations, events)
     @players = players
     @player = current_player
+    @locations = locations
     @events = events
     @event = set_event
     @script = set_script

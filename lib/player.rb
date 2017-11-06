@@ -138,6 +138,10 @@ class Player
     roll_d20 + cha_mod
   end
 
+  def initiative
+    roll_dex_check
+  end
+
   # passive checks
 
   def wis_passive
@@ -168,10 +172,6 @@ class Player
     else
       equipped_armor.dex_bonus_max
     end
-  end
-
-  def initiative
-    dex_mod
   end
 
   def roll_attack(weapon)
