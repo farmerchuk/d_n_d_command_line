@@ -21,7 +21,7 @@ class Player
                         13 => 5, 14 => 5, 15 => 5, 16 => 5,
                         17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
-  ACTIONS = %w[move examine search wait skill item equip rest engage]
+  EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
 
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location,

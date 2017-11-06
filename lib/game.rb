@@ -24,6 +24,7 @@ class DND
   include Helpers::Menus
   include Helpers::Prompts
   include Helpers::Data
+  include Helpers::Displays
 
   def initialize
     @players = PlayerList.new
@@ -43,7 +44,7 @@ class DND
     set_current_player
 
     loop do
-      dm_describes_scene
+      dm_describes_scene(players, current_player)
       dm_selects_from_main_menu
     end
   end
@@ -294,69 +295,6 @@ class DND
     self.current_player = players.highest_initiative
   end
 
-  def dm_describes_scene
-    clear_screen
-    puts 'AREA DESCRIPTION:'
-    puts '-----------------------------------------------------------------'
-    puts current_player.area.description
-    puts
-    puts
-    puts "CURRENT PLAYER: #{current_player}"
-    puts '-----------------------------------------------------------------'
-    puts "Location: The #{current_player.location.display_name}"
-    puts
-    puts current_player.location.description
-    puts
-    puts
-    puts 'ALL PLAYERS QUICK SUMMARY:'
-    puts '-----------------------------------------------------------------'
-    players.each do |player|
-      puts "#{player} " +
-           "(#{player.race} #{player.role} / " +
-           "#{player.current_hp} HP) " +
-           "is at the #{player.location.display_name}"
-    end
-    puts
-    puts
-    puts 'GAME COMMANDS'
-    puts '-----------------------------------------------------------------'
-    puts
-  end
-
-  def player_turn
-    current_player.start_turn
-    player_choose_first_action
-
-    if current_player.action == 'move'
-      player_moves
-      player_selects_action
-      resolve_player_turn
-    else
-      player_selects_action
-      resolve_player_turn
-      player_moves if player_also_move?
-    end
-
-    prompt_for_next_turn
-  end
-
-  def player_choose_first_action
-    puts "What action would #{current_player.name} like to take first?"
-    choice = choose_from_menu(['move', 'other action'])
-    choice == 'move' ? current_player.action = 'move' : nil
-  end
-
-  def player_moves
-    current_player.action = 'move'
-    resolve_player_turn
-  end
-
-  def player_also_move?
-    puts "Would #{current_player.name} also like to move?"
-    choice = choose_from_menu(['yes', 'no'])
-    choice == 'yes' ? true : false
-  end
-
   def dm_selects_from_main_menu
     puts 'Select an option:'
     choice = choose_from_menu(MainMenu::OPTIONS)
@@ -384,7 +322,7 @@ class DND
 
   def dm_chose_player_turn
     dm_selects_player_turn
-    dm_describes_scene
+    dm_describes_scene(players, current_player)
     player_turn
   end
 
@@ -397,14 +335,13 @@ class DND
     self.current_player = choose_from_menu(players.to_a)
   end
 
-  def player_selects_action
-    puts "What action would #{current_player.name} like to take?"
-    current_player.action = choose_from_menu(Player::ACTIONS)
-  end
-
-  def resolve_player_turn
-    EventHandler.new(players, current_player, locations, events).run
-    dm_describes_scene
+  def player_turn
+    EventHandler.new(
+      players,
+      current_player,
+      locations,
+      events,
+      Player::EXPLORE_ACTIONS).run
   end
 end
 

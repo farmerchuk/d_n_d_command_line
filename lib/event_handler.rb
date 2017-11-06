@@ -8,36 +8,81 @@ class EventHandler
   include Helpers::Menus
   include Helpers::Prompts
   include Helpers::Messages
+  include Helpers::Displays
 
-  attr_accessor :players, :player, :locations, :events, :event, :script
+  attr_accessor :players, :player, :locations,
+                :events, :event, :script, :actions
 
-  def initialize(players, current_player, locations, events)
+  def initialize(players, current_player, locations, events, actions)
     @players = players
     @player = current_player
     @locations = locations
     @events = events
-    @event = set_event
-    @script = set_script
+    @event = nil
+    @script = nil
+    @actions = actions
   end
 
   def run
+    player.start_turn
+    player_choose_first_action
+
+    if player.action == 'move'
+      run_action
+      player_selects_action
+      run_action
+    else
+      player_selects_action
+      run_action
+      player.action = 'move' if player_also_move?
+      run_action
+    end
+    prompt_for_next_turn
+  end
+
+  def run_action
+    dm_describes_scene(players, player)
+    set_event
+    set_script
     resolve_player_action
+    reset_event
     prompt_continue
-    player.end_action
+    dm_describes_scene(players, player)
+  end
+
+  def player_choose_first_action
+    puts "What action would #{player.name} like to take first?"
+    choice = choose_from_menu(['move', 'other action'])
+    choice == 'move' ? player.action = 'move' : nil
+  end
+
+  def player_also_move?
+    puts "Would #{player.name} also like to move?"
+    choice = choose_from_menu(['yes', 'no'])
+    choice == 'yes' ? true : false
   end
 
   def set_event
-    events.each do |event|
-      if event.trigger == player.action && event.location == player.location
-        return event
+    events.each do |evt|
+      if evt.trigger == player.action && evt.location == player.location
+        self.event = evt
       end
     end
-    nil
   end
 
   def set_script
-    return nil unless event
-    event.script ? event.script : nil
+    self.script = event && event.script ? event.script : nil
+  end
+
+  def reset_event
+    player.end_action
+    self.event = nil
+    self.script = nil
+  end
+
+  def player_selects_action
+    puts "What action would #{player.name} like to take?"
+    player.action = choose_from_menu(actions)
   end
 
   def resolve_player_action
