@@ -111,4 +111,35 @@ module Helpers
       selected.first
     end
   end
+
+  module Displays
+    def dm_describes_scene(players, current_player)
+      clear_screen
+      puts 'AREA DESCRIPTION:'
+      puts '-----------------------------------------------------------------'
+      puts current_player.area.description
+      puts
+      puts
+      puts "CURRENT PLAYER: #{current_player}"
+      puts '-----------------------------------------------------------------'
+      puts "Location: The #{current_player.location.display_name}"
+      puts
+      puts current_player.location.description
+      puts
+      puts
+      puts 'ALL PLAYERS QUICK SUMMARY:'
+      puts '-----------------------------------------------------------------'
+      players.each do |player|
+        puts "#{player} " +
+             "(#{player.race} #{player.role} / " +
+             "#{player.current_hp} HP) " +
+             "is at the #{player.location.display_name}"
+      end
+      puts
+      puts
+      puts 'GAME COMMANDS'
+      puts '-----------------------------------------------------------------'
+      puts
+    end
+  end
 end
