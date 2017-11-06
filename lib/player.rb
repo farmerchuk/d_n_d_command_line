@@ -22,6 +22,7 @@ class Player
                         17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
   EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
+  BATTLE_ACTIONS = %w[move attack wait skill item equip]
 
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location,
