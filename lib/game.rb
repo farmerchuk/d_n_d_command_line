@@ -12,7 +12,7 @@ require_relative 'equipment'
 require_relative 'area'
 require_relative 'location'
 require_relative 'event'
-require_relative 'event_handler'
+require_relative 'action_handler'
 
 require 'yaml'
 require 'pry'
@@ -336,7 +336,7 @@ class DND
   end
 
   def player_turn
-    EventHandler.new(
+    ActionHandler.new(
       players,
       current_player,
       locations,

@@ -1,9 +1,9 @@
-# event_handler.rb
+# action_handler.rb
 
 require_relative 'helpers'
 require_relative 'encounter_handler'
 
-class EventHandler
+class ActionHandler
   include Helpers::Format
   include Helpers::Menus
   include Helpers::Prompts
