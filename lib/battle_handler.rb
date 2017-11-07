@@ -1,5 +1,6 @@
 # battle_handler.rb
 
+require_relative 'action_handler'
 require_relative 'battle'
 require_relative 'player'
 
@@ -11,7 +12,8 @@ class BattleHandler
   include Helpers::Displays
   include Helpers::Format
 
-  attr_reader :battle, :players, :current_player, :locations, :all_entities
+  attr_reader :players, :current_player, :locations,
+              :battle, :enemies, :all_entities
 
   def initialize(engagement_id, players, current_player, locations)
     battles_data = YAML.load_file('../assets/yaml/battles.yml')
@@ -21,6 +23,7 @@ class BattleHandler
     @locations = locations
     @battle = get_battle(engagement_id, battles_data)
     battle.build_enemies
+    @enemies = battle.enemies
 
     @all_entities = players.to_a + battle.enemies
     sort_all_entities_by_initiative!
@@ -74,14 +77,12 @@ class BattleHandler
     prompt_continue
   end
 
-  def player_turn(player)
-    ActionHandler.new(
+  def player_turn(current_player)
+    BattleActionHandler.new(
       players,
-      player,
-      battle.enemies,
+      current_player,
       locations,
-      nil,
-      Player::BATTLE_ACTIONS).run
+      enemies).run
   end
 
   def display_battle_details

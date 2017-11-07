@@ -18,7 +18,7 @@ require 'pry'
 
 # Game logic
 
-class DND
+class Game
   include Helpers::Format
   include Helpers::Menus
   include Helpers::Prompts
@@ -335,14 +335,12 @@ class DND
   end
 
   def player_turn
-    ActionHandler.new(
+    ExploreActionHandler.new(
       players,
       current_player,
-      nil,
       locations,
-      events,
-      Player::EXPLORE_ACTIONS).run
+      events).run
   end
 end
 
-DND.new.run
+Game.new.run
