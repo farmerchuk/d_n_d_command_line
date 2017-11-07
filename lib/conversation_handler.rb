@@ -1,7 +1,7 @@
 # conversation_handler.rb
 
 class ConversationHandler
-  def initialize(engagement_id, players, locations)
+  def initialize(engagement_id, players, current_player, locations)
 
   end
 

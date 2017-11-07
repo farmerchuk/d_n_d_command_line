@@ -113,7 +113,7 @@ module Helpers
   end
 
   module Displays
-    def dm_describes_scene(players, current_player)
+    def display_player_summary(players, current_player)
       clear_screen
       puts 'AREA DESCRIPTION:'
       puts '-----------------------------------------------------------------'

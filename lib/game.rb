@@ -43,7 +43,7 @@ class DND
     set_current_player
 
     loop do
-      dm_describes_scene(players, current_player)
+      display_player_summary(players, current_player)
       dm_selects_from_main_menu
     end
   end
@@ -321,7 +321,7 @@ class DND
 
   def dm_chose_player_turn
     dm_selects_player_turn
-    dm_describes_scene(players, current_player)
+    display_player_summary(players, current_player)
     player_turn
   end
 
@@ -338,6 +338,7 @@ class DND
     ActionHandler.new(
       players,
       current_player,
+      nil,
       locations,
       events,
       Player::EXPLORE_ACTIONS).run
