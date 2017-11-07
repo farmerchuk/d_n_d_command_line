@@ -160,10 +160,10 @@ class ActionHandler
 
       if choice.instance_of?(Weapon)
         current_player.unequip(current_player.equipped_weapon)
+      elsif choice.instance_of?(Armor) && choice.type == 'shield'
+        current_player.unequip(current_player.equipped_shield)
       elsif choice.instance_of?(Armor)
         current_player.unequip(current_player.equipped_armor)
-      elsif choice.instance_of?(Shield)
-        current_player.unequip(current_player.equipped_shield)
       end
 
       current_player.equip(choice.id)
@@ -171,6 +171,13 @@ class ActionHandler
   end
 
   def player_attack
-
+    # player selects enemy to attack (show their locations in list)
+    # player misses if enemy is not in range of equipped weapon
+    # calculate attack
+    # compare to enemy AC
+    # if successful calculate damage
+    # update enemy current hitpoints
+    # display result message
+    # prompt for next player
   end
 end

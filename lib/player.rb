@@ -236,7 +236,7 @@ class Player
   end
 
   def unequip(equipment)
-    equipment.checkin_equipment
+    equipment.checkin_equipment if equipment
   end
 
   def to_s

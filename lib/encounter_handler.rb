@@ -13,7 +13,7 @@ class EncounterHandler
 
   def initialize(encounter_id, players, current_player, locations)
     encounters_data = YAML.load_file('../assets/yaml/encounters.yml')
-    
+
     @engagement_ids = get_engagement_ids(encounter_id, encounters_data)
     @players = players
     @current_player = current_player
@@ -23,15 +23,17 @@ class EncounterHandler
   def run
     engagement_ids.each do |engagement_id|
       if get_engagement_id_prefix(engagement_id) == 'battle'
-        BattleHandler.new(engagement_id,
-                          players,
-                          current_player,
-                          locations).run
+        BattleHandler.new(
+          engagement_id,
+          players,
+          current_player,
+          locations).run
       elsif get_engagement_id_prefix(engagement_id) == 'conversation'
-        ConversationHandler.new(engagement_id,
-                                players,
-                                current_player,
-                                locations).run
+        ConversationHandler.new(
+          engagement_id,
+          players,
+          current_player,
+          locations).run
       end
     end
   end

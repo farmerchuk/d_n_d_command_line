@@ -34,15 +34,7 @@ class BattleHandler
       next if entity.current_hp <= 0
 
       if entity.instance_of?(Player)
-        action = ActionHandler.new(
-                   players,
-                   entity,
-                   battle.enemies,
-                   locations,
-                   nil,
-                   Player::BATTLE_ACTIONS)
-        action.run
-        # action.result
+        player_turn(entity)
       else
         puts 'Enemy attacks!'
         prompt_continue
@@ -80,6 +72,16 @@ class BattleHandler
     display_player_summary(players, current_player)
     puts battle.introduction
     prompt_continue
+  end
+
+  def player_turn(player)
+    ActionHandler.new(
+      players,
+      player,
+      battle.enemies,
+      locations,
+      nil,
+      Player::BATTLE_ACTIONS).run
   end
 
   def display_battle_details

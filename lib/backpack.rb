@@ -99,11 +99,10 @@ class Backpack
     puts
     puts 'WEAPONS'
     puts '-----------------------------------------------------------------'
-    puts 'opt  name                     class             details'
-    puts '---  ----                     -----             -------'
+    puts 'name                     class             details'
+    puts '----                     -----             -------'
     all_unequipped_equipment.each_with_index do |eq, idx|
-      puts "#{(idx.to_s + '.').ljust(5)}#{eq.display_name.ljust(25)}" +
-            "#{eq.classifier.ljust(18)}" +
+      puts "#{eq.display_name.ljust(25)}#{eq.classifier.ljust(18)}" +
       if eq.instance_of?(Weapon)
         "#{eq.damage_die.ljust(8)}damage"
       elsif eq.instance_of?(Armor)
