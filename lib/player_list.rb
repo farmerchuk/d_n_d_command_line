@@ -1,10 +1,6 @@
 # player_list.rb
 
-require_relative 'helpers'
-
 class PlayerList
-  include Helpers::Format
-
   attr_reader :players
 
   def initialize

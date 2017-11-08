@@ -1,10 +1,8 @@
 # backpack.rb
 
-require_relative 'helpers'
+require_relative 'menu'
 
 class Backpack
-  include Helpers::Format
-
   attr_reader :armors, :weapons, :gears, :tools
   attr_accessor :purse
 
@@ -41,13 +39,13 @@ class Backpack
 
   def view
     sort_all_equipment_by_type!
-    clear_screen
+    Menu.clear_screen
 
     puts "Party Equipment:                             GOLD: #{purse}"
-    puts '-' * 100
+    Menu.draw_line
     puts
     puts 'WEAPONS'
-    puts '-' * 100
+    Menu.draw_line
     puts 'name                     type      damage    equipped by'
     puts '----                     ----      ------    -----------'
     weapons.each do |weapon|
@@ -59,7 +57,7 @@ class Backpack
     puts
     puts
     puts 'ARMOR'
-    puts '-' * 100
+    Menu.draw_line
     puts 'name                     type      AC        equipped by'
     puts '----                     ----      --        -----------'
     armors.each do |armor|
@@ -71,7 +69,7 @@ class Backpack
     puts
     puts
     puts 'GEAR'
-    puts '-' * 100
+    Menu.draw_line
     puts 'name                     type'
     puts '----                     ----'
     gears.each do |gear|
@@ -81,7 +79,7 @@ class Backpack
     puts
     puts
     puts 'TOOLS'
-    puts '-' * 100
+    Menu.draw_line
     puts 'name                     type'
     puts '----                     ----'
     tools.each do |tool|
@@ -92,13 +90,13 @@ class Backpack
   end
 
   def view_equippable
-    clear_screen
+    Menu.clear_screen
 
     puts "Available Equipment:"
-    puts '-' * 100
+    Menu.draw_line
     puts
     puts 'WEAPONS'
-    puts '-' * 100
+    Menu.draw_line
     puts 'name                     class             details'
     puts '----                     -----             -------'
     all_unequipped_equipment.each_with_index do |eq, idx|

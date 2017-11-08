@@ -1,10 +1,8 @@
 # coin_purse.rb
 
-require_relative 'helpers'
+require_relative 'menu'
 
 class CoinPurse
-  include Helpers::Format
-
   attr_accessor :gold
 
   def initialize(int)
@@ -21,6 +19,6 @@ class CoinPurse
   end
 
   def to_s
-    num_with_commas(gold)
+    Menu.num_with_commas(gold)
   end
 end

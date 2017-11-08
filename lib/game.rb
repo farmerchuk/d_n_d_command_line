@@ -1,7 +1,7 @@
 # game.rb
 
 require_relative 'helpers'
-require_relative 'main_menu'
+require_relative 'menu'
 require_relative 'player_list'
 require_relative 'player'
 require_relative 'player_role'
@@ -19,10 +19,12 @@ require 'pry'
 # Game logic
 
 class Game
-  include Helpers::Format
-  include Helpers::Menus
-  include Helpers::Prompts
   include Helpers::Data
+
+  MENU_OPTIONS = ['view party equipment',
+                  'view player profiles',
+                  'choose player turn',
+                  'save and quit']
 
   def initialize
     @players = PlayerList.new
@@ -149,9 +151,9 @@ class Game
   def welcome
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
-    clear_screen
+    Menu.clear_screen
     puts initialize_data['title']
-    puts '-' * 100
+    Menu.draw_line
     puts
   end
 
@@ -179,7 +181,7 @@ class Game
 
     loop do
       puts "Add new player's name: "
-      name = prompt
+      name = Menu.prompt
       break unless name =~ /\W/ || name.size < 3
       puts 'Sorry, that is not a valid name...'
     end
@@ -189,7 +191,7 @@ class Game
 
   def add_role(player)
     puts "What role will #{player.name} be?"
-    role = choose_from_menu(PlayerRole::ROLES)
+    role = Menu.choose_from_menu(PlayerRole::ROLES)
 
     case role
     when 'fighter' then player.role = Fighter.new
@@ -201,7 +203,7 @@ class Game
 
   def add_race(player)
     puts "What race will #{player.name} be?"
-    role = choose_from_menu(PlayerRace::RACES)
+    role = Menu.choose_from_menu(PlayerRace::RACES)
 
     case role
     when 'human' then player.race = Human.new
@@ -218,7 +220,7 @@ class Game
 
     loop do
       puts 'Would you like to add another player? (y/n) '
-      input = prompt
+      input = Menu.prompt
       break if ['y', 'n'].include?(input)
       puts 'Sorry, that is not a valid choice...'
     end
@@ -295,7 +297,7 @@ class Game
 
   def dm_selects_from_main_menu
     puts 'Select an option:'
-    choice = choose_from_menu(MainMenu::OPTIONS)
+    choice = Menu.choose_from_menu(MENU_OPTIONS)
 
     case choice
     when 'view party equipment' then dm_chose_view_party_equipment
@@ -307,15 +309,15 @@ class Game
 
   def dm_chose_view_party_equipment
     current_player.backpack.view
-    prompt_continue
+    Menu.prompt_continue
   end
 
   def dm_chose_view_player_profiles
     puts 'Which player?'
-    player = choose_from_menu(players.to_a)
+    player = Menu.choose_from_menu(players.to_a)
 
     player.view
-    prompt_continue
+    Menu.prompt_continue
   end
 
   def dm_chose_player_turn
@@ -329,7 +331,7 @@ class Game
 
   def dm_selects_player_turn
     puts 'Which player would like to take a turn?'
-    self.current_player = choose_from_menu(players.to_a)
+    self.current_player = Menu.choose_from_menu(players.to_a)
   end
 
   def player_turn

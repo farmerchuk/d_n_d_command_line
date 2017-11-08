@@ -1,14 +1,9 @@
 # action_handler.rb
 
-require_relative 'helpers'
+require_relative 'menu'
 require_relative 'encounter_handler'
 
 class ActionHandler
-  include Helpers::Format
-  include Helpers::Menus
-  include Helpers::Prompts
-  include Helpers::Messages
-
   attr_accessor :players, :current_player, :locations
 
   def initialize(players, current_player, locations)
@@ -19,20 +14,20 @@ class ActionHandler
 
   def player_choose_first_action
     puts "What action would #{current_player.name} like to take first?"
-    choice = choose_from_menu(['move', 'other action'])
+    choice = Menu.choose_from_menu(['move', 'other action'])
     choice == 'move' ? current_player.action = 'move' : nil
   end
 
   def player_also_move?
     puts "Would #{current_player.name} also like to move?"
-    choice = choose_from_menu(['yes', 'no'])
+    choice = Menu.choose_from_menu(['yes', 'no'])
     choice == 'yes' ? true : false
   end
 
   def player_move
     puts "Where would #{current_player.name} like to move to?"
     available_locations = current_player.location.paths
-    current_player.location = choose_from_menu(available_locations)
+    current_player.location = Menu.choose_from_menu(available_locations)
 
     puts "#{current_player} is now at the #{current_player.location.display_name}"
     puts
@@ -62,12 +57,12 @@ class ActionHandler
     available_equipment = current_player.backpack.all_unequipped_equipment
 
     if available_equipment.empty?
-      no_equippable_msg
+      puts 'Sorry, all equipment is currently in use...'
     else
       current_player.backpack.view_equippable
 
       puts "Select the item to equip:"
-      choice = choose_from_menu(available_equipment)
+      choice = Menu.choose_from_menu(available_equipment)
 
       if choice.instance_of?(Weapon)
         current_player.unequip(current_player.equipped_weapon)
@@ -109,7 +104,7 @@ class ExploreActionHandler < ActionHandler
       current_player.action = 'move' if player_also_move?
       run_action
     end
-    prompt_for_next_turn
+    Menu.prompt_for_next_turn
   end
 
   def run_action
@@ -118,13 +113,13 @@ class ExploreActionHandler < ActionHandler
     set_script
     resolve_player_action
     reset_event
-    prompt_continue
+    Menu.prompt_continue
     display_summary
   end
 
   def player_selects_action
     puts "What action would #{current_player.name} like to take?"
-    current_player.action = choose_from_menu(ACTIONS)
+    current_player.action = Menu.choose_from_menu(ACTIONS)
   end
 
   def execute_player_action
@@ -162,7 +157,7 @@ class ExploreActionHandler < ActionHandler
     if event
       puts event.description
     else
-      puts no_event_msg unless current_player.action == 'equip'
+      puts 'Nothing happens...' unless current_player.action == 'equip'
     end
   end
 
@@ -181,21 +176,21 @@ class ExploreActionHandler < ActionHandler
   end
 
   def self.display_summary(players, current_player)
-    system 'clear'
+    Menu.clear_screen
     puts 'AREA DESCRIPTION:'
-    puts '-' * 100
+    Menu.draw_line
     puts current_player.area.description
     puts
     puts
     puts "CURRENT PLAYER: #{current_player}"
-    puts '-' * 100
+    Menu.draw_line
     puts "Location: The #{current_player.location.display_name}"
     puts
     puts current_player.location.description
     puts
     puts
     puts 'ALL PLAYERS QUICK SUMMARY:'
-    puts '-' * 100
+    Menu.draw_line
     players.each do |player|
       puts "#{player} " +
            "(#{player.race} #{player.role} / " +
@@ -205,7 +200,7 @@ class ExploreActionHandler < ActionHandler
     puts
     puts
     puts 'EXPLORATION DETAILS'
-    puts '-' * 100
+    Menu.draw_line
     puts
   end
 end
@@ -236,20 +231,20 @@ class BattleActionHandler < ActionHandler
       current_player.action = 'move' if player_also_move?
       run_action
     end
-    prompt_for_next_turn
+    Menu.prompt_for_next_turn
   end
 
   def run_action
     display_summary
     execute_player_action
     current_player.end_action
-    prompt_continue
+    Menu.prompt_continue
     display_summary
   end
 
   def player_selects_action
     puts "What action would #{current_player.name} like to take?"
-    current_player.action = choose_from_menu(ACTIONS)
+    current_player.action = Menu.choose_from_menu(ACTIONS)
   end
 
   def execute_player_action
@@ -280,9 +275,9 @@ class BattleActionHandler < ActionHandler
   end
 
   def self.display_summary(all_entities)
-    system 'clear'
+    Menu.clear_screen
     puts 'BATTLE TURN ORDER & DETAILS:'
-    puts '-' * 100
+    Menu.draw_line
     all_entities.each do |entity|
       if entity.instance_of?(Player)
         puts "#{entity.to_s.ljust(12)}" +
@@ -299,7 +294,7 @@ class BattleActionHandler < ActionHandler
     puts
     puts
     puts 'BATTLE DETAILS'
-    puts '-' * 100
+    Menu.draw_line
     puts
   end
 end

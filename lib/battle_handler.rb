@@ -1,17 +1,13 @@
 # battle_handler.rb
 
+require_relative 'menu'
 require_relative 'action_handler'
 require_relative 'battle'
 require_relative 'player'
-require_relative 'helpers'
 
 require 'pry'
 
 class BattleHandler
-  include Helpers::Prompts
-  include Helpers::Menus
-  include Helpers::Format
-
   attr_reader :players, :current_player, :locations,
               :battle, :enemies, :all_entities
 
@@ -43,7 +39,7 @@ class BattleHandler
       else
         BattleActionHandler.display_summary(all_entities)
         puts 'Enemy attacks!'
-        prompt_continue
+        Menu.prompt_continue
       end
     end
   end
@@ -77,7 +73,7 @@ class BattleHandler
   def battle_introduction
     ExploreActionHandler.display_summary(players, current_player)
     puts battle.introduction
-    prompt_continue
+    Menu.prompt_continue
   end
 
   def set_current_turn(current_entity)
