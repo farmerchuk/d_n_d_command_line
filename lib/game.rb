@@ -151,7 +151,7 @@ class Game
 
     clear_screen
     puts initialize_data['title']
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts
   end
 

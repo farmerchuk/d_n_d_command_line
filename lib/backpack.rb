@@ -44,10 +44,10 @@ class Backpack
     clear_screen
 
     puts "Party Equipment:                             GOLD: #{purse}"
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts
     puts 'WEAPONS'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     type      damage    equipped by'
     puts '----                     ----      ------    -----------'
     weapons.each do |weapon|
@@ -59,7 +59,7 @@ class Backpack
     puts
     puts
     puts 'ARMOR'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     type      AC        equipped by'
     puts '----                     ----      --        -----------'
     armors.each do |armor|
@@ -71,7 +71,7 @@ class Backpack
     puts
     puts
     puts 'GEAR'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     type'
     puts '----                     ----'
     gears.each do |gear|
@@ -81,7 +81,7 @@ class Backpack
     puts
     puts
     puts 'TOOLS'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     type'
     puts '----                     ----'
     tools.each do |tool|
@@ -95,10 +95,10 @@ class Backpack
     clear_screen
 
     puts "Available Equipment:"
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts
     puts 'WEAPONS'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     class             details'
     puts '----                     -----             -------'
     all_unequipped_equipment.each_with_index do |eq, idx|

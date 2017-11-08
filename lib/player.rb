@@ -253,22 +253,22 @@ class Player
     clear_screen
 
     puts "Player Profile:"
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts
     puts 'GENERAL INFO'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts "NAME: #{name.ljust(29)}ROLE:      #{role}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
     puts
     puts 'CONDITION'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts "CURRENT HIT POINTS: #{current_hp}"
     puts "MAXIMUM HIT POINTS: #{max_hp}"
     puts
     puts
     puts 'ABILITY SCORES'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts "STR: #{str.to_s.ljust(5)}DEX: #{dex.to_s.ljust(5)}" +
          "CON: #{con.to_s.ljust(5)}INT: #{int.to_s.ljust(5)}" +
          "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
@@ -277,21 +277,21 @@ class Player
     puts "ABILITY ROLL MODIFIERS                  PROF BONUS: " +
          "+#{prof_bonus} #{role.proficiency[0].upcase} & " +
          "#{role.proficiency[1].upcase}"
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
          "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +
          "WIS: #{wis_mod.to_s.ljust(5)}CHA: #{cha_mod.to_s.ljust(5)}"
     puts
     puts
     puts 'EQUIPPED WEAPON'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     type           damage'
     puts '----                     ----           ------'
     puts "#{equipped_weapon.display_in_profile}" if equipped_weapon
     puts
     puts
     puts "EQUIPPED ARMOR                          TOTAL AC: #{armor_class}"
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts 'name                     type           AC'
     puts '----                     ----           --'
     puts "#{equipped_armor.display_in_profile}" if equipped_armor

@@ -183,19 +183,19 @@ class ExploreActionHandler < ActionHandler
   def self.display_summary(players, current_player)
     system 'clear'
     puts 'AREA DESCRIPTION:'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts current_player.area.description
     puts
     puts
     puts "CURRENT PLAYER: #{current_player}"
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts "Location: The #{current_player.location.display_name}"
     puts
     puts current_player.location.description
     puts
     puts
     puts 'ALL PLAYERS QUICK SUMMARY:'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     players.each do |player|
       puts "#{player} " +
            "(#{player.race} #{player.role} / " +
@@ -205,7 +205,7 @@ class ExploreActionHandler < ActionHandler
     puts
     puts
     puts 'EXPLORATION DETAILS'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts
   end
 end
@@ -282,25 +282,24 @@ class BattleActionHandler < ActionHandler
   def self.display_summary(all_entities)
     system 'clear'
     puts 'BATTLE TURN ORDER & DETAILS:'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     all_entities.each do |entity|
       if entity.instance_of?(Player)
-        puts "#{entity} " +
-             "(#{entity.race} #{entity.role} / " +
-             "#{entity.current_hp} HP) " +
-             "is at the #{entity.location.display_name} " +
+        puts "#{entity.to_s.ljust(12)}" +
+             "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(25) +
+             "is at the #{entity.location.display_name}".ljust(32) +
              (entity.current_turn ? "(Current Turn)" : "")
       elsif entity.instance_of?(Enemy)
-        puts "#{entity} " +
-             "(Monster / #{entity.current_hp} HP) " +
-             "is at the #{entity.location.display_name} " +
+        puts "#{entity.to_s.ljust(12)}" +
+             "(Monster / #{entity.current_hp} HP)".ljust(25) +
+             "is at the #{entity.location.display_name}".ljust(32) +
              (entity.current_turn ? "(Current Turn)" : "")
       end
     end
     puts
     puts
     puts 'BATTLE DETAILS'
-    puts '-----------------------------------------------------------------'
+    puts '-' * 100
     puts
   end
 end
