@@ -3,13 +3,13 @@
 require_relative 'action_handler'
 require_relative 'battle'
 require_relative 'player'
+require_relative 'helpers'
 
 require 'pry'
 
 class BattleHandler
   include Helpers::Prompts
   include Helpers::Menus
-  include Helpers::Displays
   include Helpers::Format
 
   attr_reader :players, :current_player, :locations,
@@ -72,7 +72,7 @@ class BattleHandler
   end
 
   def battle_introduction
-    display_player_summary(players, current_player)
+    ExploreActionHandler.display_summary(players, current_player)
     puts battle.introduction
     prompt_continue
   end
@@ -82,11 +82,7 @@ class BattleHandler
       players,
       current_player,
       locations,
-      enemies).run
-  end
-
-  def display_battle_details
-    display_player_summary
-
+      enemies,
+      all_entities).run
   end
 end

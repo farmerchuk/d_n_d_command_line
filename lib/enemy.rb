@@ -100,4 +100,10 @@ class Enemy
   def initiative
     roll_dex_check
   end
+
+  # other
+
+  def to_s
+    name
+  end
 end

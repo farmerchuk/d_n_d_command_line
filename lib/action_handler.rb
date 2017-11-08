@@ -8,7 +8,6 @@ class ActionHandler
   include Helpers::Menus
   include Helpers::Prompts
   include Helpers::Messages
-  include Helpers::Displays
 
   attr_accessor :players, :current_player, :locations
 
@@ -16,23 +15,6 @@ class ActionHandler
     @players = players
     @current_player = current_player
     @locations = locations
-  end
-
-  def run
-    current_player.start_turn
-    player_choose_first_action
-
-    if current_player.action == 'move'
-      run_action
-      player_selects_action
-      run_action
-    else
-      player_selects_action
-      run_action
-      current_player.action = 'move' if player_also_move?
-      run_action
-    end
-    prompt_for_next_turn
   end
 
   def player_choose_first_action
@@ -112,14 +94,32 @@ class ExploreActionHandler < ActionHandler
     @script = nil
   end
 
+  def run
+    display_summary
+    current_player.start_turn
+    player_choose_first_action
+
+    if current_player.action == 'move'
+      run_action
+      player_selects_action
+      run_action
+    else
+      player_selects_action
+      run_action
+      current_player.action = 'move' if player_also_move?
+      run_action
+    end
+    prompt_for_next_turn
+  end
+
   def run_action
-    display_player_summary(players, current_player)
+    display_summary
     set_event
     set_script
     resolve_player_action
     reset_event
     prompt_continue
-    display_player_summary(players, current_player)
+    display_summary
   end
 
   def player_selects_action
@@ -175,23 +175,75 @@ class ExploreActionHandler < ActionHandler
     self.event = nil
     self.script = nil
   end
+
+  def display_summary
+    ExploreActionHandler.display_summary(players, current_player)
+  end
+
+  def self.display_summary(players, current_player)
+    system 'clear'
+    puts 'AREA DESCRIPTION:'
+    puts '-----------------------------------------------------------------'
+    puts current_player.area.description
+    puts
+    puts
+    puts "CURRENT PLAYER: #{current_player}"
+    puts '-----------------------------------------------------------------'
+    puts "Location: The #{current_player.location.display_name}"
+    puts
+    puts current_player.location.description
+    puts
+    puts
+    puts 'ALL PLAYERS QUICK SUMMARY:'
+    puts '-----------------------------------------------------------------'
+    players.each do |player|
+      puts "#{player} " +
+           "(#{player.race} #{player.role} / " +
+           "#{player.current_hp} HP) " +
+           "is at the #{player.location.display_name}"
+    end
+    puts
+    puts
+    puts 'EXPLORATION DETAILS'
+    puts '-----------------------------------------------------------------'
+    puts
+  end
 end
 
 class BattleActionHandler < ActionHandler
   ACTIONS = %w[move attack wait skill item equip]
 
-  attr_accessor :enemies
+  attr_accessor :enemies, :all_entities
 
-  def initialize(players, current_player, locations, enemies)
+  def initialize(players, current_player, locations, enemies, all_entities)
     super(players, current_player, locations)
     @enemies = enemies
+    @all_entities = all_entities
+  end
+
+  def run
+    display_summary
+    current_player.start_turn
+    player_choose_first_action
+
+    if current_player.action == 'move'
+      run_action
+      player_selects_action
+      run_action
+    else
+      player_selects_action
+      run_action
+      current_player.action = 'move' if player_also_move?
+      run_action
+    end
+    prompt_for_next_turn
   end
 
   def run_action
-    display_player_summary(players, current_player)
+    display_summary
     execute_player_action
     prompt_continue
-    display_player_summary(players, current_player)
+    display_summary
   end
 
   def player_selects_action
@@ -220,5 +272,32 @@ class BattleActionHandler < ActionHandler
     # update enemy current hitpoints
     # display result message
     # prompt for next player
+  end
+
+  def display_summary
+    BattleActionHandler.display_summary(all_entities)
+  end
+
+  def self.display_summary(all_entities)
+    system 'clear'
+    puts 'BATTLE TURN ORDER & DETAILS:'
+    puts '-----------------------------------------------------------------'
+    all_entities.each do |entity|
+      if entity.instance_of?(Player)
+        puts "#{entity} " +
+             "(#{entity.race} #{entity.role} / " +
+             "#{entity.current_hp} HP) " +
+             "is at the #{entity.location.display_name}"
+      elsif entity.instance_of?(Enemy)
+        puts "#{entity} " +
+             "(Monster / #{entity.current_hp} HP) " +
+             "is at the #{entity.location.display_name}"
+      end
+    end
+    puts
+    puts
+    puts 'BATTLE DETAILS'
+    puts '-----------------------------------------------------------------'
+    puts
   end
 end

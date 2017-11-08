@@ -23,7 +23,6 @@ class Game
   include Helpers::Menus
   include Helpers::Prompts
   include Helpers::Data
-  include Helpers::Displays
 
   def initialize
     @players = PlayerList.new
@@ -43,7 +42,7 @@ class Game
     set_current_player
 
     loop do
-      display_player_summary(players, current_player)
+      ExploreActionHandler.display_summary(players, current_player)
       dm_selects_from_main_menu
     end
   end
@@ -321,7 +320,6 @@ class Game
 
   def dm_chose_player_turn
     dm_selects_player_turn
-    display_player_summary(players, current_player)
     player_turn
   end
 
