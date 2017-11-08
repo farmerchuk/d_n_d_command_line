@@ -9,14 +9,13 @@ require 'yaml'
 class EncounterHandler
   include Helpers::Data
 
-  attr_reader :engagement_ids, :players, :current_player, :locations
+  attr_reader :engagement_ids, :players, :locations
 
-  def initialize(encounter_id, players, current_player, locations)
+  def initialize(encounter_id, players, locations)
     encounters_data = YAML.load_file('../assets/yaml/encounters.yml')
 
     @engagement_ids = get_engagement_ids(encounter_id, encounters_data)
     @players = players
-    @current_player = current_player
     @locations = locations
   end
 
@@ -26,13 +25,11 @@ class EncounterHandler
         BattleHandler.new(
           engagement_id,
           players,
-          current_player,
           locations).run
       elsif get_engagement_id_prefix(engagement_id) == 'conversation'
         ConversationHandler.new(
           engagement_id,
           players,
-          current_player,
           locations).run
       end
     end

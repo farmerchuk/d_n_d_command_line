@@ -8,14 +8,14 @@ require_relative 'player'
 require 'pry'
 
 class BattleHandler
-  attr_reader :players, :current_player, :locations,
+  attr_reader :players, :locations,
               :battle, :enemies, :all_entities
 
-  def initialize(engagement_id, players, current_player, locations)
+  def initialize(engagement_id, players, locations)
     battles_data = YAML.load_file('../assets/yaml/battles.yml')
 
     @players = players
-    @current_player = current_player
+    @current_player = players.current
     @locations = locations
     @battle = get_battle(engagement_id, battles_data)
     battle.build_enemies
@@ -71,7 +71,7 @@ class BattleHandler
   end
 
   def battle_introduction
-    ExploreActionHandler.display_summary(players, current_player)
+    ExploreActionHandler.display_summary(players)
     puts battle.introduction
     Menu.prompt_continue
   end
@@ -88,7 +88,6 @@ class BattleHandler
   def player_turn(current_player)
     BattleActionHandler.new(
       players,
-      current_player,
       locations,
       enemies,
       all_entities).run

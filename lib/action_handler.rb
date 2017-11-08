@@ -6,9 +6,9 @@ require_relative 'encounter_handler'
 class ActionHandler
   attr_accessor :players, :current_player, :locations
 
-  def initialize(players, current_player, locations)
+  def initialize(players, locations)
     @players = players
-    @current_player = current_player
+    @current_player = players.current
     @locations = locations
   end
 
@@ -82,8 +82,8 @@ class ExploreActionHandler < ActionHandler
 
   attr_accessor :events, :event, :script
 
-  def initialize(players, current_player, locations, events)
-    super(players, current_player, locations)
+  def initialize(players, locations, events)
+    super(players, locations)
     @events = events
     @event = nil
     @script = nil
@@ -113,6 +113,7 @@ class ExploreActionHandler < ActionHandler
     set_script
     resolve_player_action
     reset_event
+    current_player.end_action
     Menu.prompt_continue
     display_summary
   end
@@ -166,33 +167,32 @@ class ExploreActionHandler < ActionHandler
   end
 
   def reset_event
-    current_player.end_action
     self.event = nil
     self.script = nil
   end
 
   def display_summary
-    ExploreActionHandler.display_summary(players, current_player)
+    self.class.display_summary(players)
   end
 
-  def self.display_summary(players, current_player)
+  def self.display_summary(players)
     Menu.clear_screen
     puts 'ALL PLAYERS & DETAILS:'
     Menu.draw_line
     players.each do |player|
       puts "#{player.to_s.ljust(12)}" +
-           "(#{player.race} #{player.role} / #{player.current_hp} HP)".ljust(25) +
+           "(#{player.race} #{player.role} / #{player.current_hp} HP)".ljust(28) +
            "is at the #{player.location.display_name}".ljust(32) +
            (player.current_turn ? "(Current Turn)" : "")
     end
     puts
     puts
-    puts "CURRENT PLAYER LOCATION:"
+    puts "CURRENT PLAYER LOCATION: #{players.current.location.display_name}"
     Menu.draw_line
-    puts current_player.location.description
+    puts players.current.location.description
     puts
     puts
-    puts 'EXPLORATION DETAILS'
+    puts 'EXPLORATION DETAILS:'
     Menu.draw_line
     puts
   end
@@ -203,8 +203,8 @@ class BattleActionHandler < ActionHandler
 
   attr_accessor :enemies, :all_entities
 
-  def initialize(players, current_player, locations, enemies, all_entities)
-    super(players, current_player, locations)
+  def initialize(players, locations, enemies, all_entities)
+    super(players, locations)
     @enemies = enemies
     @all_entities = all_entities
   end
@@ -264,7 +264,7 @@ class BattleActionHandler < ActionHandler
   end
 
   def display_summary
-    BattleActionHandler.display_summary(all_entities)
+    self.class.display_summary(all_entities)
   end
 
   def self.display_summary(all_entities)
@@ -274,7 +274,7 @@ class BattleActionHandler < ActionHandler
     all_entities.each do |entity|
       if entity.instance_of?(Player)
         puts "#{entity.to_s.ljust(12)}" +
-             "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(25) +
+             "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(28) +
              "is at the #{entity.location.display_name}".ljust(32) +
              (entity.current_turn ? "(Current Turn)" : "")
       elsif entity.instance_of?(Enemy)
@@ -286,7 +286,7 @@ class BattleActionHandler < ActionHandler
     end
     puts
     puts
-    puts 'BATTLE DETAILS'
+    puts 'BATTLE DETAILS:'
     Menu.draw_line
     puts
   end

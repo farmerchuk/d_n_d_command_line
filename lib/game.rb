@@ -29,7 +29,6 @@ class Game
 
   def initialize
     @players = PlayerList.new
-    @current_player = nil
     @areas = []
     @locations = []
     @events = []
@@ -45,14 +44,14 @@ class Game
     set_current_player
 
     loop do
-      ExploreActionHandler.display_summary(players, current_player)
+      ExploreActionHandler.display_summary(players)
       dm_selects_from_main_menu
     end
   end
 
   private
 
-  attr_accessor :players, :current_player, :areas, :locations, :events
+  attr_accessor :players, :areas, :locations, :events
 
   def build_resources
     build_areas
@@ -288,7 +287,7 @@ class Game
   end
 
   def set_current_player
-    self.current_player = players.highest_initiative
+    current_player = players.highest_initiative
     current_player.set_current_turn!
   end
 
@@ -306,12 +305,12 @@ class Game
   end
 
   def dm_chose_area_description
-    puts current_player.area.description
+    puts players.current.area.description
     Menu.prompt_continue
   end
 
   def dm_chose_view_party_equipment
-    current_player.backpack.view
+    players.current.backpack.view
     Menu.prompt_continue
   end
 
@@ -333,16 +332,15 @@ class Game
   end
 
   def dm_selects_player_turn
-    current_player.unset_current_turn!
+    players.current.unset_current_turn!
     puts 'Which player would like to take a turn?'
-    self.current_player = Menu.choose_from_menu(players.to_a)
+    current_player = Menu.choose_from_menu(players.to_a)
     current_player.set_current_turn!
   end
 
   def player_turn
     ExploreActionHandler.new(
       players,
-      current_player,
       locations,
       events).run
   end

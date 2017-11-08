@@ -31,7 +31,7 @@ class PlayerList
 
   def current
     players.each do |player|
-      return player if player.current_player
+      return player if player.current_turn
     end
   end
 
