@@ -22,7 +22,7 @@ class Player
                         17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
   attr_accessor :name, :race, :role, :alignment,
-                :area, :location,
+                :area, :location, :current_turn,
                 :action, :wait,
                 :current_hp,
                 :backpack,
@@ -35,6 +35,7 @@ class Player
     @alignment = nil # TBD
     @area = nil # Area
     @location = nil # Location
+    @current_turn = false # Boolean
     @action = nil # String
     @wait = false # Boolean
     @current_hp = nil # Integer
@@ -215,6 +216,14 @@ class Player
 
   def set_current_hp_to_max
     self.current_hp = max_hp
+  end
+
+  def set_current_turn!
+    self.current_turn = true
+  end
+
+  def unset_current_turn!
+    self.current_turn = false
   end
 
   def equip(equipment_id)

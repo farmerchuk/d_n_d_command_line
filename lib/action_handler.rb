@@ -242,6 +242,7 @@ class BattleActionHandler < ActionHandler
   def run_action
     display_summary
     execute_player_action
+    current_player.end_action
     prompt_continue
     display_summary
   end
@@ -287,11 +288,13 @@ class BattleActionHandler < ActionHandler
         puts "#{entity} " +
              "(#{entity.race} #{entity.role} / " +
              "#{entity.current_hp} HP) " +
-             "is at the #{entity.location.display_name}"
+             "is at the #{entity.location.display_name} " +
+             (entity.current_turn ? "(Current Turn)" : "")
       elsif entity.instance_of?(Enemy)
         puts "#{entity} " +
              "(Monster / #{entity.current_hp} HP) " +
-             "is at the #{entity.location.display_name}"
+             "is at the #{entity.location.display_name} " +
+             (entity.current_turn ? "(Current Turn)" : "")
       end
     end
     puts

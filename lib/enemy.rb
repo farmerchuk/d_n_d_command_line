@@ -5,8 +5,9 @@ require_relative 'helpers'
 class Enemy
   include Helpers::Dice
 
-  attr_accessor :id, :name, :description, :location, :max_hp, :current_hp,
-                :armor_class, :melee_attack_bonus, :ranged_attack_bonus,
+  attr_accessor :id, :name, :description, :location, :current_turn,
+                :max_hp, :current_hp, :armor_class,
+                :melee_attack_bonus, :ranged_attack_bonus,
                 :melee_attack_dmg, :ranged_attack_dmg
 
   attr_writer   :str_mod, :dex_mod, :con_mod, :int_mod, :wis_mod, :cha_mod
@@ -16,6 +17,7 @@ class Enemy
     @name = nil # String
     @description = nil # String
     @location = nil # Location
+    @current_turn = false # Boolean
     @max_hp = nil # Integer
     @current_hp = nil # Integer
     @armor_class = nil # Integer
@@ -102,6 +104,14 @@ class Enemy
   end
 
   # other
+
+  def set_current_turn!
+    self.current_turn = true
+  end
+
+  def unset_current_turn!
+    self.current_turn = false
+  end
 
   def to_s
     name

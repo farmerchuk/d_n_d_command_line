@@ -36,9 +36,12 @@ class BattleHandler
       break if all_players_dead? || all_enemies_dead?
       next if entity.current_hp <= 0
 
+      set_current_turn(entity)
+
       if entity.instance_of?(Player)
         player_turn(entity)
       else
+        BattleActionHandler.display_summary(all_entities)
         puts 'Enemy attacks!'
         prompt_continue
       end
@@ -75,6 +78,15 @@ class BattleHandler
     ExploreActionHandler.display_summary(players, current_player)
     puts battle.introduction
     prompt_continue
+  end
+
+  def set_current_turn(current_entity)
+    current_entity.set_current_turn!
+    all_entities.each do |entity|
+      if entity.object_id != current_entity.object_id
+        entity.unset_current_turn!
+      end
+    end
   end
 
   def player_turn(current_player)
