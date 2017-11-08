@@ -177,26 +177,19 @@ class ExploreActionHandler < ActionHandler
 
   def self.display_summary(players, current_player)
     Menu.clear_screen
-    puts 'AREA DESCRIPTION:'
-    Menu.draw_line
-    puts current_player.area.description
-    puts
-    puts
-    puts "CURRENT PLAYER: #{current_player}"
-    Menu.draw_line
-    puts "Location: The #{current_player.location.display_name}"
-    puts
-    puts current_player.location.description
-    puts
-    puts
-    puts 'ALL PLAYERS QUICK SUMMARY:'
+    puts 'ALL PLAYERS & DETAILS:'
     Menu.draw_line
     players.each do |player|
-      puts "#{player} " +
-           "(#{player.race} #{player.role} / " +
-           "#{player.current_hp} HP) " +
-           "is at the #{player.location.display_name}"
+      puts "#{player.to_s.ljust(12)}" +
+           "(#{player.race} #{player.role} / #{player.current_hp} HP)".ljust(25) +
+           "is at the #{player.location.display_name}".ljust(32) +
+           (player.current_turn ? "(Current Turn)" : "")
     end
+    puts
+    puts
+    puts "CURRENT PLAYER LOCATION:"
+    Menu.draw_line
+    puts current_player.location.description
     puts
     puts
     puts 'EXPLORATION DETAILS'

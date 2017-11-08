@@ -21,7 +21,8 @@ require 'pry'
 class Game
   include Helpers::Data
 
-  MENU_OPTIONS = ['view party equipment',
+  MENU_OPTIONS = ['area description',
+                  'view party equipment',
                   'view player profiles',
                   'choose player turn',
                   'save and quit']
@@ -62,7 +63,6 @@ class Game
     add_area_to_locations
     add_paths_to_locations
     add_location_to_events
-    add_encounter_to_events
   end
 
   def build_areas
@@ -142,10 +142,6 @@ class Game
         end
       end
     end
-  end
-
-  def add_encounter_to_events
-    # TBD
   end
 
   def welcome
@@ -293,6 +289,7 @@ class Game
 
   def set_current_player
     self.current_player = players.highest_initiative
+    current_player.set_current_turn!
   end
 
   def dm_selects_from_main_menu
@@ -300,11 +297,17 @@ class Game
     choice = Menu.choose_from_menu(MENU_OPTIONS)
 
     case choice
+    when 'area description' then dm_chose_area_description
     when 'view party equipment' then dm_chose_view_party_equipment
     when 'view player profiles' then dm_chose_view_player_profiles
     when 'choose player turn' then dm_chose_player_turn
     when 'save and quit' then dm_chose_save_and_quit
     end
+  end
+
+  def dm_chose_area_description
+    puts current_player.area.description
+    Menu.prompt_continue
   end
 
   def dm_chose_view_party_equipment
@@ -330,8 +333,10 @@ class Game
   end
 
   def dm_selects_player_turn
+    current_player.unset_current_turn!
     puts 'Which player would like to take a turn?'
     self.current_player = Menu.choose_from_menu(players.to_a)
+    current_player.set_current_turn!
   end
 
   def player_turn

@@ -29,6 +29,12 @@ class PlayerList
     players
   end
 
+  def current
+    players.each do |player|
+      return player if player.current_player
+    end
+  end
+
   def highest_initiative
     raise 'PlayerList empty' if players.empty?
     players.sort_by { |player| player.initiative }.last
