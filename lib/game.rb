@@ -55,6 +55,7 @@ class Game
       new_area = Area.new
       new_area.id = area['id']
       new_area.description = area['description']
+      new_area.map = area['map']
       areas << new_area
     end
   end
@@ -290,7 +291,10 @@ class Game
   end
 
   def dm_chose_area_description
+    ExploreActionHandler.display_summary(players)
     puts players.current.area.description
+    puts
+    puts players.current.area.map
     Menu.prompt_continue
   end
 

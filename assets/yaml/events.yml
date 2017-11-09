@@ -5,13 +5,13 @@
 # the instance method 'player'.
 
 - id: area_1_event_1
-  location_id: area_1_west_exit
+  location_id: area_1_west_trail
   encounter_id:
   trigger: examine
   description: "The road is dirty."
 
 - id: area_1_event_2
-  location_id: area_1_west_exit
+  location_id: area_1_west_trail
   encounter_id:
   trigger: search
   description: "You see nothing of interest."

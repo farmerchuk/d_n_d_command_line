@@ -21,7 +21,7 @@ class Location
   def distance_to(location)
     raise ArgumentError unless self.area_id == location.area_id
     return 0 if self.id == location.id
-    
+
     checked_path_ids = []
     jumps(self, location.id, checked_path_ids)
   end

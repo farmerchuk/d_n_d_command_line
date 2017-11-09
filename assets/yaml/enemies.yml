@@ -1,7 +1,7 @@
 # enemies.yml
 
 - id: goblin
-  name: goblin
+  name: Goblin
   description: |
     Goblins are black-hearted, gather in overwhelming numbers,
     and crave power, which they abuse.

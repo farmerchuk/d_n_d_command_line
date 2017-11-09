@@ -193,7 +193,6 @@ class ExploreActionHandler < ActionHandler
     puts
     puts 'EXPLORATION DETAILS:'
     Menu.draw_line
-    puts
   end
 end
 
@@ -263,12 +262,12 @@ class BattleActionHandler < ActionHandler
   end
 
   def display_summary
-    self.class.display_summary(all_entities)
+    self.class.display_summary(all_entities, current_player)
   end
 
-  def self.display_summary(all_entities)
+  def self.display_summary(all_entities, current_player)
     Menu.clear_screen
-    puts 'BATTLE TURN ORDER & DETAILS:'
+    puts 'BATTLE TURN ORDER & PLAYER LOCATIONS:'
     Menu.draw_line
     all_entities.each do |entity|
       if entity.instance_of?(Player)
@@ -285,8 +284,13 @@ class BattleActionHandler < ActionHandler
     end
     puts
     puts
-    puts 'BATTLE DETAILS:'
+    puts 'AREA MAP:'
     Menu.draw_line
     puts
+    puts current_player.area.map
+    puts
+    puts
+    puts 'BATTLE DETAILS:'
+    Menu.draw_line
   end
 end

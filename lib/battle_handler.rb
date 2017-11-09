@@ -3,7 +3,7 @@
 require_relative 'dnd'
 
 class BattleHandler
-  attr_reader :players, :locations,
+  attr_reader :players, :current_player, :locations,
               :battle, :enemies, :all_entities
 
   def initialize(engagement_id, players, locations)
@@ -32,7 +32,7 @@ class BattleHandler
       if entity.instance_of?(Player)
         player_turn(entity)
       else
-        BattleActionHandler.display_summary(all_entities)
+        BattleActionHandler.display_summary(all_entities, current_player)
         puts 'Enemy attacks!'
         Menu.prompt_continue
       end
