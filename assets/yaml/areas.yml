@@ -11,12 +11,13 @@
     press close to the trail here, with a steep embankment and
     dense thickets to the north and south.
   map: |
-    A. Western trail                  +------[ B ]------+
-    B. Northern embankment            |        |        |
-    C. Dead horses                    |        |        |
-    D. Southern embankment            |        |        |
-    E. Eastern trail                [ A ]----[ C ]----[ E ]--->> EXIT
-                                      |        |        |
-                                      |        |        |
-                                      |        |        |
-                                      +------[ D ]------+
+    ~Triboar Trail~
+
+          +---------- NORTH EMBANKMENT -----------+
+          |                   |                   |
+          |                   |                   |
+    WESTERN TRAIL ------ DEAD HORSES ------ EASTERN TRAIL
+          |                   |                   |
+          |                   |                   |
+          +---------- SOUTH EMBANKMENT -----------+
+          

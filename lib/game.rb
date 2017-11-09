@@ -295,6 +295,7 @@ class Game
     puts players.current.area.description
     puts
     puts players.current.area.map
+    puts
     Menu.prompt_continue
   end
 

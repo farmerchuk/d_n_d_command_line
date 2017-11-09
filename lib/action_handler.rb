@@ -286,7 +286,6 @@ class BattleActionHandler < ActionHandler
     puts
     puts 'AREA MAP:'
     Menu.draw_line
-    puts
     puts current_player.area.map
     puts
     puts
