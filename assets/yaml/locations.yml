@@ -4,7 +4,10 @@
 
 - id: area_1_west_exit
   area_id: area_1_goblin_ambush
-  path_ids: [area_1_dead_horses, area_1_north_embankment, area_1_south_embankment]
+  path_ids:
+    - area_1_dead_horses
+    - area_1_north_embankment
+    - area_1_south_embankment
   display_name: "Western exit"
   description: |
     An unremarkable stretch of road. You arrived from the west. No need
@@ -14,7 +17,10 @@
 
 - id: area_1_east_exit
   area_id: area_1_goblin_ambush
-  path_ids: [area_1_dead_horses, area_1_north_embankment, area_1_south_embankment]
+  path_ids:
+    - area_1_dead_horses
+    - area_1_north_embankment
+    - area_1_south_embankment
   display_name: "Eastern exit"
   description: |
     Here the trail is rough and rutted. Clearly the Triboar trail sees
@@ -25,7 +31,10 @@
 
 - id: area_1_north_embankment
   area_id: area_1_goblin_ambush
-  path_ids: [area_1_dead_horses, area_1_west_exit, area_1_east_exit]
+  path_ids:
+    - area_1_dead_horses
+    - area_1_west_exit
+    - area_1_east_exit
   display_name: "Northern embankment"
   description: |
     The woods press close here and it's difficult to see further
@@ -35,7 +44,10 @@
 
 - id: area_1_south_embankment
   area_id: area_1_goblin_ambush
-  path_ids: [area_1_dead_horses, area_1_west_exit, area_1_east_exit]
+  path_ids:
+    - area_1_dead_horses
+    - area_1_west_exit
+    - area_1_east_exit
   display_name: "Southern embankment"
   description: |
     The woods press close here and it's difficult to see further
@@ -45,7 +57,11 @@
 
 - id: area_1_dead_horses
   area_id: area_1_goblin_ambush
-  path_ids: [area_1_north_embankment, area_1_south_embankment, area_1_west_exit, area_1_east_exit]
+  path_ids:
+    - area_1_north_embankment
+    - area_1_south_embankment
+    - area_1_west_exit
+    - area_1_east_exit
   display_name: "Dead horses"
   description: |
     The horses appear to have been dead for about a day. It's clear

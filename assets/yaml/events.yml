@@ -23,6 +23,8 @@
   description: |
     The saddlebags have been looted. Nearby lies an empty
     leather map case.
+  script: |
+    EncounterHandler.new('area_1_encounter_1', players, locations).run
 
 - id: area_1_event_4
   location_id: area_1_dead_horses
@@ -30,6 +32,6 @@
   trigger: search
   description: "You find 10 gold with a sword and shield!"
   script: |
-    player.backpack.purse + 10
-    player.backpack.add(Equipment.build_weapon('basic_shortsword'))
-    player.backpack.add(Equipment.build_armor('basic_shield'))
+    current_player.backpack.purse + 10
+    current_player.backpack.add(Equipment.build_weapon('basic_shortsword'))
+    current_player.backpack.add(Equipment.build_armor('basic_shield'))

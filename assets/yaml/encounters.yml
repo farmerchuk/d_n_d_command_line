@@ -1,7 +1,6 @@
 # encounter.yml
 
-- id: area_1_enounter_1
-  type:
-  intro:
-  enemies:
-  treasure:
+- id: area_1_encounter_1
+  engagement_ids:
+    - battle_4_goblins
+    - conversation_goblin

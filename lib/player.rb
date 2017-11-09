@@ -1,11 +1,9 @@
 # player.rb
 
-require_relative 'helpers'
-require_relative 'coin_purse'
+require_relative 'dnd'
 
 class Player
   include Helpers::Dice
-  include Helpers::Format
   include Helpers::Data
 
   ABILITY_MODS = { 1 => -5, 2 => -4, 3 => -4, 4 => -3, 5 => -3,
@@ -21,10 +19,8 @@ class Player
                         13 => 5, 14 => 5, 15 => 5, 16 => 5,
                         17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
-  ACTIONS = %w[move examine search wait skill item equip rest engage]
-
   attr_accessor :name, :race, :role, :alignment,
-                :area, :location,
+                :area, :location, :current_turn,
                 :action, :wait,
                 :current_hp,
                 :backpack,
@@ -37,6 +33,7 @@ class Player
     @alignment = nil # TBD
     @area = nil # Area
     @location = nil # Location
+    @current_turn = false # Boolean
     @action = nil # String
     @wait = false # Boolean
     @current_hp = nil # Integer
@@ -138,6 +135,10 @@ class Player
     roll_d20 + cha_mod
   end
 
+  def initiative
+    roll_dex_check
+  end
+
   # passive checks
 
   def wis_passive
@@ -168,10 +169,6 @@ class Player
     else
       equipped_armor.dex_bonus_max
     end
-  end
-
-  def initiative
-    dex_mod
   end
 
   def roll_attack(weapon)
@@ -219,6 +216,14 @@ class Player
     self.current_hp = max_hp
   end
 
+  def set_current_turn!
+    self.current_turn = true
+  end
+
+  def unset_current_turn!
+    self.current_turn = false
+  end
+
   def equip(equipment_id)
     item = retrieve(equipment_id, backpack.all_unequipped_equipment)
     raise StandardError, 'No equipment matching id' if item.nil?
@@ -235,7 +240,7 @@ class Player
   end
 
   def unequip(equipment)
-    equipment.checkin_equipment
+    equipment.checkin_equipment if equipment
   end
 
   def to_s
@@ -243,25 +248,25 @@ class Player
   end
 
   def view
-    clear_screen
+    Menu.clear_screen
 
     puts "Player Profile:"
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts
     puts 'GENERAL INFO'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts "NAME: #{name.ljust(29)}ROLE:      #{role}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
     puts
     puts 'CONDITION'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts "CURRENT HIT POINTS: #{current_hp}"
     puts "MAXIMUM HIT POINTS: #{max_hp}"
     puts
     puts
     puts 'ABILITY SCORES'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts "STR: #{str.to_s.ljust(5)}DEX: #{dex.to_s.ljust(5)}" +
          "CON: #{con.to_s.ljust(5)}INT: #{int.to_s.ljust(5)}" +
          "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
@@ -270,21 +275,21 @@ class Player
     puts "ABILITY ROLL MODIFIERS                  PROF BONUS: " +
          "+#{prof_bonus} #{role.proficiency[0].upcase} & " +
          "#{role.proficiency[1].upcase}"
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
          "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +
          "WIS: #{wis_mod.to_s.ljust(5)}CHA: #{cha_mod.to_s.ljust(5)}"
     puts
     puts
     puts 'EQUIPPED WEAPON'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts 'name                     type           damage'
     puts '----                     ----           ------'
     puts "#{equipped_weapon.display_in_profile}" if equipped_weapon
     puts
     puts
     puts "EQUIPPED ARMOR                          TOTAL AC: #{armor_class}"
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts 'name                     type           AC'
     puts '----                     ----           --'
     puts "#{equipped_armor.display_in_profile}" if equipped_armor

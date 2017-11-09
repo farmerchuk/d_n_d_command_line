@@ -1,33 +1,18 @@
 # game.rb
 
-require_relative 'helpers'
-require_relative 'main_menu'
-require_relative 'player_list'
-require_relative 'player'
-require_relative 'player_role'
-require_relative 'player_race'
-require_relative 'backpack'
-require_relative 'coin_purse'
-require_relative 'equipment'
-require_relative 'area'
-require_relative 'location'
-require_relative 'event'
-require_relative 'event_handler'
+require_relative 'dnd'
 
-require 'yaml'
-require 'pry'
-
-# Game logic
-
-class DND
-  include Helpers::Format
-  include Helpers::Menus
-  include Helpers::Prompts
+class Game
   include Helpers::Data
+
+  MENU_OPTIONS = ['area description',
+                  'view party equipment',
+                  'view player profiles',
+                  'choose player turn',
+                  'save and quit']
 
   def initialize
     @players = PlayerList.new
-    @current_player = nil
     @areas = []
     @locations = []
     @events = []
@@ -43,14 +28,14 @@ class DND
     set_current_player
 
     loop do
-      dm_describes_scene
+      ExploreActionHandler.display_summary(players)
       dm_selects_from_main_menu
     end
   end
 
   private
 
-  attr_accessor :players, :current_player, :areas, :locations, :events
+  attr_accessor :players, :areas, :locations, :events
 
   def build_resources
     build_areas
@@ -61,7 +46,6 @@ class DND
     add_area_to_locations
     add_paths_to_locations
     add_location_to_events
-    add_encounter_to_events
   end
 
   def build_areas
@@ -143,16 +127,13 @@ class DND
     end
   end
 
-  def add_encounter_to_events
-    # TBD
-  end
-
   def welcome
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
-    clear_screen
+    Menu.clear_screen
+    puts
     puts initialize_data['title']
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts
   end
 
@@ -180,7 +161,7 @@ class DND
 
     loop do
       puts "Add new player's name: "
-      name = prompt
+      name = Menu.prompt
       break unless name =~ /\W/ || name.size < 3
       puts 'Sorry, that is not a valid name...'
     end
@@ -190,7 +171,7 @@ class DND
 
   def add_role(player)
     puts "What role will #{player.name} be?"
-    role = choose_from_menu(PlayerRole::ROLES)
+    role = Menu.choose_from_menu(PlayerRole::ROLES)
 
     case role
     when 'fighter' then player.role = Fighter.new
@@ -202,7 +183,7 @@ class DND
 
   def add_race(player)
     puts "What race will #{player.name} be?"
-    role = choose_from_menu(PlayerRace::RACES)
+    role = Menu.choose_from_menu(PlayerRace::RACES)
 
     case role
     when 'human' then player.race = Human.new
@@ -219,7 +200,7 @@ class DND
 
     loop do
       puts 'Would you like to add another player? (y/n) '
-      input = prompt
+      input = Menu.prompt
       break if ['y', 'n'].include?(input)
       puts 'Sorry, that is not a valid choice...'
     end
@@ -291,77 +272,16 @@ class DND
   end
 
   def set_current_player
-    self.current_player = players.highest_initiative
-  end
-
-  def dm_describes_scene
-    clear_screen
-    puts 'AREA DESCRIPTION:'
-    puts '-----------------------------------------------------------------'
-    puts current_player.area.description
-    puts
-    puts
-    puts "CURRENT PLAYER: #{current_player}"
-    puts '-----------------------------------------------------------------'
-    puts "Location: The #{current_player.location.display_name}"
-    puts
-    puts current_player.location.description
-    puts
-    puts
-    puts 'ALL PLAYERS QUICK SUMMARY:'
-    puts '-----------------------------------------------------------------'
-    players.each do |player|
-      puts "#{player} " +
-           "(#{player.race} #{player.role} / " +
-           "#{player.current_hp} HP) " +
-           "is at the #{player.location.display_name}"
-    end
-    puts
-    puts
-    puts 'GAME COMMANDS'
-    puts '-----------------------------------------------------------------'
-    puts
-  end
-
-  def player_turn
-    current_player.start_turn
-    player_choose_first_action
-
-    if current_player.action == 'move'
-      player_moves
-      player_selects_action
-      resolve_player_turn
-    else
-      player_selects_action
-      resolve_player_turn
-      player_moves if player_also_move?
-    end
-
-    prompt_for_next_turn
-  end
-
-  def player_choose_first_action
-    puts "What action would #{current_player.name} like to take first?"
-    choice = choose_from_menu(['move', 'other action'])
-    choice == 'move' ? current_player.action = 'move' : nil
-  end
-
-  def player_moves
-    current_player.action = 'move'
-    resolve_player_turn
-  end
-
-  def player_also_move?
-    puts "Would #{current_player.name} also like to move?"
-    choice = choose_from_menu(['yes', 'no'])
-    choice == 'yes' ? true : false
+    current_player = players.highest_initiative
+    current_player.set_current_turn!
   end
 
   def dm_selects_from_main_menu
     puts 'Select an option:'
-    choice = choose_from_menu(MainMenu::OPTIONS)
+    choice = Menu.choose_from_menu(MENU_OPTIONS)
 
     case choice
+    when 'area description' then dm_chose_area_description
     when 'view party equipment' then dm_chose_view_party_equipment
     when 'view player profiles' then dm_chose_view_player_profiles
     when 'choose player turn' then dm_chose_player_turn
@@ -369,22 +289,26 @@ class DND
     end
   end
 
+  def dm_chose_area_description
+    puts players.current.area.description
+    Menu.prompt_continue
+  end
+
   def dm_chose_view_party_equipment
-    current_player.backpack.view
-    prompt_continue
+    players.current.backpack.view
+    Menu.prompt_continue
   end
 
   def dm_chose_view_player_profiles
     puts 'Which player?'
-    player = choose_from_menu(players.to_a)
+    player = Menu.choose_from_menu(players.to_a)
 
     player.view
-    prompt_continue
+    Menu.prompt_continue
   end
 
   def dm_chose_player_turn
     dm_selects_player_turn
-    dm_describes_scene
     player_turn
   end
 
@@ -393,19 +317,18 @@ class DND
   end
 
   def dm_selects_player_turn
+    players.current.unset_current_turn!
     puts 'Which player would like to take a turn?'
-    self.current_player = choose_from_menu(players.to_a)
+    current_player = Menu.choose_from_menu(players.to_a)
+    current_player.set_current_turn!
   end
 
-  def player_selects_action
-    puts "What action would #{current_player.name} like to take?"
-    current_player.action = choose_from_menu(Player::ACTIONS)
-  end
-
-  def resolve_player_turn
-    EventHandler.new(current_player, events).run
-    dm_describes_scene
+  def player_turn
+    ExploreActionHandler.new(
+      players,
+      locations,
+      events).run
   end
 end
 
-DND.new.run
+Game.new.run

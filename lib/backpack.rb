@@ -1,10 +1,8 @@
 # backpack.rb
 
-require_relative 'helpers'
+require_relative 'dnd'
 
 class Backpack
-  include Helpers::Format
-
   attr_reader :armors, :weapons, :gears, :tools
   attr_accessor :purse
 
@@ -41,13 +39,13 @@ class Backpack
 
   def view
     sort_all_equipment_by_type!
-    clear_screen
+    Menu.clear_screen
 
     puts "Party Equipment:                             GOLD: #{purse}"
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts
     puts 'WEAPONS'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts 'name                     type      damage    equipped by'
     puts '----                     ----      ------    -----------'
     weapons.each do |weapon|
@@ -59,7 +57,7 @@ class Backpack
     puts
     puts
     puts 'ARMOR'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts 'name                     type      AC        equipped by'
     puts '----                     ----      --        -----------'
     armors.each do |armor|
@@ -71,7 +69,7 @@ class Backpack
     puts
     puts
     puts 'GEAR'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts 'name                     type'
     puts '----                     ----'
     gears.each do |gear|
@@ -81,7 +79,7 @@ class Backpack
     puts
     puts
     puts 'TOOLS'
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts 'name                     type'
     puts '----                     ----'
     tools.each do |tool|
@@ -92,18 +90,17 @@ class Backpack
   end
 
   def view_equippable
-    clear_screen
+    Menu.clear_screen
 
     puts "Available Equipment:"
-    puts '-----------------------------------------------------------------'
+    Menu.draw_line
     puts
     puts 'WEAPONS'
-    puts '-----------------------------------------------------------------'
-    puts 'opt  name                     class             details'
-    puts '---  ----                     -----             -------'
+    Menu.draw_line
+    puts 'name                     class             details'
+    puts '----                     -----             -------'
     all_unequipped_equipment.each_with_index do |eq, idx|
-      puts "#{(idx.to_s + '.').ljust(5)}#{eq.display_name.ljust(25)}" +
-            "#{eq.classifier.ljust(18)}" +
+      puts "#{eq.display_name.ljust(25)}#{eq.classifier.ljust(18)}" +
       if eq.instance_of?(Weapon)
         "#{eq.damage_die.ljust(8)}damage"
       elsif eq.instance_of?(Armor)

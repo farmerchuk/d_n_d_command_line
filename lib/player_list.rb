@@ -1,10 +1,6 @@
 # player_list.rb
 
-require_relative 'helpers'
-
 class PlayerList
-  include Helpers::Format
-
   attr_reader :players
 
   def initialize
@@ -31,6 +27,12 @@ class PlayerList
 
   def to_a
     players
+  end
+
+  def current
+    players.each do |player|
+      return player if player.current_turn
+    end
   end
 
   def highest_initiative
