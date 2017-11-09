@@ -16,39 +16,46 @@
   display_name: "Basic greatsword"
   cost: 50
   damage_die: 2d6
+  range: 0
 
 - id: basic_longbow
   type: ranged
   display_name: "Basic longbow"
   cost: 50
   damage_die: 1d8
+  range: 2
 
 - id: basic_dagger
   type: melee
   display_name: "Basic dagger"
   cost: 2
   damage_die: 1d4
+  range: 0
 
 - id: basic_quarterstaff
   type: melee
   display_name: "Basic quarterstaff"
   cost: 2
   damage_die: 1d6
+  range: 0
 
 - id: basic_shortsword
   type: melee
   display_name: "Basic shortsword"
   cost: 10
   damage_die: 1d6
+  range: 0
 
 - id: basic_shortbow
   type: ranged
   display_name: "Basic shortbow"
   cost: 25
   damage_die: 1d6
+  range: 1
 
 - id: basic_warhammer
   type: melee
   display_name: "Basic warhammer"
   cost: 15
   damage_die: 1d8
+  range: 0

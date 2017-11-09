@@ -32,7 +32,7 @@ class BattleHandler
       if entity.instance_of?(Player)
         player_turn(entity)
       else
-        BattleActionHandler.display_summary(all_entities, current_player)
+        BattleActionHandler.display_battle_summary(all_entities, current_player)
         puts 'Enemy attacks!'
         Menu.prompt_continue
       end

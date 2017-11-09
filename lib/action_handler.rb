@@ -197,7 +197,8 @@ class ExploreActionHandler < ActionHandler
 end
 
 class BattleActionHandler < ActionHandler
-  ACTIONS = %w[move attack wait skill item equip]
+  IN_RANGE_ACTIONS = %w[move attack wait skill item equip]
+  OUT_RANGE_ACTIONS = %w[move wait skill item equip]
 
   attr_accessor :enemies, :all_entities
 
@@ -208,7 +209,7 @@ class BattleActionHandler < ActionHandler
   end
 
   def run
-    display_summary
+    display_battle_summary
     current_player.start_turn
     player_choose_first_action
 
@@ -226,16 +227,28 @@ class BattleActionHandler < ActionHandler
   end
 
   def run_action
-    display_summary
+    display_battle_summary
     execute_player_action
     current_player.end_action
     Menu.prompt_continue
-    display_summary
+    display_battle_summary
   end
 
   def player_selects_action
     puts "What action would #{current_player.name} like to take?"
-    current_player.action = Menu.choose_from_menu(ACTIONS)
+    if enemies_in_range.empty?
+      current_player.action = Menu.choose_from_menu(OUT_RANGE_ACTIONS)
+    else
+      current_player.action = Menu.choose_from_menu(IN_RANGE_ACTIONS)
+    end
+  end
+
+  def enemies_in_range
+    enemies.select do |enemy|
+      player_weapon_range = current_player.equipped_weapon.range
+      distance = current_player.location.distance_to(enemy.location)
+      player_weapon_range >= distance && !enemy.dead?
+    end
   end
 
   def execute_player_action
@@ -251,21 +264,59 @@ class BattleActionHandler < ActionHandler
   end
 
   def player_attack
-    # player selects enemy to attack (show their locations in list)
-    # player misses if enemy is not in range of equipped weapon
-    # calculate attack
-    # compare to enemy AC
-    # if successful calculate damage
-    # update enemy current hitpoints
-    # display result message
-    # prompt for next player
+    target_enemy = select_enemy_to_attack
+    hit = attack_successful?(target_enemy)
+    damage = resolve_damage(target_enemy) if hit
+    display_attack_summary(hit, damage, target_enemy)
   end
 
-  def display_summary
-    self.class.display_summary(all_entities, current_player)
+  def select_enemy_to_attack
+    puts "Which enemy would #{current_player.name} like to attack?"
+    choose_enemy_menu_with_location(enemies_in_range)
   end
 
-  def self.display_summary(all_entities, current_player)
+  def choose_enemy_menu_with_location(enemies)
+    enemies.each_with_index do |enemy, idx|
+      puts "#{idx}. #{enemy} at #{enemy.location.display_name} " +
+           "(#{enemy.current_hp} HP)"
+    end
+
+    choice = nil
+    loop do
+      choice = Menu.prompt.to_i
+      break if (0..enemies.size - 1).include?(choice)
+      puts 'Sorry, that is not a valid choice...'
+    end
+    enemies[choice]
+  end
+
+  def attack_successful?(enemy)
+    current_player.roll_attack > enemy.armor_class
+  end
+
+  def resolve_damage(enemy)
+    damage = current_player.roll_weapon_dmg
+    enemy.current_hp -= damage
+    damage
+  end
+
+  def display_attack_summary(hit, damage, enemy)
+    if hit
+      puts "#{current_player}'s attack was successful!"
+      puts
+      puts "You hit the #{enemy} with your " +
+           "#{current_player.equipped_weapon.display_name} " +
+           "and dealt #{damage} damage."
+    else
+      puts "#{current_player}'s attack missed!"
+    end
+  end
+
+  def display_battle_summary
+    self.class.display_battle_summary(all_entities, current_player)
+  end
+
+  def self.display_battle_summary(all_entities, current_player)
     Menu.clear_screen
     puts 'BATTLE TURN ORDER & PLAYER LOCATIONS:'
     Menu.draw_line

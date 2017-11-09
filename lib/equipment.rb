@@ -15,6 +15,7 @@ class Equipment
     new_weapon.description = weapon['description']
     new_weapon.cost = weapon['cost']
     new_weapon.damage_die = weapon['damage_die']
+    new_weapon.range = weapon['range']
     new_weapon.script = weapon['script']
     new_weapon
   end
@@ -87,12 +88,13 @@ end
 class Weapon < Equipment
   TYPES = %w[melee ranged]
 
-  attr_accessor :damage_die, :equipped_by
+  attr_accessor :damage_die, :range, :equipped_by
 
   def initialize
     super
     @type = nil # String
     @damage_die = nil # String ie. 2d6
+    @range = nil # Integer
   end
 
   def display_in_profile
