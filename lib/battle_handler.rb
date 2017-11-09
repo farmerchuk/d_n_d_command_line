@@ -1,11 +1,6 @@
 # battle_handler.rb
 
-require_relative 'menu'
-require_relative 'action_handler'
-require_relative 'battle'
-require_relative 'player'
-
-require 'pry'
+require_relative 'dnd'
 
 class BattleHandler
   attr_reader :players, :locations,

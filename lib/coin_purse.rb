@@ -1,6 +1,6 @@
 # coin_purse.rb
 
-require_relative 'menu'
+require_relative 'dnd'
 
 class CoinPurse
   attr_accessor :gold

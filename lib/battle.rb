@@ -1,7 +1,6 @@
 # battle.rb
 
-require_relative 'enemy'
-require_relative 'helpers'
+require_relative 'dnd'
 
 class Battle
   include Helpers::Data

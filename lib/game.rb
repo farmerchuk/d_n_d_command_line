@@ -1,22 +1,6 @@
 # game.rb
 
-require_relative 'helpers'
-require_relative 'menu'
-require_relative 'player_list'
-require_relative 'player'
-require_relative 'player_role'
-require_relative 'player_race'
-require_relative 'backpack'
-require_relative 'equipment'
-require_relative 'area'
-require_relative 'location'
-require_relative 'event'
-require_relative 'action_handler'
-
-require 'yaml'
-require 'pry'
-
-# Game logic
+require_relative 'dnd'
 
 class Game
   include Helpers::Data
@@ -147,6 +131,7 @@ class Game
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     Menu.clear_screen
+    puts
     puts initialize_data['title']
     Menu.draw_line
     puts

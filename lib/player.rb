@@ -1,8 +1,6 @@
 # player.rb
 
-require_relative 'helpers'
-require_relative 'menu'
-require_relative 'coin_purse'
+require_relative 'dnd'
 
 class Player
   include Helpers::Dice

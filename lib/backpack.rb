@@ -1,6 +1,6 @@
 # backpack.rb
 
-require_relative 'menu'
+require_relative 'dnd'
 
 class Backpack
   attr_reader :armors, :weapons, :gears, :tools

@@ -1,6 +1,6 @@
 # enemy.rb
 
-require_relative 'helpers'
+require_relative 'dnd'
 
 class Enemy
   include Helpers::Dice

@@ -1,10 +1,6 @@
 # encounter_handler.rb
 
-require_relative 'helpers'
-require_relative 'battle_handler'
-require_relative 'conversation_handler'
-
-require 'yaml'
+require_relative 'dnd'
 
 class EncounterHandler
   include Helpers::Data

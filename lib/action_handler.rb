@@ -1,7 +1,6 @@
 # action_handler.rb
 
-require_relative 'menu'
-require_relative 'encounter_handler'
+require_relative 'dnd'
 
 class ActionHandler
   attr_accessor :players, :current_player, :locations
@@ -182,8 +181,8 @@ class ExploreActionHandler < ActionHandler
     players.each do |player|
       puts "#{player.to_s.ljust(12)}" +
            "(#{player.race} #{player.role} / #{player.current_hp} HP)".ljust(28) +
-           "is at the #{player.location.display_name}".ljust(32) +
-           (player.current_turn ? "(Current Turn)" : "")
+           "is at the #{player.location.display_name}".ljust(33) +
+           (player.current_turn ? "<< Current Player" : "")
     end
     puts
     puts
@@ -275,13 +274,13 @@ class BattleActionHandler < ActionHandler
       if entity.instance_of?(Player)
         puts "#{entity.to_s.ljust(12)}" +
              "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(32) +
-             (entity.current_turn ? "(Current Turn)" : "")
+             "is at the #{entity.location.display_name}".ljust(33) +
+             (entity.current_turn ? "<< Current Player" : "")
       elsif entity.instance_of?(Enemy)
         puts "#{entity.to_s.ljust(12)}" +
-             "(Monster / #{entity.current_hp} HP)".ljust(25) +
-             "is at the #{entity.location.display_name}".ljust(32) +
-             (entity.current_turn ? "(Current Turn)" : "")
+             "(Monster / #{entity.current_hp} HP)".ljust(28) +
+             "is at the #{entity.location.display_name}".ljust(33) +
+             (entity.current_turn ? "<< Current Player" : "")
       end
     end
     puts
