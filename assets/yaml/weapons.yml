@@ -59,3 +59,19 @@
   cost: 15
   damage_die: 1d8
   range: 0
+
+# enemy weapons
+
+- id: goblin_scimitar
+  type: melee
+  display_name: "Goblin scimitar"
+  cost: 15
+  damage_die: 1d6 + 2
+  range: 0
+
+- id: goblin_shortbow
+  type: melee
+  display_name: "Goblin shortbow"
+  cost: 15
+  damage_die: 1d6 + 2
+  range: 1

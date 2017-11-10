@@ -41,8 +41,8 @@ class Battle
           new_enemy.cha_mod = enemy['cha_mod']
           new_enemy.melee_attack_bonus = enemy['melee_attack_bonus']
           new_enemy.ranged_attack_bonus = enemy['ranged_attack_bonus']
-          new_enemy.melee_attack_dmg = enemy['melee_attack_dmg']
-          new_enemy.ranged_attack_dmg = enemy['ranged_attack_dmg']
+          new_enemy.equipped_weapon =
+            Equipment.build_weapon(enemy['equipped_weapon'])
           enemies << new_enemy
         end
       end

@@ -30,13 +30,13 @@ class BattleHandler
       set_current_turn(entity)
 
       if entity.instance_of?(Player)
-        player_turn(entity)
+        player_turn
       else
-        BattleActionHandler.display_battle_summary(all_entities, current_player)
-        puts 'Enemy attacks!'
-        Menu.prompt_continue
+        enemy_turn(entity)
       end
     end
+
+    players.set_current_turn_by_highest_initiative
   end
 
   private
@@ -80,11 +80,20 @@ class BattleHandler
     end
   end
 
-  def player_turn(current_player)
-    BattleActionHandler.new(
+  def player_turn
+    PlayerBattleActionHandler.new(
       players,
       locations,
       enemies,
       all_entities).run
+  end
+
+  def enemy_turn(enemy)
+    EnemyBattleActionHandler.new(
+      players,
+      locations,
+      enemies,
+      all_entities,
+      enemy).run
   end
 end

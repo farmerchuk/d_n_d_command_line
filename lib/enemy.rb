@@ -8,7 +8,7 @@ class Enemy
   attr_accessor :id, :name, :description, :location, :current_turn,
                 :max_hp, :current_hp, :armor_class,
                 :melee_attack_bonus, :ranged_attack_bonus,
-                :melee_attack_dmg, :ranged_attack_dmg
+                :equipped_weapon
 
   attr_writer   :str_mod, :dex_mod, :con_mod, :int_mod, :wis_mod, :cha_mod
 
@@ -29,8 +29,7 @@ class Enemy
     @cha_mod = nil # String
     @melee_attack_bonus = nil # Integer
     @ranged_attack_bonus = nil # Integer
-    @melee_attack_dmg = nil # String
-    @ranged_attack_dmg = nil # String
+    @equipped_weapon = nil # Weapon
   end
 
   def str_mod
@@ -59,22 +58,17 @@ class Enemy
 
   # attack rolls
 
-  def roll_melee_attack
-    roll_d20 + melee_attack_bonus
+  def roll_attack
+    weapon_type = equipped_weapon.type
+
+    case weapon_type
+    when 'melee' then roll_d20 + melee_attack_bonus
+    when 'ranged' then roll_d20 + ranged_attack_bonus
+    end
   end
 
-  def roll_ranged_attack
-    roll_d20 + ranged_attack_bonus
-  end
-
-  # damage rolls
-
-  def roll_melee_dmg
-    roll_dice(melee_attack_dmg)
-  end
-
-  def roll_ranged_dmg
-    roll_dice(ranged_attack_dmg)
+  def roll_weapon_dmg
+    roll_dice(equipped_weapon.damage_die)
   end
 
   # checks (challenges and saving throws)

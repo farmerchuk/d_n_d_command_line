@@ -197,15 +197,75 @@ class ExploreActionHandler < ActionHandler
 end
 
 class BattleActionHandler < ActionHandler
-  IN_RANGE_ACTIONS = %w[move attack wait skill item equip]
-  OUT_RANGE_ACTIONS = %w[move wait skill item equip]
-
   attr_accessor :enemies, :all_entities
 
   def initialize(players, locations, enemies, all_entities)
     super(players, locations)
     @enemies = enemies
     @all_entities = all_entities
+  end
+
+  def targets_in_range(targets)
+    targets.select do |target|
+      weapon_range = current_player.equipped_weapon.range
+      distance = current_player.location.distance_to(target.location)
+      weapon_range >= distance && !target.dead?
+    end
+  end
+
+  def attack_successful?(target)
+    attack_roll = current_player.roll_attack
+    puts "#{current_player} rolled #{attack_roll} to hit " +
+         "versus an armor class of #{target.armor_class}..."
+    puts
+    attack_roll > target.armor_class
+  end
+
+  def resolve_damage(target)
+    damage = current_player.roll_weapon_dmg
+    target.current_hp -= damage
+    damage
+  end
+
+  def display_battle_summary
+    self.class.display_battle_summary(all_entities, players)
+  end
+
+  def self.display_battle_summary(all_entities, players)
+    Menu.clear_screen
+    puts 'BATTLE TURN ORDER & PLAYER LOCATIONS:'
+    Menu.draw_line
+    all_entities.each do |entity|
+      if entity.instance_of?(Player)
+        puts "#{entity.to_s.ljust(12)}" +
+             "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(28) +
+             "is at the #{entity.location.display_name}".ljust(33) +
+             (entity.current_turn ? "<< Current Player" : "")
+      elsif entity.instance_of?(Enemy)
+        puts "#{entity.to_s.ljust(12)}" +
+             "(Monster / #{entity.current_hp} HP)".ljust(28) +
+             "is at the #{entity.location.display_name}".ljust(33) +
+             (entity.current_turn ? "<< Current Player" : "")
+      end
+    end
+    puts
+    puts
+    puts 'AREA MAP:'
+    Menu.draw_line
+    puts players.first.area.map
+    puts
+    puts
+    puts 'BATTLE DETAILS:'
+    Menu.draw_line
+  end
+end
+
+class PlayerBattleActionHandler < BattleActionHandler
+  IN_RANGE_ACTIONS = %w[move attack wait skill item equip]
+  OUT_RANGE_ACTIONS = %w[move wait skill item equip]
+
+  def initialize(players, locations, enemies, all_entities)
+    super
   end
 
   def run
@@ -236,18 +296,10 @@ class BattleActionHandler < ActionHandler
 
   def player_selects_action
     puts "What action would #{current_player.name} like to take?"
-    if enemies_in_range.empty?
+    if targets_in_range(enemies).empty?
       current_player.action = Menu.choose_from_menu(OUT_RANGE_ACTIONS)
     else
       current_player.action = Menu.choose_from_menu(IN_RANGE_ACTIONS)
-    end
-  end
-
-  def enemies_in_range
-    enemies.select do |enemy|
-      player_weapon_range = current_player.equipped_weapon.range
-      distance = current_player.location.distance_to(enemy.location)
-      player_weapon_range >= distance && !enemy.dead?
     end
   end
 
@@ -272,7 +324,8 @@ class BattleActionHandler < ActionHandler
 
   def select_enemy_to_attack
     puts "Which enemy would #{current_player.name} like to attack?"
-    choose_enemy_menu_with_location(enemies_in_range)
+    targets = targets_in_range(enemies)
+    choose_enemy_menu_with_location(targets)
   end
 
   def choose_enemy_menu_with_location(enemies)
@@ -290,57 +343,58 @@ class BattleActionHandler < ActionHandler
     enemies[choice]
   end
 
-  def attack_successful?(enemy)
-    current_player.roll_attack > enemy.armor_class
-  end
-
-  def resolve_damage(enemy)
-    damage = current_player.roll_weapon_dmg
-    enemy.current_hp -= damage
-    damage
-  end
-
-  def display_attack_summary(hit, damage, enemy)
+  def display_attack_summary(hit, damage, target)
     if hit
       puts "#{current_player}'s attack was successful!"
       puts
-      puts "You hit the #{enemy} with your " +
+      puts "You hit the #{target} with a " +
            "#{current_player.equipped_weapon.display_name} " +
            "and dealt #{damage} damage."
     else
       puts "#{current_player}'s attack missed!"
     end
   end
+end
 
-  def display_battle_summary
-    self.class.display_battle_summary(all_entities, current_player)
+class EnemyBattleActionHandler < BattleActionHandler
+  attr_accessor :current_player
+
+  def initialize(players, locations, enemies, all_entities, enemy)
+    super(players, locations, enemies, all_entities)
+    @current_player = enemy
   end
 
-  def self.display_battle_summary(all_entities, current_player)
-    Menu.clear_screen
-    puts 'BATTLE TURN ORDER & PLAYER LOCATIONS:'
-    Menu.draw_line
-    all_entities.each do |entity|
-      if entity.instance_of?(Player)
-        puts "#{entity.to_s.ljust(12)}" +
-             "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33) +
-             (entity.current_turn ? "<< Current Player" : "")
-      elsif entity.instance_of?(Enemy)
-        puts "#{entity.to_s.ljust(12)}" +
-             "(Monster / #{entity.current_hp} HP)".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33) +
-             (entity.current_turn ? "<< Current Player" : "")
-      end
+  def run
+    display_battle_summary
+    targets = targets_in_range(players.to_a)
+
+    if targets.empty?
+      # move closer
+      # attack if possible
+    else
+      attack(targets)
     end
-    puts
-    puts
-    puts 'AREA MAP:'
-    Menu.draw_line
-    puts current_player.area.map
-    puts
-    puts
-    puts 'BATTLE DETAILS:'
-    Menu.draw_line
+    display_battle_summary
+    Menu.prompt_for_next_turn
+  end
+
+  def attack(targets)
+    target_player = targets.sample
+    hit = attack_successful?(target_player)
+    damage = resolve_damage(target_player) if hit
+    display_attack_summary(hit, damage, target_player)
+    Menu.prompt_continue
+  end
+
+  def display_attack_summary(hit, damage, target)
+    if hit
+      puts "#{current_player}'s attack was successful!"
+      puts
+      puts "The #{current_player} hit #{target} with a " +
+           "#{current_player.equipped_weapon.display_name} " +
+           "and dealt #{damage} damage."
+    else
+      puts "#{current_player}'s attack missed!"
+    end
   end
 end

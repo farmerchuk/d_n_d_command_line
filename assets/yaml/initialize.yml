@@ -10,7 +10,7 @@ party_equipment:
     weapon: basic_greatsword
     armor: basic_leather
   rogue:
-    weapon: basic_dagger
+    weapon: basic_shortbow
     armor: basic_leather
   cleric:
     weapon: basic_warhammer

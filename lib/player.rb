@@ -247,6 +247,10 @@ class Player
     equipment.checkin_equipment if equipment
   end
 
+  def dead?
+    current_hp <= 0
+  end
+
   def to_s
     name
   end
