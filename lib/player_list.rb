@@ -39,9 +39,13 @@ class PlayerList
     end
   end
 
-  def set_current_turn_by_highest_initiative
+  def set_current_turn!(current_player)
+    unset_current_turn_all_players!
+    current_player.set_current_turn!
+  end
+
+  def unset_current_turn_all_players!
     players.each { |player| player.unset_current_turn! }
-    highest_initiative.set_current_turn!
   end
 
   def highest_initiative

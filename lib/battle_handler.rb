@@ -36,7 +36,7 @@ class BattleHandler
       end
     end
 
-    players.set_current_turn_by_highest_initiative
+    reset_current_turn
   end
 
   private
@@ -78,6 +78,10 @@ class BattleHandler
         entity.unset_current_turn!
       end
     end
+  end
+
+  def reset_current_turn
+    players.set_current_turn!(current_player)
   end
 
   def player_turn
