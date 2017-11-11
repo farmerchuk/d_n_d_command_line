@@ -21,6 +21,20 @@ module PlayerActionHandler
     Menu.prompt_for_next_turn
   end
 
+  def player_selects_action
+    loop do
+      puts "What action would #{current_player.name} like to take?"
+      role = current_player.role.to_s
+
+      options = eval "#{role.capitalize}::#{action_type.upcase}_ACTIONS"
+      current_player.action = Menu.choose_from_menu(options)
+
+      break if action_possible?(action_type)
+      display_summary
+      display_action_error
+    end
+  end
+
   def execute_player_action
     case current_player.action
     when 'move' then player_move
@@ -77,6 +91,24 @@ module PlayerActionHandler
 
   def player_magic
     puts "What spell would #{current_player.name} like to use?"
+    spell = choose_spell
+  end
+
+  def choose_spell
+    available_spells =
+      current_player.spells.select { |spell| spell.when == action_type }
+
+    available_spells.each_with_index do |spell, idx|
+      puts "#{idx}. #{spell.display_name}"
+    end
+
+    choice = nil
+    loop do
+      choice = Menu.prompt.to_i
+      break if (0..available_spells.size - 1).include?(choice)
+      puts 'Sorry, that is not a valid choice...'
+    end
+    available_spells[choice]
   end
 
   def action_possible?(current_context)

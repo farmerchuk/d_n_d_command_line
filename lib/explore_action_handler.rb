@@ -16,6 +16,10 @@ class ExploreActionHandler
     @script = nil
   end
 
+  def action_type
+    'explore'
+  end
+
   def run_action
     display_summary
     set_event
@@ -25,28 +29,6 @@ class ExploreActionHandler
     current_player.end_action
     Menu.prompt_continue
     display_summary
-  end
-
-  def player_selects_action
-    loop do
-      puts "What action would #{current_player.name} like to take?"
-      role = current_player.role.to_s
-
-      case role
-      when 'fighter'
-        current_player.action = Menu.choose_from_menu(Fighter::EXPLORE_ACTIONS)
-      when 'rogue'
-        current_player.action = Menu.choose_from_menu(Rogue::EXPLORE_ACTIONS)
-      when 'cleric'
-        current_player.action = Menu.choose_from_menu(Cleric::EXPLORE_ACTIONS)
-      when 'wizard'
-        current_player.action = Menu.choose_from_menu(Wizard::EXPLORE_ACTIONS)
-      end
-
-      break if action_possible?('explore')
-      display_summary
-      display_action_error
-    end
   end
 
   def resolve_player_action

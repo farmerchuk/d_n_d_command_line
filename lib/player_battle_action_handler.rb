@@ -12,34 +12,16 @@ class PlayerBattleActionHandler < BattleActionHandler
     @current_player = players.current
   end
 
+  def action_type
+    'battle'
+  end
+
   def run_action
     display_summary
     execute_player_action
     current_player.end_action
     Menu.prompt_continue
     display_summary
-  end
-
-  def player_selects_action
-    loop do
-      puts "What action would #{current_player.name} like to take?"
-      role = current_player.role.to_s
-
-      case role
-      when 'fighter'
-        current_player.action = Menu.choose_from_menu(Fighter::BATTLE_ACTIONS)
-      when 'rogue'
-        current_player.action = Menu.choose_from_menu(Rogue::BATTLE_ACTIONS)
-      when 'cleric'
-        current_player.action = Menu.choose_from_menu(Cleric::BATTLE_ACTIONS)
-      when 'wizard'
-        current_player.action = Menu.choose_from_menu(Wizard::BATTLE_ACTIONS)
-      end
-
-      break if action_possible?('battle')
-      display_summary
-      display_action_error
-    end
   end
 
   def player_attack
