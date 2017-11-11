@@ -5,9 +5,6 @@ require_relative 'dnd'
 class PlayerBattleActionHandler < BattleActionHandler
   include PlayerActionHandler
 
-  IN_RANGE_ACTIONS = %w[move attack wait skill item equip]
-  OUT_RANGE_ACTIONS = %w[move wait skill item equip]
-
   attr_accessor :current_player
 
   def initialize(players, locations, enemies, all_entities)
@@ -24,11 +21,24 @@ class PlayerBattleActionHandler < BattleActionHandler
   end
 
   def player_selects_action
-    puts "What action would #{current_player.name} like to take?"
-    if targets_in_range(enemies).empty?
-      current_player.action = Menu.choose_from_menu(OUT_RANGE_ACTIONS)
-    else
-      current_player.action = Menu.choose_from_menu(IN_RANGE_ACTIONS)
+    loop do
+      puts "What action would #{current_player.name} like to take?"
+      role = current_player.role.to_s
+
+      case role
+      when 'fighter'
+        current_player.action = Menu.choose_from_menu(Fighter::BATTLE_ACTIONS)
+      when 'rogue'
+        current_player.action = Menu.choose_from_menu(Rogue::BATTLE_ACTIONS)
+      when 'cleric'
+        current_player.action = Menu.choose_from_menu(Cleric::BATTLE_ACTIONS)
+      when 'wizard'
+        current_player.action = Menu.choose_from_menu(Wizard::BATTLE_ACTIONS)
+      end
+
+      break if action_possible?('battle')
+      display_summary
+      display_action_error
     end
   end
 

@@ -45,8 +45,7 @@ class ExploreActionHandler
 
       break if action_possible?('explore')
       display_summary
-      puts "That is not possible at this time. Please choose another option..."
-      puts
+      display_action_error
     end
   end
 

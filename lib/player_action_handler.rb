@@ -85,7 +85,26 @@ module PlayerActionHandler
         spell.when == current_context
       end
     end
+
+    if current_player.action == 'attack'
+      return false if targets_in_range(enemies).empty?
+    end
+
     true
+  end
+
+  def display_action_error
+    case current_player.action
+    when 'magic'
+      puts 'None of your spells would be effective right now.'
+    when 'attack'
+      puts "No enemies are within range. Try moving closer first or"
+      puts "equipping a weapon with greater range."
+    end
+
+    puts
+    puts 'Please select another option...'
+    puts
   end
 
   def player_equip

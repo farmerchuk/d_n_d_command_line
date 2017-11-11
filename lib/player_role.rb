@@ -17,6 +17,7 @@ end
 
 class Fighter < PlayerRole
   EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
+  BATTLE_ACTIONS = %w[move attack wait skill item equip]
 
   def initialize
     super
@@ -33,6 +34,7 @@ end
 
 class Rogue < PlayerRole
   EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
+  BATTLE_ACTIONS = %w[move attack wait skill item equip]
 
   def initialize
     super
@@ -49,6 +51,7 @@ end
 
 class Cleric < PlayerRole
   EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
+  BATTLE_ACTIONS = %w[move attack magic wait skill item equip]
 
   def initialize
     super
@@ -65,6 +68,7 @@ end
 
 class Wizard < PlayerRole
   EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
+  BATTLE_ACTIONS = %w[move attack magic wait skill item equip]
 
   def initialize
     super
