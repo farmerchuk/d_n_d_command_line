@@ -44,7 +44,7 @@ class Backpack
     puts "Party Equipment:                             GOLD: #{purse}"
     Menu.draw_line
     puts
-    puts 'WEAPONS'
+    puts 'ALL EQUIPMENT'
     Menu.draw_line
     puts 'name                     type      damage    equipped by'
     puts '----                     ----      ------    -----------'
