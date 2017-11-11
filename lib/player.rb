@@ -171,13 +171,17 @@ class Player
     end
   end
 
-  def roll_attack(weapon)
-    weapon_type = weapon.type
+  def roll_attack
+    weapon_type = equipped_weapon.type
 
     case weapon_type
     when 'melee' then roll_d20 + str_mod
     when 'ranged' then roll_d20 + dex_mod
     end
+  end
+
+  def roll_weapon_dmg
+    roll_dice(equipped_weapon.damage_die)
   end
 
   # actions
@@ -241,6 +245,10 @@ class Player
 
   def unequip(equipment)
     equipment.checkin_equipment if equipment
+  end
+
+  def dead?
+    current_hp <= 0
   end
 
   def to_s

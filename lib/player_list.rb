@@ -25,6 +25,10 @@ class PlayerList
     players[index]
   end
 
+  def first
+    players[0]
+  end
+
   def to_a
     players
   end
@@ -33,6 +37,15 @@ class PlayerList
     players.each do |player|
       return player if player.current_turn
     end
+  end
+
+  def set_current_turn!(current_player)
+    unset_current_turn_all_players!
+    current_player.set_current_turn!
+  end
+
+  def unset_current_turn_all_players!
+    players.each { |player| player.unset_current_turn! }
   end
 
   def highest_initiative

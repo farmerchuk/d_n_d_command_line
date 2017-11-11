@@ -2,7 +2,7 @@
 
 title: "Dungeons & Dragons: The Lost Mine of Phandelver"
 area_id: area_1_goblin_ambush
-location_id: area_1_west_exit
+location_id: area_1_west_trail
 
 party_gold: 100
 party_equipment:
@@ -10,7 +10,7 @@ party_equipment:
     weapon: basic_greatsword
     armor: basic_leather
   rogue:
-    weapon: basic_dagger
+    weapon: basic_shortbow
     armor: basic_leather
   cleric:
     weapon: basic_warhammer

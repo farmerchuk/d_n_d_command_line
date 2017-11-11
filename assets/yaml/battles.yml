@@ -7,7 +7,7 @@
     beyond the northern embankment and two from the thickets
     beyond the southern embankment.
   enemy_and_location_ids:
-    - goblin area_1_north_embankment
-    - goblin area_1_north_embankment
-    - goblin area_1_south_embankment
-    - goblin area_1_south_embankment
+    - goblin_with_scimitar area_1_north_embankment
+    - goblin_with_scimitar area_1_north_embankment
+    - goblin_with_shortbow area_1_south_embankment
+    - goblin_with_shortbow area_1_south_embankment

@@ -1,7 +1,7 @@
 # enemies.yml
 
-- id: goblin
-  name: goblin
+- id: goblin_with_scimitar
+  name: Goblin
   description: |
     Goblins are black-hearted, gather in overwhelming numbers,
     and crave power, which they abuse.
@@ -16,5 +16,22 @@
   cha_mod: '-1'
   melee_attack_bonus: 4
   ranged_attack_bonus: 4
-  melee_attack_dmg: 1d6 + 2
-  ranged_attack_dmg: 1d6 + 2
+  equipped_weapon: goblin_scimitar
+
+- id: goblin_with_shortbow
+  name: Goblin
+  description: |
+    Goblins are black-hearted, gather in overwhelming numbers,
+    and crave power, which they abuse.
+  max_hp: 7
+  current_hp: 7
+  armor_class: 15
+  str_mod: -1
+  dex_mod: '2'
+  con_mod: '0'
+  int_mod: '0'
+  wis_mod: '-1'
+  cha_mod: '-1'
+  melee_attack_bonus: 4
+  ranged_attack_bonus: 4
+  equipped_weapon: goblin_shortbow

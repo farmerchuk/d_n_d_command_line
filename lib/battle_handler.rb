@@ -3,7 +3,7 @@
 require_relative 'dnd'
 
 class BattleHandler
-  attr_reader :players, :locations,
+  attr_reader :players, :current_player, :locations,
               :battle, :enemies, :all_entities
 
   def initialize(engagement_id, players, locations)
@@ -30,13 +30,13 @@ class BattleHandler
       set_current_turn(entity)
 
       if entity.instance_of?(Player)
-        player_turn(entity)
+        player_turn
       else
-        BattleActionHandler.display_summary(all_entities)
-        puts 'Enemy attacks!'
-        Menu.prompt_continue
+        enemy_turn(entity)
       end
     end
+
+    reset_current_turn
   end
 
   private
@@ -80,11 +80,24 @@ class BattleHandler
     end
   end
 
-  def player_turn(current_player)
-    BattleActionHandler.new(
+  def reset_current_turn
+    players.set_current_turn!(current_player)
+  end
+
+  def player_turn
+    PlayerBattleActionHandler.new(
       players,
       locations,
       enemies,
       all_entities).run
+  end
+
+  def enemy_turn(enemy)
+    EnemyBattleActionHandler.new(
+      players,
+      locations,
+      enemies,
+      all_entities,
+      enemy).run
   end
 end

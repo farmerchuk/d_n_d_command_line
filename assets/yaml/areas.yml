@@ -1,7 +1,5 @@
 # areas.yml
 
-# Area ids must be unique
-
 # Area 1: Goblin Ambush
 
 - id: area_1_goblin_ambush
@@ -11,4 +9,15 @@
     about fifty feet ahead of you, blocking the path. Each has
     several black-feathered arrows sticking out of it. The woods
     press close to the trail here, with a steep embankment and
-    dense thickets on either side.
+    dense thickets to the north and south.
+  map: |
+    ~Triboar Trail~
+
+          +---------- NORTH EMBANKMENT -----------+
+          |                   |                   |
+          |                   |                   |
+    WESTERN TRAIL ------ DEAD HORSES ------ EASTERN TRAIL
+          |                   |                   |
+          |                   |                   |
+          +---------- SOUTH EMBANKMENT -----------+
+          
