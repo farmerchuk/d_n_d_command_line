@@ -34,22 +34,7 @@ class PlayerBattleActionHandler < BattleActionHandler
   def select_enemy_to_attack
     puts "Which enemy would #{current_player.name} like to attack?"
     targets = targets_in_range(enemies)
-    choose_enemy_menu_with_location(targets)
-  end
-
-  def choose_enemy_menu_with_location(enemies)
-    enemies.each_with_index do |enemy, idx|
-      puts "#{idx}. #{enemy} at #{enemy.location.display_name} " +
-           "(#{enemy.current_hp} HP)"
-    end
-
-    choice = nil
-    loop do
-      choice = Menu.prompt.to_i
-      break if (0..enemies.size - 1).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
-    enemies[choice]
+    choose_target_menu_with_location(targets)
   end
 
   def display_attack_summary(hit, damage, target)

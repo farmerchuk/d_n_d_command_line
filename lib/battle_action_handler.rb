@@ -12,14 +12,6 @@ class BattleActionHandler
     @all_entities = all_entities
   end
 
-  def targets_in_range(targets)
-    targets.select do |target|
-      weapon_range = current_player.equipped_weapon.range
-      distance = current_player.location.distance_to(target.location)
-      weapon_range >= distance && !target.dead?
-    end
-  end
-
   def attack_successful?(target)
     attack_roll = current_player.roll_attack
     puts "#{current_player} rolled #{attack_roll} to hit " +

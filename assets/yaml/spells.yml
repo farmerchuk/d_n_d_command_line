@@ -35,6 +35,7 @@
   range: 0
   aoe: single
   script: |
+    puts "Shazam!"
 
 - id: cure_wounds_1
   level: 1
@@ -46,7 +47,8 @@
   roles:
     - cleric
   when: battle
-  target: ally
+  target: player
   range: 0
   aoe: single
   script: |
+    puts "(Angelic music)"

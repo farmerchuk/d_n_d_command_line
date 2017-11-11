@@ -91,15 +91,21 @@ module PlayerActionHandler
 
   def player_magic
     puts "What spell would #{current_player.name} like to use?"
-    spell = choose_spell
+    choose_and_equip_spell
+    spell = current_player.equipped_spell
+    target = choose_spell_target
+
+    display_summary
+    eval(spell.script)
   end
 
-  def choose_spell
+  def choose_and_equip_spell
     available_spells =
       current_player.spells.select { |spell| spell.when == action_type }
 
     available_spells.each_with_index do |spell, idx|
-      puts "#{idx}. #{spell.display_name}"
+      puts "#{idx}. #{spell.display_name} - " +
+           "#{spell.stat_desc}"
     end
 
     choice = nil
@@ -108,13 +114,54 @@ module PlayerActionHandler
       break if (0..available_spells.size - 1).include?(choice)
       puts 'Sorry, that is not a valid choice...'
     end
-    available_spells[choice]
+    current_player.equipped_spell = available_spells[choice]
   end
 
-  def action_possible?(current_context)
+  def choose_spell_target
+    if current_player.equipped_spell.target == 'enemy'
+      select_enemy_to_attack
+    elsif current_player.equipped_spell.target == 'player'
+      select_player_to_cast_on
+    end
+  end
+
+  def select_player_to_cast_on
+    puts "Which player would #{current_player.name} like to cast on?"
+    targets = targets_in_range(players.to_a)
+    choose_target_menu_with_location(targets)
+  end
+
+  def targets_in_range(targets)
+    targets.select do |target|
+      if current_player.action == 'attack'
+        action_range = current_player.equipped_weapon.range
+      elsif current_player.action == 'magic'
+        action_range = current_player.equipped_spell.range
+      end
+      distance = current_player.location.distance_to(target.location)
+      action_range >= distance && !target.dead?
+    end
+  end
+
+  def choose_target_menu_with_location(targets)
+    targets.each_with_index do |target, idx|
+      puts "#{idx}. #{target} at #{target.location.display_name} " +
+           "(#{target.current_hp} HP)"
+    end
+
+    choice = nil
+    loop do
+      choice = Menu.prompt.to_i
+      break if (0..targets.size - 1).include?(choice)
+      puts 'Sorry, that is not a valid choice...'
+    end
+    enemies[choice]
+  end
+
+  def action_possible?(current_action_context)
     if current_player.action == 'magic'
       return false unless current_player.spells.any? do |spell|
-        spell.when == current_context
+        spell.when == current_action_context
       end
     end
 

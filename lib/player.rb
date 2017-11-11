@@ -22,7 +22,7 @@ class Player
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
                 :action, :wait,
-                :current_hp, :spells,
+                :current_hp, :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
 
@@ -42,6 +42,7 @@ class Player
     @equipped_weapon = nil # Weapon
     @equipped_armor = nil # Armor
     @equipped_shield = nil # Armor
+    @equipped_spell = nil # Spell
   end
 
   # proficiency
@@ -193,6 +194,7 @@ class Player
 
   def end_action
     self.action = nil
+    self.equipped_spell = nil
   end
 
   def wait!

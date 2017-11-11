@@ -35,6 +35,14 @@ class EnemyBattleActionHandler < BattleActionHandler
     Menu.prompt_continue
   end
 
+  def targets_in_range(targets)
+    targets.select do |target|
+      weapon_range = current_player.equipped_weapon.range
+      distance = current_player.location.distance_to(target.location)
+      weapon_range >= distance && !target.dead?
+    end
+  end
+
   def move_towards_closest_player
     current_player.location = get_next_location
     puts "#{current_player} moves to #{current_player.location.display_name}."
