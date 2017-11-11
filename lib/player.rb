@@ -22,7 +22,7 @@ class Player
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
                 :action, :wait,
-                :current_hp,
+                :current_hp, :spells,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
 
@@ -37,6 +37,7 @@ class Player
     @action = nil # String
     @wait = false # Boolean
     @current_hp = nil # Integer
+    @spells = nil # Array of Spell
     @backpack = nil # Backpack
     @equipped_weapon = nil # Weapon
     @equipped_armor = nil # Armor

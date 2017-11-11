@@ -152,6 +152,7 @@ class Game
     add_name(player)
     add_role(player)
     add_race(player)
+    add_spells(player)
     player.set_current_hp_to_max
 
     player
@@ -184,9 +185,9 @@ class Game
 
   def add_race(player)
     puts "What race will #{player.name} be?"
-    role = Menu.choose_from_menu(PlayerRace::RACES)
+    race = Menu.choose_from_menu(PlayerRace::RACES)
 
-    case role
+    case race
     when 'human' then player.race = Human.new
     when 'dwarf' then player.race = Dwarf.new
     when 'elf' then player.race = Elf.new
@@ -194,6 +195,11 @@ class Game
     when 'halfling' then player.race = Halfling.new
     when 'gnome' then player.race = Gnome.new
     end
+  end
+
+  def add_spells(player)
+    role = player.role.to_s
+    player.spells = Spell.generate_spells(role)
   end
 
   def create_another_player?
@@ -223,7 +229,7 @@ class Game
 
   def add_starting_equipment_to_backpack(backpack, initialize_data)
     players.each do |player|
-      role = player.role.to_s.downcase
+      role = player.role.to_s
       role_equipment = initialize_data['party_equipment'][role]
       weapon_id = role_equipment['weapon']
       armor_id = role_equipment['armor']
@@ -244,7 +250,7 @@ class Game
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     players.each do |player|
-      role = player.role.to_s.downcase
+      role = player.role.to_s
       role_equipment = initialize_data['party_equipment'][role]
       weapon_id = role_equipment['weapon']
       armor_id = role_equipment['armor']

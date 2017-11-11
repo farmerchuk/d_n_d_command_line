@@ -5,8 +5,6 @@ require_relative 'dnd'
 class ExploreActionHandler
   include PlayerActionHandler
 
-  ACTIONS = %w[move examine search wait skill item equip rest engage]
-
   attr_accessor :players, :current_player, :locations, :events, :event, :script
 
   def initialize(players, locations, events)
@@ -30,8 +28,26 @@ class ExploreActionHandler
   end
 
   def player_selects_action
-    puts "What action would #{current_player.name} like to take?"
-    current_player.action = Menu.choose_from_menu(ACTIONS)
+    loop do
+      puts "What action would #{current_player.name} like to take?"
+      role = current_player.role.to_s
+
+      case role
+      when 'fighter'
+        current_player.action = Menu.choose_from_menu(Fighter::EXPLORE_ACTIONS)
+      when 'rogue'
+        current_player.action = Menu.choose_from_menu(Rogue::EXPLORE_ACTIONS)
+      when 'cleric'
+        current_player.action = Menu.choose_from_menu(Cleric::EXPLORE_ACTIONS)
+      when 'wizard'
+        current_player.action = Menu.choose_from_menu(Wizard::EXPLORE_ACTIONS)
+      end
+
+      break if action_possible?('explore')
+      display_summary
+      puts "That is not possible at this time. Please choose another option..."
+      puts
+    end
   end
 
   def resolve_player_action

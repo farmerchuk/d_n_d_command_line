@@ -11,11 +11,13 @@ class PlayerRole
   end
 
   def to_s
-    self.class.to_s
+    self.class.to_s.downcase
   end
 end
 
 class Fighter < PlayerRole
+  EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
+
   def initialize
     super
     @str = 14
@@ -30,6 +32,8 @@ class Fighter < PlayerRole
 end
 
 class Rogue < PlayerRole
+  EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
+
   def initialize
     super
     @str = 8
@@ -44,6 +48,8 @@ class Rogue < PlayerRole
 end
 
 class Cleric < PlayerRole
+  EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
+
   def initialize
     super
     @str = 14
@@ -58,6 +64,8 @@ class Cleric < PlayerRole
 end
 
 class Wizard < PlayerRole
+  EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
+
   def initialize
     super
     @str = 10

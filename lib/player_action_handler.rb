@@ -30,6 +30,7 @@ module PlayerActionHandler
     when 'rest' then player_rest
     when 'equip' then player_equip
     when 'attack' then player_attack
+    when 'magic' then player_magic
     end
   end
 
@@ -72,6 +73,19 @@ module PlayerActionHandler
   def player_rest
     puts "#{current_player} rests."
     puts
+  end
+
+  def player_magic
+    puts "What spell would #{current_player.name} like to use?"
+  end
+
+  def action_possible?(current_context)
+    if current_player.action == 'magic'
+      return false unless current_player.spells.any? do |spell|
+        spell.when == current_context
+      end
+    end
+    true
   end
 
   def player_equip
