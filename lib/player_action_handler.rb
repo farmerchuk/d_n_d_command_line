@@ -1,14 +1,36 @@
-# action_handler.rb
+# player_action_handler.rb
 
 require_relative 'dnd'
 
-class ActionHandler
-  attr_accessor :players, :current_player, :locations
+module PlayerActionHandler
+  def run
+    display_summary
+    current_player.start_turn
+    player_choose_first_action
 
-  def initialize(players, locations)
-    @players = players
-    @current_player = players.current
-    @locations = locations
+    if current_player.action == 'move'
+      run_action
+      player_selects_action
+      run_action
+    else
+      player_selects_action
+      run_action
+      current_player.action = 'move' if player_also_move?
+      run_action
+    end
+    Menu.prompt_for_next_turn
+  end
+
+  def execute_player_action
+    case current_player.action
+    when 'move' then player_move
+    when 'wait' then player_wait
+    when 'skill' then player_use_skill
+    when 'item' then player_use_item
+    when 'rest' then player_rest
+    when 'equip' then player_equip
+    when 'attack' then player_attack
+    end
   end
 
   def player_choose_first_action

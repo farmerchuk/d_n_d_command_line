@@ -3,37 +3,24 @@
 require_relative 'dnd'
 
 class PlayerBattleActionHandler < BattleActionHandler
+  include PlayerActionHandler
+
   IN_RANGE_ACTIONS = %w[move attack wait skill item equip]
   OUT_RANGE_ACTIONS = %w[move wait skill item equip]
 
+  attr_accessor :current_player
+
   def initialize(players, locations, enemies, all_entities)
     super
-  end
-
-  def run
-    display_battle_summary
-    current_player.start_turn
-    player_choose_first_action
-
-    if current_player.action == 'move'
-      run_action
-      player_selects_action
-      run_action
-    else
-      player_selects_action
-      run_action
-      current_player.action = 'move' if player_also_move?
-      run_action
-    end
-    Menu.prompt_for_next_turn
+    @current_player = players.current
   end
 
   def run_action
-    display_battle_summary
+    display_summary
     execute_player_action
     current_player.end_action
     Menu.prompt_continue
-    display_battle_summary
+    display_summary
   end
 
   def player_selects_action
@@ -42,18 +29,6 @@ class PlayerBattleActionHandler < BattleActionHandler
       current_player.action = Menu.choose_from_menu(OUT_RANGE_ACTIONS)
     else
       current_player.action = Menu.choose_from_menu(IN_RANGE_ACTIONS)
-    end
-  end
-
-  def execute_player_action
-    case current_player.action
-    when 'move' then player_move
-    when 'wait' then player_wait
-    when 'skill' then player_use_skill
-    when 'item' then player_use_item
-    when 'rest' then player_rest
-    when 'equip' then player_equip
-    when 'attack' then player_attack
     end
   end
 

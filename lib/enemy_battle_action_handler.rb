@@ -11,19 +11,19 @@ class EnemyBattleActionHandler < BattleActionHandler
   end
 
   def run
-    display_battle_summary
+    display_summary
     targets = targets_in_range(players.to_a)
 
     if targets.empty?
       move_towards_closest_player
       Menu.prompt_continue
-      BattleActionHandler.display_battle_summary(all_entities, players)
+      display_summary
       targets = targets_in_range(players.to_a)
       attack(targets) unless targets.empty?
     else
       attack(targets)
     end
-    display_battle_summary
+    display_summary
     Menu.prompt_for_next_turn
   end
 

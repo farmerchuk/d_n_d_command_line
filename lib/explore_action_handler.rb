@@ -2,34 +2,20 @@
 
 require_relative 'dnd'
 
-class ExploreActionHandler < ActionHandler
+class ExploreActionHandler
+  include PlayerActionHandler
+
   ACTIONS = %w[move examine search wait skill item equip rest engage]
 
-  attr_accessor :events, :event, :script
+  attr_accessor :players, :current_player, :locations, :events, :event, :script
 
   def initialize(players, locations, events)
-    super(players, locations)
+    @players = players
+    @current_player = players.current
+    @locations = locations
     @events = events
     @event = nil
     @script = nil
-  end
-
-  def run
-    display_summary
-    current_player.start_turn
-    player_choose_first_action
-
-    if current_player.action == 'move'
-      run_action
-      player_selects_action
-      run_action
-    else
-      player_selects_action
-      run_action
-      current_player.action = 'move' if player_also_move?
-      run_action
-    end
-    Menu.prompt_for_next_turn
   end
 
   def run_action
@@ -46,17 +32,6 @@ class ExploreActionHandler < ActionHandler
   def player_selects_action
     puts "What action would #{current_player.name} like to take?"
     current_player.action = Menu.choose_from_menu(ACTIONS)
-  end
-
-  def execute_player_action
-    case current_player.action
-    when 'move' then player_move
-    when 'wait' then player_wait
-    when 'skill' then player_use_skill
-    when 'item' then player_use_item
-    when 'rest' then player_rest
-    when 'equip' then player_equip
-    end
   end
 
   def resolve_player_action

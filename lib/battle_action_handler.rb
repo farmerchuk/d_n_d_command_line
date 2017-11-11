@@ -2,11 +2,12 @@
 
 require_relative 'dnd'
 
-class BattleActionHandler < ActionHandler
-  attr_accessor :enemies, :all_entities
+class BattleActionHandler
+  attr_accessor :players, :locations, :enemies, :all_entities
 
   def initialize(players, locations, enemies, all_entities)
-    super(players, locations)
+    @players = players
+    @locations = locations
     @enemies = enemies
     @all_entities = all_entities
   end
@@ -33,11 +34,11 @@ class BattleActionHandler < ActionHandler
     damage
   end
 
-  def display_battle_summary
-    self.class.display_battle_summary(all_entities, players)
+  def display_summary
+    self.class.display_summary(all_entities, players)
   end
 
-  def self.display_battle_summary(all_entities, players)
+  def self.display_summary(all_entities, players)
     Menu.clear_screen
     puts 'BATTLE TURN ORDER & PLAYER LOCATIONS:'
     Menu.draw_line

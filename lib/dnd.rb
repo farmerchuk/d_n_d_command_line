@@ -2,7 +2,7 @@
 
 require_relative 'helpers'
 require_relative 'menu'
-require_relative 'action_handler'
+require_relative 'player_action_handler'
 require_relative 'explore_action_handler'
 require_relative 'battle_action_handler'
 require_relative 'player_battle_action_handler'
