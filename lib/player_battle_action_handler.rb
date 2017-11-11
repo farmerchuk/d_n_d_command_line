@@ -93,7 +93,8 @@ class PlayerBattleActionHandler < BattleActionHandler
            "#{current_player.equipped_weapon.display_name} " +
            "and dealt #{damage} damage."
     else
-      puts "#{current_player}'s attack on #{target} missed!"
+      puts "#{current_player} attacks #{target} with a " +
+           "#{current_player.equipped_weapon.display_name} and missed!"
     end
   end
 end
