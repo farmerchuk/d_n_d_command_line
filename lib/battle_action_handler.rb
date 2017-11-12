@@ -32,7 +32,7 @@ class BattleActionHandler
 
   def self.display_summary(all_entities, players)
     Menu.clear_screen
-    puts 'BATTLE TURN ORDER & PLAYER LOCATIONS:'
+    puts 'BATTLE TURN ORDER & PLAYER LOCATIONS'
     Menu.draw_line
     all_entities.each do |entity|
       if entity.instance_of?(Player)
@@ -49,12 +49,12 @@ class BattleActionHandler
     end
     puts
     puts
-    puts 'AREA MAP:'
+    puts 'AREA MAP'
     Menu.draw_line
     puts players.first.area.map
     puts
     puts
-    puts 'BATTLE DETAILS:'
+    puts 'BATTLE DETAILS'
     Menu.draw_line
   end
 end

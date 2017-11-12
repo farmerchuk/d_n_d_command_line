@@ -21,8 +21,6 @@ class BattleHandler
   end
 
   def run
-    battle_introduction
-
     all_entities.cycle do |entity|
       break if all_players_dead? || all_enemies_dead?
       next if entity.current_hp <= 0
@@ -46,7 +44,6 @@ class BattleHandler
       if battle['id'] == engagement_id
         new_battle = Battle.new(locations)
         new_battle.id = battle['id']
-        new_battle.introduction = battle['introduction']
         new_battle.enemy_and_location_ids = battle['enemy_and_location_ids']
         return new_battle
       end
@@ -63,12 +60,6 @@ class BattleHandler
 
   def all_enemies_dead?
     battle.enemies.all? { |enemy| enemy.current_hp <= 0 }
-  end
-
-  def battle_introduction
-    ExploreActionHandler.display_summary(players)
-    puts battle.introduction
-    Menu.prompt_continue
   end
 
   def set_current_turn(current_entity)

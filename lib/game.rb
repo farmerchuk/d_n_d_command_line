@@ -35,17 +35,15 @@ class Game
 
   private
 
-  attr_accessor :players, :areas, :locations, :events
+  attr_accessor :players, :areas, :locations
 
   def build_resources
     build_areas
     build_locations
-    build_events
 
     add_locations_to_areas
     add_area_to_locations
     add_paths_to_locations
-    add_location_to_events
   end
 
   def build_areas
@@ -74,20 +72,6 @@ class Game
     end
   end
 
-  def build_events
-    event_data = YAML.load_file('../assets/yaml/events.yml')
-
-    event_data.each do |event|
-      new_event = Event.new
-      new_event.id = event['id']
-      new_event.location_id = event['location_id']
-      new_event.description = event['description']
-      new_event.trigger = event['trigger']
-      new_event.script = event['script']
-      events << new_event
-    end
-  end
-
   def add_locations_to_areas
     areas.each do |area|
       locations.each do |location|
@@ -113,16 +97,6 @@ class Game
       locations.each do |location2|
         if location1.path_ids.include?(location2.id)
           location1.add_path(location2)
-        end
-      end
-    end
-  end
-
-  def add_location_to_events
-    events.each do |event|
-      locations.each do |location|
-        if event.location_id == location.id
-          event.location = location
         end
       end
     end
@@ -335,10 +309,7 @@ class Game
   end
 
   def player_turn
-    ExploreActionHandler.new(
-      players,
-      locations,
-      events).run
+    ExploreActionHandler.new(players,locations).run
   end
 end
 

@@ -21,7 +21,7 @@ class Player
 
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
-                :action, :wait,
+                :action, :action_success, :wait,
                 :current_hp, :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
@@ -35,6 +35,7 @@ class Player
     @location = nil # Location
     @current_turn = false # Boolean
     @action = nil # String
+    @action_success = true # Boolean
     @wait = false # Boolean
     @current_hp = nil # Integer
     @spells = nil # Array of Spell
@@ -195,6 +196,11 @@ class Player
   def end_action
     self.action = nil
     self.equipped_spell = nil
+    self.action_success = true
+  end
+
+  def action_fail
+    self.action_success = false
   end
 
   def wait!

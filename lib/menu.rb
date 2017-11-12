@@ -23,9 +23,15 @@ class Menu
     gets
   end
 
-  def self.prompt_for_next_turn
+  def self.prompt_encounter_start
     puts
-    print "Hit RETURN to advance to next turn..."
+    print "Hit RETURN to start the encounter..."
+    gets
+  end
+
+  def self.prompt_end_player_turn
+    puts
+    print "Hit RETURN to end player's turn..."
     gets
   end
 

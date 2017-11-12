@@ -24,7 +24,7 @@ class EnemyBattleActionHandler < BattleActionHandler
       attack(targets)
     end
     display_summary
-    Menu.prompt_for_next_turn
+    Menu.prompt_end_player_turn
   end
 
   def attack(targets)

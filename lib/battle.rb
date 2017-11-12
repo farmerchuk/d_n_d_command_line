@@ -5,12 +5,11 @@ require_relative 'dnd'
 class Battle
   include Helpers::Data
 
-  attr_accessor :id, :introduction, :locations,
+  attr_accessor :id, :locations,
                 :enemy_and_location_ids, :enemies
 
   def initialize(locations)
     @id = nil # String
-    @introduction = nil # String
     @locations = locations
     @enemy_and_location_ids = nil # Array of String
     @enemies = [] # Array of Enemy
