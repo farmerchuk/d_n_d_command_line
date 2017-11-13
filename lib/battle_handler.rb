@@ -76,7 +76,7 @@ class BattleHandler
   end
 
   def player_turn
-    PlayerBattleActionHandler.new(
+    PlayerBattle.new(
       players,
       locations,
       enemies,
@@ -84,11 +84,10 @@ class BattleHandler
   end
 
   def enemy_turn(enemy)
-    EnemyBattleActionHandler.new(
+    EnemyBattle.new(
+      enemy,
       players,
       locations,
-      enemies,
-      all_entities,
-      enemy).run
+      all_entities).run
   end
 end

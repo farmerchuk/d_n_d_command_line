@@ -1,19 +1,17 @@
-# player_battle_action_handler.rb
+# player_battle.rb
 
 require_relative 'dnd'
 
-class PlayerBattleActionHandler < BattleActionHandler
-  include PlayerActionHandler
+class PlayerBattle < PlayerActionHandler
+  include GeneralBattleActions
 
-  attr_accessor :current_player
+  attr_reader :action_type, :enemies, :all_entities
 
   def initialize(players, locations, enemies, all_entities)
-    super
-    @current_player = players.current
-  end
-
-  def action_type
-    'battle'
+    super(players, locations)
+    @enemies = enemies
+    @all_entities = all_entities
+    @action_type = 'battle'
   end
 
   def player_attack
@@ -26,7 +24,7 @@ class PlayerBattleActionHandler < BattleActionHandler
         puts
         puts 'Please select another option...'
       end
-      current_player.action_fail
+      action_fail
     else
       target_enemy = select_enemy_to_attack(targets)
       hit = attack_successful?(target_enemy)

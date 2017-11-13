@@ -1,13 +1,17 @@
-# enemy_battle_action_handler.rb
+# enemy_battle.rb
 
 require_relative 'dnd'
 
-class EnemyBattleActionHandler < BattleActionHandler
-  attr_accessor :current_player
+class EnemyBattle
+  include GeneralBattleActions
 
-  def initialize(players, locations, enemies, all_entities, enemy)
-    super(players, locations, enemies, all_entities)
+  attr_accessor :current_player, :players, :locations, :all_entities
+
+  def initialize(enemy, players, locations, all_entities)
     @current_player = enemy
+    @players = players
+    @locations = locations
+    @all_entities = all_entities
   end
 
   def run

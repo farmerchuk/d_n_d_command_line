@@ -1,27 +1,17 @@
-# explore_action_handler.rb
+# player_explore.rb
 
 require_relative 'dnd'
 
-class ExploreActionHandler
-  include PlayerActionHandler
+class PlayerExplore < PlayerActionHandler
 
-  attr_accessor :players, :current_player, :locations
+  attr_reader :action_type
 
   def initialize(players, locations)
-    @players = players
-    @current_player = players.current
-    @locations = locations
-  end
-
-  def action_type
-    'explore'
+    super
+    @action_type = 'explore'
   end
 
   def display_summary
-    self.class.display_summary(players)
-  end
-
-  def self.display_summary(players)
     Menu.clear_screen
     puts 'ALL PLAYERS & DETAILS'
     Menu.draw_line
@@ -33,7 +23,7 @@ class ExploreActionHandler
     end
     puts
     puts
-    puts "CURRENT PLAYER LOCATION #{players.current.location.display_name}"
+    puts "CURRENT PLAYER LOCATION: #{players.current.location.display_name}"
     Menu.draw_line
     puts players.current.location.description
     puts

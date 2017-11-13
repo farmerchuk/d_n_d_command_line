@@ -2,13 +2,18 @@
 
 require_relative 'dnd'
 
-module PlayerActionHandler
-  attr_accessor :events, :event, :script
+class PlayerActionHandler
+  attr_accessor :players, :current_player, :locations,
+                :events, :event, :script, :action_success
 
-  def add_instance_variables
+  def initialize(players, locations)
+    @players = players
+    @current_player = players.current
+    @locations = locations
     @events = []
     @event = nil
     @script = nil
+    @action_success = true
   end
 
   def build_events
@@ -38,7 +43,6 @@ module PlayerActionHandler
   end
 
   def run
-    add_instance_variables
     build_events
 
     display_summary
@@ -54,20 +58,25 @@ module PlayerActionHandler
     Menu.prompt_end_player_turn
   end
 
+  def action_fail
+    self.action_success = false
+  end
+
+  def end_action
+    current_player.end_action
+    self.action_success = true
+  end
+
   def cycle_action(n)
     loop do
       player_selects_action(n)
       execute_player_action
-      break if action_success?
-      current_player.end_action
+      break if action_success
+      end_action
       Menu.prompt_continue
       display_summary
     end
-    current_player.end_action
-  end
-
-  def action_success?
-    current_player.action_success
+    end_action
   end
 
   def player_selects_action(n)
@@ -173,27 +182,22 @@ module PlayerActionHandler
 
       if target
         display_summary
-
-        if action_type == 'explore'
-          spell.cast(current_player, target, players)
-        elsif action_type == 'battle'
-          spell.cast(current_player, target, players, enemies)
-        end
+        launch_spell(current_player, spell, target, players, enemies)
       else
-        display_ineffective_action do
-          puts 'There are no valid targets close enough.'
-          puts
-          puts 'Please select another option...'
-        end
-        current_player.action_fail
+        display_no_valid_targets
+        action_fail
       end
     else
-      display_ineffective_action do
-        puts 'None of your spells would be effective right now.'
-        puts
-        puts 'Please select another option...'
-      end
-      current_player.action_fail
+      display_no_useful_spells
+      action_fail
+    end
+  end
+
+  def launch_spell(current_player, spell, target, players, enemies)
+    if action_type == 'explore'
+      spell.cast(current_player, target, players)
+    elsif action_type == 'battle'
+      spell.cast(current_player, target, players, enemies)
     end
   end
 
@@ -218,6 +222,7 @@ module PlayerActionHandler
   def choose_spell_target
     if current_player.equipped_spell.target_type == 'enemy'
       targets = targets_in_range(enemies)
+      return nil if targets.empty?
       select_enemy_to_attack(targets)
     elsif current_player.equipped_spell.target_type == 'player'
       select_player_to_cast_on
@@ -279,6 +284,24 @@ module PlayerActionHandler
       end
 
       current_player.equip(choice.id)
+      puts
+      puts "#{current_player} equips #{choice}."
+    end
+  end
+
+  def display_no_valid_targets
+    display_ineffective_action do
+      puts 'There are no valid targets close enough.'
+      puts
+      puts 'Please select another option...'
+    end
+  end
+
+  def display_no_useful_spells
+    display_ineffective_action do
+      puts 'None of your spells would be effective right now.'
+      puts
+      puts 'Please select another option...'
     end
   end
 

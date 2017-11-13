@@ -1,17 +1,8 @@
-# battle_action_handler.rb
+# general_battle_actions.rb
 
 require_relative 'dnd'
 
-class BattleActionHandler
-  attr_accessor :players, :locations, :enemies, :all_entities
-
-  def initialize(players, locations, enemies, all_entities)
-    @players = players
-    @locations = locations
-    @enemies = enemies
-    @all_entities = all_entities
-  end
-
+module GeneralBattleActions
   def attack_successful?(target)
     attack_roll = current_player.roll_attack
     puts "#{current_player} rolled #{attack_roll} to hit " +
@@ -27,10 +18,6 @@ class BattleActionHandler
   end
 
   def display_summary
-    self.class.display_summary(all_entities, players)
-  end
-
-  def self.display_summary(all_entities, players)
     Menu.clear_screen
     puts 'BATTLE TURN ORDER & PLAYER LOCATIONS'
     Menu.draw_line

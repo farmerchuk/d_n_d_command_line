@@ -5,32 +5,21 @@ require_relative 'dnd'
 class Game
   include Helpers::Data
 
-  MENU_OPTIONS = ['area description',
-                  'view party equipment',
-                  'view player profiles',
-                  'choose player turn',
-                  'save and quit']
-
   def initialize
     @players = PlayerList.new
     @areas = []
     @locations = []
-    @events = []
 
     build_resources
   end
 
   def run
-    welcome
     create_players
     initialize_player_equipment
     stage_players
     set_current_player
 
-    loop do
-      ExploreActionHandler.display_summary(players)
-      dm_selects_from_main_menu
-    end
+    MainMenuHandler.new(players, locations).run
   end
 
   private
@@ -114,6 +103,7 @@ class Game
 
   def create_players
     loop do
+      welcome
       player = create_player
       players.add(player)
       break unless create_another_player?
@@ -255,61 +245,6 @@ class Game
   def set_current_player
     current_player = players.highest_initiative
     current_player.set_current_turn!
-  end
-
-  def dm_selects_from_main_menu
-    puts 'Select an option:'
-    choice = Menu.choose_from_menu(MENU_OPTIONS)
-
-    case choice
-    when 'area description' then dm_chose_area_description
-    when 'view party equipment' then dm_chose_view_party_equipment
-    when 'view player profiles' then dm_chose_view_player_profiles
-    when 'choose player turn' then dm_chose_player_turn
-    when 'save and quit' then dm_chose_save_and_quit
-    end
-  end
-
-  def dm_chose_area_description
-    ExploreActionHandler.display_summary(players)
-    puts players.current.area.description
-    puts
-    puts players.current.area.map
-    puts
-    Menu.prompt_continue
-  end
-
-  def dm_chose_view_party_equipment
-    players.current.backpack.view
-    Menu.prompt_continue
-  end
-
-  def dm_chose_view_player_profiles
-    puts 'Which player?'
-    player = Menu.choose_from_menu(players.to_a)
-
-    player.view
-    Menu.prompt_continue
-  end
-
-  def dm_chose_player_turn
-    dm_selects_player_turn
-    player_turn
-  end
-
-  def dm_chose_save_and_quit
-    exit
-  end
-
-  def dm_selects_player_turn
-    players.current.unset_current_turn!
-    puts 'Which player would like to take a turn?'
-    current_player = Menu.choose_from_menu(players.to_a)
-    current_player.set_current_turn!
-  end
-
-  def player_turn
-    ExploreActionHandler.new(players,locations).run
   end
 end
 
