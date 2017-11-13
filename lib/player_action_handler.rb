@@ -285,7 +285,7 @@ class PlayerActionHandler
     if available_equipment.empty?
       puts 'Sorry, all equipment is currently in use...'
     else
-      current_player.backpack.view_equippable
+      current_player.backpack.view_equippable(current_player)
 
       puts "Select the item to equip:"
       choice = Menu.choose_from_menu(available_equipment)

@@ -283,6 +283,10 @@ class Player
     equipment.checkin_equipment if equipment
   end
 
+  def all_equipped
+    [equipped_weapon, equipped_armor, equipped_shield].compact
+  end
+
   def alive?
     current_hp > 0
   end
@@ -294,7 +298,7 @@ class Player
   def view
     Menu.clear_screen
 
-    puts "Player Profile:"
+    puts "PLAYER PROFILE:"
     Menu.draw_line
     puts
     puts 'GENERAL INFO'

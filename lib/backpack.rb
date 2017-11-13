@@ -39,8 +39,8 @@ class Backpack
 
   def view
     sort_all_equipment_by_type!
-    Menu.clear_screen
 
+    Menu.clear_screen
     puts "Party Equipment:                             GOLD: #{purse}"
     Menu.draw_line
     puts
@@ -89,17 +89,13 @@ class Backpack
     puts
   end
 
-  def view_equippable
+  def view_equippable(current_player)
     Menu.clear_screen
-
-    puts "Available Equipment:"
-    Menu.draw_line
-    puts
-    puts 'ALL EQUIPMENT'
+    puts "CURRENTLY EQUIPPED BY: #{current_player}"
     Menu.draw_line
     puts 'name                     class             details'
     puts '----                     -----             -------'
-    all_unequipped_equipment.each_with_index do |eq, idx|
+    current_player.all_equipped.each do |eq|
       puts "#{eq.display_name.ljust(25)}#{eq.classifier.ljust(18)}" +
       if eq.instance_of?(Weapon)
         "#{eq.damage_die.ljust(8)}damage"
@@ -108,6 +104,23 @@ class Backpack
       end
     end
     puts
+    puts
+    puts 'ALL AVAILABLE EQUIPMENT'
+    Menu.draw_line
+    puts 'name                     class             details'
+    puts '----                     -----             -------'
+    all_unequipped_equipment.each do |eq|
+      puts "#{eq.display_name.ljust(25)}#{eq.classifier.ljust(18)}" +
+      if eq.instance_of?(Weapon)
+        "#{eq.damage_die.ljust(8)}damage"
+      elsif eq.instance_of?(Armor)
+        "#{eq.armor_class.to_s.ljust(8)}AC"
+      end
+    end
+    puts
+    puts
+    puts 'EQUIPMENT DETAILS'
+    Menu.draw_line
   end
 
   private
