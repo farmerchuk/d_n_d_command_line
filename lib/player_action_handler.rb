@@ -206,7 +206,7 @@ class PlayerActionHandler
       current_player.spells.select { |spell| spell.when == action_type }
 
     available_spells.each_with_index do |spell, idx|
-      puts "#{idx}. #{spell.display_name} - " +
+      puts "#{idx}. #{spell.display_name} > " +
            "#{spell.stat_desc}"
     end
 

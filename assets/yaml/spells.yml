@@ -38,15 +38,13 @@
   target_type: enemy
   range: 0
   aoe: single
-  script: |
-    puts "Shazam!"
 
 - id: cure_wounds_1
   level: 1
   display_name: "Cure Wounds 1"
-  dice: 1d8
+  dice: 1d8 + 3
   effect: heal
-  stat_desc: "Heals 1d8 to a single target. Range: 0"
+  stat_desc: "Heals a single ally by 1d8 + 3 HP. Range: 0"
   general_desc: |
     As you place your hands on the wounded, they begin to glow with a gentle
     healing light.
@@ -56,5 +54,3 @@
   target_type: player
   range: 0
   aoe: single
-  script: |
-    puts "(Angelic music)"

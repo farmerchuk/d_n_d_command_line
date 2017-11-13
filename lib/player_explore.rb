@@ -22,8 +22,8 @@ class PlayerExplore < PlayerActionHandler
              "is at the #{player.location.display_name}".ljust(33) +
              (player.current_turn ? "<< Current Player" : "")
       else
-        puts "#{entity.to_s.ljust(12)}" + "DEAD".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33)
+        puts "#{player.to_s.ljust(12)}" + "DEAD".ljust(28) +
+             "is at the #{player.location.display_name}".ljust(33)
       end
     end
     puts

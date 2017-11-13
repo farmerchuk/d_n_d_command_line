@@ -85,7 +85,14 @@ class Spell
         puts "You hit the #{target} at full power and dealt #{damage} damage."
       end
     elsif aoe == 'single' && target_type == 'player'
+      hp = roll_dice(dice)
+      target.current_hp += hp
+      
+      if target.current_hp > target.max_hp
+        target.current_hp = target.max_hp
+      end
 
+      puts "#{caster} heals #{target} by #{hp} HPs."
     elsif aoe == 'all' && target_type == 'enemy'
 
     elsif aoe == 'all' && target_type == 'player'
