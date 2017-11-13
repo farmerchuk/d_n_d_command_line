@@ -186,6 +186,30 @@ class Player
     roll_dice(equipped_weapon.damage_die)
   end
 
+  def caster
+    role.caster
+  end
+
+  def spend_cast
+    role.casts_remaining -= 1
+  end
+
+  def casts_remaining
+    role.casts_remaining
+  end
+
+  def casts_max
+    role.casts_max
+  end
+
+  def reset_casts_remaining
+    role.casts_remaining = casts_max
+  end
+
+  def casts_exhausted?
+    casts_remaining <= 0
+  end
+
   def spell_dc
     case role.to_s
     when 'wizard' then 8 + int_mod

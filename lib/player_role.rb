@@ -4,7 +4,7 @@ class PlayerRole
   ROLES = %w[fighter rogue cleric wizard]
 
   attr_accessor :str, :dex, :con, :int, :wis, :cha,
-                :level, :hit_die, :proficiency
+                :level, :hit_die, :caster, :proficiency
 
   def initialize
     @level = 1
@@ -28,6 +28,7 @@ class Fighter < PlayerRole
     @wis = 13
     @cha = 9
     @hit_die = 10
+    @caster = false
     @proficiency = ['str', 'con']
   end
 end
@@ -45,6 +46,7 @@ class Rogue < PlayerRole
     @wis = 10
     @cha = 16
     @hit_die = 8
+    @caster = false
     @proficiency = ['dex', 'int']
   end
 end
@@ -52,6 +54,8 @@ end
 class Cleric < PlayerRole
   EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
   BATTLE_ACTIONS = %w[move attack magic wait skill item equip]
+
+  attr_accessor :casts_max, :casts_remaining
 
   def initialize
     super
@@ -62,6 +66,9 @@ class Cleric < PlayerRole
     @wis = 16
     @cha = 12
     @hit_die = 8
+    @caster = true
+    @casts_max = 2
+    @casts_remaining = casts_max
     @proficiency = ['wis', 'cha']
   end
 end
@@ -69,6 +76,8 @@ end
 class Wizard < PlayerRole
   EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
   BATTLE_ACTIONS = %w[move attack magic wait skill item equip]
+
+  attr_accessor :casts_max, :casts_remaining
 
   def initialize
     super
@@ -79,6 +88,9 @@ class Wizard < PlayerRole
     @wis = 12
     @cha = 8
     @hit_die = 6
+    @caster = true
+    @casts_max = 2
+    @casts_remaining = casts_max
     @proficiency = ['int', 'wis']
   end
 end

@@ -26,15 +26,10 @@ class BattleHandler
       next if entity.current_hp <= 0
 
       set_current_turn(entity)
-
-      if entity.instance_of?(Player)
-        player_turn
-      else
-        enemy_turn(entity)
-      end
+      entity.instance_of?(Player) ? player_turn : enemy_turn(entity)
     end
 
-    reset_current_turn
+    battle_cleanup
   end
 
   private
@@ -71,8 +66,9 @@ class BattleHandler
     end
   end
 
-  def reset_current_turn
+  def battle_cleanup
     players.set_current_turn!(current_player)
+    players.reset_casts
   end
 
   def player_turn

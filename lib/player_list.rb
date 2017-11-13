@@ -48,6 +48,12 @@ class PlayerList
     players.each { |player| player.unset_current_turn! }
   end
 
+  def reset_casts
+    players.each do |player|
+      player.reset_casts_remaining if player.caster
+    end
+  end
+
   def highest_initiative
     raise 'PlayerList empty' if players.empty?
     players.sort_by { |player| player.initiative }.last

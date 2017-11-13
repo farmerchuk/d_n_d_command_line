@@ -174,8 +174,13 @@ class PlayerActionHandler
     valid_spells =
       current_player.spells.any? { |spell| spell.when == action_type }
 
-    if valid_spells
-      puts "What spell would #{current_player.name} like to use?"
+    if current_player.casts_exhausted?
+      display_no_casts_remaining
+      action_fail
+    elsif valid_spells
+      puts "What spell would #{current_player.name} like to use? " +
+           "(#{current_player.casts_remaining} " +
+           "cast#{'s' if current_player.casts_remaining > 1} remaining)"
       choose_and_equip_spell
       spell = current_player.equipped_spell
       target = choose_spell_target
@@ -197,6 +202,7 @@ class PlayerActionHandler
     if action_type == 'explore'
       spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
+      current_player.spend_cast
       spell.cast_battle(current_player, target, players, enemies)
     end
   end
@@ -292,6 +298,14 @@ class PlayerActionHandler
   def display_no_valid_targets
     display_ineffective_action do
       puts 'There are no valid targets close enough.'
+      puts
+      puts 'Please select another option...'
+    end
+  end
+
+  def display_no_casts_remaining
+    display_ineffective_action do
+      puts 'You have no casts remaining in this battle.'
       puts
       puts 'Please select another option...'
     end
