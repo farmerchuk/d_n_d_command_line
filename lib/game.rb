@@ -5,47 +5,34 @@ require_relative 'dnd'
 class Game
   include Helpers::Data
 
-  MENU_OPTIONS = ['area description',
-                  'view party equipment',
-                  'view player profiles',
-                  'choose player turn',
-                  'save and quit']
-
   def initialize
     @players = PlayerList.new
     @areas = []
     @locations = []
-    @events = []
 
     build_resources
   end
 
   def run
-    welcome
     create_players
     initialize_player_equipment
     stage_players
     set_current_player
 
-    loop do
-      ExploreActionHandler.display_summary(players)
-      dm_selects_from_main_menu
-    end
+    MainMenuHandler.new(players, locations).run
   end
 
   private
 
-  attr_accessor :players, :areas, :locations, :events
+  attr_accessor :players, :areas, :locations
 
   def build_resources
     build_areas
     build_locations
-    build_events
 
     add_locations_to_areas
     add_area_to_locations
     add_paths_to_locations
-    add_location_to_events
   end
 
   def build_areas
@@ -71,20 +58,6 @@ class Game
       new_loc.description = location['description']
       new_loc.display_name = location['display_name']
       locations << new_loc
-    end
-  end
-
-  def build_events
-    event_data = YAML.load_file('../assets/yaml/events.yml')
-
-    event_data.each do |event|
-      new_event = Event.new
-      new_event.id = event['id']
-      new_event.location_id = event['location_id']
-      new_event.description = event['description']
-      new_event.trigger = event['trigger']
-      new_event.script = event['script']
-      events << new_event
     end
   end
 
@@ -118,16 +91,6 @@ class Game
     end
   end
 
-  def add_location_to_events
-    events.each do |event|
-      locations.each do |location|
-        if event.location_id == location.id
-          event.location = location
-        end
-      end
-    end
-  end
-
   def welcome
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
@@ -140,6 +103,7 @@ class Game
 
   def create_players
     loop do
+      welcome
       player = create_player
       players.add(player)
       break unless create_another_player?
@@ -152,6 +116,7 @@ class Game
     add_name(player)
     add_role(player)
     add_race(player)
+    add_spells(player)
     player.set_current_hp_to_max
 
     player
@@ -184,9 +149,9 @@ class Game
 
   def add_race(player)
     puts "What race will #{player.name} be?"
-    role = Menu.choose_from_menu(PlayerRace::RACES)
+    race = Menu.choose_from_menu(PlayerRace::RACES)
 
-    case role
+    case race
     when 'human' then player.race = Human.new
     when 'dwarf' then player.race = Dwarf.new
     when 'elf' then player.race = Elf.new
@@ -194,6 +159,11 @@ class Game
     when 'halfling' then player.race = Halfling.new
     when 'gnome' then player.race = Gnome.new
     end
+  end
+
+  def add_spells(player)
+    role = player.role.to_s
+    player.spells = Spell.generate_spells(role)
   end
 
   def create_another_player?
@@ -223,7 +193,7 @@ class Game
 
   def add_starting_equipment_to_backpack(backpack, initialize_data)
     players.each do |player|
-      role = player.role.to_s.downcase
+      role = player.role.to_s
       role_equipment = initialize_data['party_equipment'][role]
       weapon_id = role_equipment['weapon']
       armor_id = role_equipment['armor']
@@ -244,7 +214,7 @@ class Game
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
 
     players.each do |player|
-      role = player.role.to_s.downcase
+      role = player.role.to_s
       role_equipment = initialize_data['party_equipment'][role]
       weapon_id = role_equipment['weapon']
       armor_id = role_equipment['armor']
@@ -275,64 +245,6 @@ class Game
   def set_current_player
     current_player = players.highest_initiative
     current_player.set_current_turn!
-  end
-
-  def dm_selects_from_main_menu
-    puts 'Select an option:'
-    choice = Menu.choose_from_menu(MENU_OPTIONS)
-
-    case choice
-    when 'area description' then dm_chose_area_description
-    when 'view party equipment' then dm_chose_view_party_equipment
-    when 'view player profiles' then dm_chose_view_player_profiles
-    when 'choose player turn' then dm_chose_player_turn
-    when 'save and quit' then dm_chose_save_and_quit
-    end
-  end
-
-  def dm_chose_area_description
-    ExploreActionHandler.display_summary(players)
-    puts players.current.area.description
-    puts
-    puts players.current.area.map
-    puts
-    Menu.prompt_continue
-  end
-
-  def dm_chose_view_party_equipment
-    players.current.backpack.view
-    Menu.prompt_continue
-  end
-
-  def dm_chose_view_player_profiles
-    puts 'Which player?'
-    player = Menu.choose_from_menu(players.to_a)
-
-    player.view
-    Menu.prompt_continue
-  end
-
-  def dm_chose_player_turn
-    dm_selects_player_turn
-    player_turn
-  end
-
-  def dm_chose_save_and_quit
-    exit
-  end
-
-  def dm_selects_player_turn
-    players.current.unset_current_turn!
-    puts 'Which player would like to take a turn?'
-    current_player = Menu.choose_from_menu(players.to_a)
-    current_player.set_current_turn!
-  end
-
-  def player_turn
-    ExploreActionHandler.new(
-      players,
-      locations,
-      events).run
   end
 end
 

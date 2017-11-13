@@ -1,13 +1,17 @@
-# enemy_battle_action_handler.rb
+# enemy_battle.rb
 
 require_relative 'dnd'
 
-class EnemyBattleActionHandler < BattleActionHandler
-  attr_accessor :current_player
+class EnemyBattle
+  include GeneralBattleActions
 
-  def initialize(players, locations, enemies, all_entities, enemy)
-    super(players, locations, enemies, all_entities)
+  attr_accessor :current_player, :players, :locations, :all_entities
+
+  def initialize(enemy, players, locations, all_entities)
     @current_player = enemy
+    @players = players
+    @locations = locations
+    @all_entities = all_entities
   end
 
   def run
@@ -24,7 +28,7 @@ class EnemyBattleActionHandler < BattleActionHandler
       attack(targets)
     end
     display_summary
-    Menu.prompt_for_next_turn
+    Menu.prompt_end_player_turn
   end
 
   def attack(targets)
@@ -33,6 +37,14 @@ class EnemyBattleActionHandler < BattleActionHandler
     damage = resolve_damage(target_player) if hit
     display_attack_summary(hit, damage, target_player)
     Menu.prompt_continue
+  end
+
+  def targets_in_range(targets)
+    targets.select do |target|
+      weapon_range = current_player.equipped_weapon.range
+      distance = current_player.location.distance_to(target.location)
+      weapon_range >= distance && target.alive?
+    end
   end
 
   def move_towards_closest_player

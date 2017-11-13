@@ -1,0 +1,91 @@
+# spells.yml
+
+# id: burning_hands_1
+# level: 1
+# save: dex
+# display_name: "Burning Hands 1"
+# stat_desc: "3d6 damage to a single target. Range: 0"
+# general_desc: |
+#   As you hold your hands with thumbs touching and figners spread, a thin
+#   sheet of flames shoots forth from your outstretched fingertips.
+# roles:
+#   - wizard
+#   - cleric
+# when:
+#   - battle
+#   - explore
+# target: enemy (or ally)
+# range: 0
+# aoe: single (or all)
+# script: |
+#   <code ...>
+
+# availabale local variables:
+# - spell
+# - caster
+# - target
+# - players
+# - enemies (only if when == 'battle')
+
+# available methods:
+# - saving_throw?
+# - enemy_save?(caster, target)
+
+# level 1 spells
+
+- id: burning_hands_1
+  level: 1
+  save: dex
+  display_name: "Burning Hands 1"
+  dice: 3d6
+  effect: damage
+  stat_desc: "3d6 damage to a single target. Range: 0"
+  general_desc: |
+    As you hold your hands with thumbs touching and fingers spread, a thin
+    sheet of flames shoots forth from your outstretched fingertips.
+  roles:
+    - wizard
+  when: battle
+  target_type: enemy
+  range: 0
+  aoe: single
+  script: |
+    saved = enemy_save?(caster, target) if saving_throw?
+    damage = roll_dice(dice)
+    damage /= 2 if saved
+    target.current_hp -= damage
+
+    if saved
+      puts "#{target} saved against #{caster}'s' spell!"
+      puts
+      puts "You hit the #{target} and dealt #{damage} damage."
+    else
+      puts "#{target}'s save against #{caster}'s spell failed!"
+      puts
+      puts "You hit the #{target} at full power and dealt #{damage} damage."
+    end
+
+- id: cure_wounds_1
+  level: 1
+  display_name: "Cure Wounds 1"
+  dice: 1d8 + 3
+  effect: heal
+  stat_desc: "Heals a single ally by 1d8 + 3 HP. Range: 0"
+  general_desc: |
+    As you place your hands on the wounded, they begin to glow with a gentle
+    healing light.
+  roles:
+    - cleric
+  when: battle
+  target_type: player
+  range: 0
+  aoe: single
+  script: |
+    hp = roll_dice(dice)
+    target.current_hp += hp
+
+    if target.current_hp > target.max_hp
+      target.current_hp = target.max_hp
+    end
+
+    puts "#{caster} heals #{target} by #{hp} HPs."

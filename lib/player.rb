@@ -22,7 +22,7 @@ class Player
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
                 :action, :wait,
-                :current_hp,
+                :current_hp, :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
 
@@ -37,10 +37,12 @@ class Player
     @action = nil # String
     @wait = false # Boolean
     @current_hp = nil # Integer
+    @spells = nil # Array of Spell
     @backpack = nil # Backpack
     @equipped_weapon = nil # Weapon
     @equipped_armor = nil # Armor
     @equipped_shield = nil # Armor
+    @equipped_spell = nil # Spell
   end
 
   # proficiency
@@ -184,6 +186,39 @@ class Player
     roll_dice(equipped_weapon.damage_die)
   end
 
+  def caster
+    role.caster
+  end
+
+  def spend_cast
+    role.casts_remaining -= 1
+  end
+
+  def casts_remaining
+    role.casts_remaining
+  end
+
+  def casts_max
+    role.casts_max
+  end
+
+  def reset_casts_remaining
+    role.casts_remaining = casts_max
+  end
+
+  def casts_exhausted?
+    casts_remaining <= 0
+  end
+
+  def spell_dc
+    case role.to_s
+    when 'wizard' then 8 + int_mod
+    when 'cleric' then 8 + wis_mod
+    else
+      nil
+    end
+  end
+
   # actions
 
   def start_turn
@@ -192,6 +227,7 @@ class Player
 
   def end_action
     self.action = nil
+    self.equipped_spell = nil
   end
 
   def wait!
@@ -247,8 +283,8 @@ class Player
     equipment.checkin_equipment if equipment
   end
 
-  def dead?
-    current_hp <= 0
+  def alive?
+    current_hp > 0
   end
 
   def to_s

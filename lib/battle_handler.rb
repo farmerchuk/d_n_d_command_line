@@ -21,22 +21,15 @@ class BattleHandler
   end
 
   def run
-    battle_introduction
-
     all_entities.cycle do |entity|
       break if all_players_dead? || all_enemies_dead?
       next if entity.current_hp <= 0
 
       set_current_turn(entity)
-
-      if entity.instance_of?(Player)
-        player_turn
-      else
-        enemy_turn(entity)
-      end
+      entity.instance_of?(Player) ? player_turn : enemy_turn(entity)
     end
 
-    reset_current_turn
+    battle_cleanup
   end
 
   private
@@ -46,7 +39,6 @@ class BattleHandler
       if battle['id'] == engagement_id
         new_battle = Battle.new(locations)
         new_battle.id = battle['id']
-        new_battle.introduction = battle['introduction']
         new_battle.enemy_and_location_ids = battle['enemy_and_location_ids']
         return new_battle
       end
@@ -65,12 +57,6 @@ class BattleHandler
     battle.enemies.all? { |enemy| enemy.current_hp <= 0 }
   end
 
-  def battle_introduction
-    ExploreActionHandler.display_summary(players)
-    puts battle.introduction
-    Menu.prompt_continue
-  end
-
   def set_current_turn(current_entity)
     current_entity.set_current_turn!
     all_entities.each do |entity|
@@ -80,12 +66,13 @@ class BattleHandler
     end
   end
 
-  def reset_current_turn
+  def battle_cleanup
     players.set_current_turn!(current_player)
+    players.reset_casts
   end
 
   def player_turn
-    PlayerBattleActionHandler.new(
+    PlayerBattle.new(
       players,
       locations,
       enemies,
@@ -93,11 +80,10 @@ class BattleHandler
   end
 
   def enemy_turn(enemy)
-    EnemyBattleActionHandler.new(
+    EnemyBattle.new(
+      enemy,
       players,
       locations,
-      enemies,
-      all_entities,
-      enemy).run
+      all_entities).run
   end
 end

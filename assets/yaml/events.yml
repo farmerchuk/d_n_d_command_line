@@ -4,18 +4,6 @@
 # The instance variable '@player' can be accessed by invoking
 # the instance method 'player'.
 
-- id: area_1_event_1
-  location_id: area_1_west_trail
-  encounter_id:
-  trigger: examine
-  description: "The road is dirty."
-
-- id: area_1_event_2
-  location_id: area_1_west_trail
-  encounter_id:
-  trigger: search
-  description: "You see nothing of interest."
-
 - id: area_1_event_3
   location_id: area_1_dead_horses
   encounter_id: area_1_enounter_1
@@ -23,6 +11,11 @@
   description: |
     The saddlebags have been looted. Nearby lies an empty
     leather map case.
+
+    As you're examining the dead horses, your party is suddenly
+    attacked by four vicious goblins. Two burst from the thickets
+    beyond the northern embankment and two from the thickets
+    beyond the southern embankment!
   script: |
     EncounterHandler.new('area_1_encounter_1', players, locations).run
 
