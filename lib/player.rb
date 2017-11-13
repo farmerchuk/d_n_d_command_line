@@ -187,6 +187,15 @@ class Player
     roll_dice(equipped_weapon.damage_die)
   end
 
+  def spell_dc
+    case role.to_s
+    when 'wizard' then 8 + int_mod
+    when 'cleric' then 8 + wis_mod
+    else
+      nil
+    end
+  end
+
   # actions
 
   def start_turn
@@ -256,8 +265,8 @@ class Player
     equipment.checkin_equipment if equipment
   end
 
-  def dead?
-    current_hp <= 0
+  def alive?
+    current_hp > 0
   end
 
   def to_s

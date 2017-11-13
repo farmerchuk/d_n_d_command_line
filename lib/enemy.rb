@@ -107,8 +107,8 @@ class Enemy
     self.current_turn = false
   end
 
-  def dead?
-    current_hp <= 0
+  def alive?
+    current_hp > 0
   end
 
   def to_s

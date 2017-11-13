@@ -2,6 +2,7 @@
 
 # id: burning_hands_1
 # level: 1
+# save: dex
 # display_name: "Burning Hands 1"
 # stat_desc: "3d6 damage to a single target. Range: 0"
 # general_desc: |
@@ -23,15 +24,18 @@
 
 - id: burning_hands_1
   level: 1
+  save: dex
   display_name: "Burning Hands 1"
+  dice: 3d6
+  effect: damage
   stat_desc: "3d6 damage to a single target. Range: 0"
   general_desc: |
-    As you hold your hands with thumbs touching and figners spread, a thin
+    As you hold your hands with thumbs touching and fingers spread, a thin
     sheet of flames shoots forth from your outstretched fingertips.
   roles:
     - wizard
   when: battle
-  target: enemy
+  target_type: enemy
   range: 0
   aoe: single
   script: |
@@ -40,14 +44,16 @@
 - id: cure_wounds_1
   level: 1
   display_name: "Cure Wounds 1"
-  stat_desc: "Heals 1d8 + WIS MOD to a single target. Range: 0"
+  dice: 1d8
+  effect: heal
+  stat_desc: "Heals 1d8 to a single target. Range: 0"
   general_desc: |
     As you place your hands on the wounded, they begin to glow with a gentle
     healing light.
   roles:
     - cleric
   when: battle
-  target: player
+  target_type: player
   range: 0
   aoe: single
   script: |

@@ -173,7 +173,12 @@ module PlayerActionHandler
 
       if target
         display_summary
-        eval(spell.script)
+
+        if action_type == 'explore'
+          spell.cast(current_player, target, players)
+        elsif action_type == 'battle'
+          spell.cast(current_player, target, players, enemies)
+        end
       else
         display_ineffective_action do
           puts 'There are no valid targets close enough.'
@@ -211,9 +216,10 @@ module PlayerActionHandler
   end
 
   def choose_spell_target
-    if current_player.equipped_spell.target == 'enemy'
-      select_enemy_to_attack
-    elsif current_player.equipped_spell.target == 'player'
+    if current_player.equipped_spell.target_type == 'enemy'
+      targets = targets_in_range(enemies)
+      select_enemy_to_attack(targets)
+    elsif current_player.equipped_spell.target_type == 'player'
       select_player_to_cast_on
     end
   end
@@ -234,7 +240,7 @@ module PlayerActionHandler
         action_range = current_player.equipped_spell.range
       end
       distance = current_player.location.distance_to(target.location)
-      action_range >= distance && !target.dead?
+      (action_range >= distance) && target.alive?
     end
   end
 
@@ -250,7 +256,7 @@ module PlayerActionHandler
       break if (0..targets.size - 1).include?(choice)
       puts 'Sorry, that is not a valid choice...'
     end
-    enemies[choice]
+    targets[choice]
   end
 
   def player_equip

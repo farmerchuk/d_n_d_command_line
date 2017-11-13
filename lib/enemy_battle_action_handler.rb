@@ -39,7 +39,7 @@ class EnemyBattleActionHandler < BattleActionHandler
     targets.select do |target|
       weapon_range = current_player.equipped_weapon.range
       distance = current_player.location.distance_to(target.location)
-      weapon_range >= distance && !target.dead?
+      weapon_range >= distance && target.alive?
     end
   end
 
