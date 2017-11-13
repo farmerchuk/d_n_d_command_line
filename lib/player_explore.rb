@@ -16,10 +16,15 @@ class PlayerExplore < PlayerActionHandler
     puts 'ALL PLAYERS & DETAILS'
     Menu.draw_line
     players.each do |player|
-      puts "#{player.to_s.ljust(12)}" +
-           "(#{player.race} #{player.role} / #{player.current_hp} HP)".ljust(28) +
-           "is at the #{player.location.display_name}".ljust(33) +
-           (player.current_turn ? "<< Current Player" : "")
+      if player.alive?
+        puts "#{player.to_s.ljust(12)}" +
+             "#{player.race} #{player.role} / #{player.current_hp} HP".ljust(28) +
+             "is at the #{player.location.display_name}".ljust(33) +
+             (player.current_turn ? "<< Current Player" : "")
+      else
+        puts "#{entity.to_s.ljust(12)}" + "DEAD".ljust(28) +
+             "is at the #{entity.location.display_name}".ljust(33)
+      end
     end
     puts
     puts

@@ -22,16 +22,21 @@ module GeneralBattleActions
     puts 'BATTLE TURN ORDER & PLAYER LOCATIONS'
     Menu.draw_line
     all_entities.each do |entity|
-      if entity.instance_of?(Player)
-        puts "#{entity.to_s.ljust(12)}" +
-             "(#{entity.race} #{entity.role} / #{entity.current_hp} HP)".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33) +
-             (entity.current_turn ? "<< Current Player" : "")
-      elsif entity.instance_of?(Enemy)
-        puts "#{entity.to_s.ljust(12)}" +
-             "(Monster / #{entity.current_hp} HP)".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33) +
-             (entity.current_turn ? "<< Current Player" : "")
+      if entity.alive?
+        if entity.instance_of?(Player)
+          puts "#{entity.to_s.ljust(12)}" +
+               "#{entity.race} #{entity.role} / #{entity.current_hp} HP".ljust(28) +
+               "is at the #{entity.location.display_name}".ljust(33) +
+               (entity.current_turn ? "<< Current Player" : "")
+        elsif entity.instance_of?(Enemy)
+          puts "#{entity.to_s.ljust(12)}" +
+               "Monster / #{entity.current_hp} HP".ljust(28) +
+               "is at the #{entity.location.display_name}".ljust(33) +
+               (entity.current_turn ? "<< Current Player" : "")
+        end
+      else
+        puts "#{entity.to_s.ljust(12)}" + "DEAD".ljust(28) +
+             "is at the #{entity.location.display_name}".ljust(33)
       end
     end
     puts
