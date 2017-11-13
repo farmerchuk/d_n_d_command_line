@@ -99,18 +99,22 @@ class PlayerActionHandler
       reset_event
     else
       display_summary
-      case current_player.action
-      when 'move' then player_move
-      when 'examine' then player_examine
-      when 'search' then player_search
-      when 'wait' then player_wait
-      when 'skill' then player_use_skill
-      when 'item' then player_use_item
-      when 'rest' then player_rest
-      when 'equip' then player_equip
-      when 'attack' then player_attack
-      when 'magic' then player_magic
-      end
+      execute_chosen_action
+    end
+  end
+
+  def execute_chosen_action
+    case current_player.action
+    when 'move' then player_move
+    when 'examine' then player_examine
+    when 'search' then player_search
+    when 'wait' then player_wait
+    when 'skill' then player_use_skill
+    when 'item' then player_use_item
+    when 'rest' then player_rest
+    when 'equip' then player_equip
+    when 'attack' then player_attack
+    when 'magic' then player_magic
     end
   end
 
