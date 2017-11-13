@@ -52,58 +52,24 @@ class Spell
     @script = nil # String
   end
 
-  def cast(caster, target, players, enemies = nil)
+  def cast_explore(caster, target, players)
+    spell = caster.equipped_spell
     puts general_desc
     puts
-    if enemies
-      cast_battle_spell(caster, target, players, enemies)
-    else
-      cast_explore_spell(caster, target, players)
-    end
+    eval(spell.script)
+  end
+
+  def cast_battle(caster, target, players, enemies)
+    spell = caster.equipped_spell
+    puts general_desc
+    puts
+    eval(spell.script)
   end
 
   private
 
   def saving_throw?
     !!save
-  end
-
-  def cast_battle_spell(caster, target, players, enemies)
-    if aoe == 'single' && target_type == 'enemy'
-      saved = enemy_save?(caster, target) if saving_throw?
-      damage = roll_dice(dice)
-      damage /= 2 if saved
-      target.current_hp -= damage
-
-      if saved
-        puts "#{target} saved against #{caster}'s' spell!"
-        puts
-        puts "You hit the #{target} and dealt #{damage} damage."
-      else
-        puts "#{target}'s save against #{caster}'s spell failed!"
-        puts
-        puts "You hit the #{target} at full power and dealt #{damage} damage."
-      end
-    elsif aoe == 'single' && target_type == 'player'
-      hp = roll_dice(dice)
-      target.current_hp += hp
-      
-      if target.current_hp > target.max_hp
-        target.current_hp = target.max_hp
-      end
-
-      puts "#{caster} heals #{target} by #{hp} HPs."
-    elsif aoe == 'all' && target_type == 'enemy'
-
-    elsif aoe == 'all' && target_type == 'player'
-
-    else
-      puts "Spell fizzled out..."
-    end
-  end
-
-  def cast_explore_spell(caster, target, players)
-
   end
 
   def enemy_save?(caster, target)

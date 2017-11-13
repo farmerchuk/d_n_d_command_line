@@ -195,9 +195,9 @@ class PlayerActionHandler
 
   def launch_spell(current_player, spell, target, players, enemies)
     if action_type == 'explore'
-      spell.cast(current_player, target, players)
+      spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
-      spell.cast(current_player, target, players, enemies)
+      spell.cast_battle(current_player, target, players, enemies)
     end
   end
 
