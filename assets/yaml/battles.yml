@@ -1,8 +1,8 @@
 # battles.yml
 
-- id: battle_4_goblins
+- id: battle_goblin_ambush_4_goblins
   enemy_and_location_ids:
-    - goblin_with_scimitar area_1_north_embankment
-    - goblin_with_scimitar area_1_north_embankment
-    - goblin_with_shortbow area_1_south_embankment
-    - goblin_with_shortbow area_1_south_embankment
+    - goblin_with_scimitar goblin_ambush_north_embankment
+    - goblin_with_scimitar goblin_ambush_north_embankment
+    - goblin_with_shortbow goblin_ambush_south_embankment
+    - goblin_with_shortbow goblin_ambush_south_embankment

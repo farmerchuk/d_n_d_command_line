@@ -1,8 +1,8 @@
 # initialize.yml
 
 title: "Dungeons & Dragons: The Lost Mine of Phandelver"
-area_id: area_1_goblin_ambush
-location_id: area_1_west_trail
+area_id: goblin_ambush
+location_id: goblin_ambush_west_trail
 
 party_gold: 100
 party_equipment:

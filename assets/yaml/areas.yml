@@ -1,8 +1,10 @@
 # areas.yml
 
-# Area 1: Goblin Ambush
+# Goblin Ambush
 
-- id: area_1_goblin_ambush
+- id: goblin_ambush
+  entrance: goblin_ambush_west_trail
+  display_name: "Triboar Trail - Goblin Ambush Site"
   description: |
     You've been on the Triboar Trail for about half a day. As
     you come around a bend, you spot two dead horses sprawled
@@ -20,3 +22,27 @@
             |                   |                   |
             |                   |                   |
             +---------- SOUTH EMBANKMENT -----------+
+
+# Cragmaw Entrance
+
+- id: cragmaw_entrance
+  entrance: cragmaw_entrance_goblin_trail
+  display_name: "Cragmaw Hideout Entrance"
+  description: |
+    The goblin trail opens up to a large clearing in the woods. At the north
+    end of the clearing you see the opening of a cave. A shallow stream flows
+    out of the cave mouth, continuing on past you to the south. To the east
+    of the cave mouth, to your right, are dense briar thickets. To your west,
+    the clearing eventually fades into more woods.
+  map: |
+    ~Cragmaw Hideout Entrance~
+
+      CAVE ENTRANCE ------ EASTERN THICKETS
+           |
+           |
+        CLEARING
+           |
+           |
+           |
+           |
+      GOBLIN TRAIL

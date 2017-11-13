@@ -3,15 +3,17 @@
 require_relative 'dnd'
 
 class MainMenuHandler
-  MENU_OPTIONS = ['view party equipment',
+  MENU_OPTIONS = ['travel to new area',
+                  'view party equipment',
                   'view player profiles',
                   'choose player turn',
                   'save and quit']
 
-  attr_reader :players, :locations
+  attr_reader :players, :areas, :locations
 
-  def initialize(players, locations)
+  def initialize(players, areas, locations)
     @players = players
+    @areas = areas
     @locations = locations
   end
 
@@ -29,11 +31,22 @@ class MainMenuHandler
     choice = Menu.choose_from_menu(MENU_OPTIONS)
 
     case choice
+    when 'travel to new area' then travel
     when 'view party equipment' then view_party_equipment
     when 'view player profiles' then view_player_profiles
     when 'choose player turn' then player_turn
     when 'save and quit' then save_and_quit
     end
+  end
+
+  def travel
+    display_summary(players)
+    puts "Where would the party like to travel to?"
+    other_areas = areas.select do |area|
+      area.id != players.first.area.id
+    end
+    area = Menu.choose_from_menu(other_areas)
+    players.set_destination(area, locations)
   end
 
   def view_party_equipment

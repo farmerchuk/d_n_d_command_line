@@ -1,6 +1,10 @@
 # player_list.rb
 
+require_relative 'dnd'
+
 class PlayerList
+  include Helpers::Data
+
   attr_reader :players
 
   def initialize
@@ -42,6 +46,13 @@ class PlayerList
   def set_current_turn!(current_player)
     unset_current_turn_all_players!
     current_player.set_current_turn!
+  end
+
+  def set_destination(area, locations)
+    players.each do |player|
+      player.area = area
+      player.location = retrieve(area.entrance, locations)
+    end
   end
 
   def unset_current_turn_all_players!

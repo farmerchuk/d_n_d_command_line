@@ -1,12 +1,13 @@
 # events.yml
 
-# Scripting notes:
-# The instance variable '@player' can be accessed by invoking
-# the instance method 'player'.
+# available variables:
 
-- id: area_1_event_3
-  location_id: area_1_dead_horses
-  encounter_id: area_1_enounter_1
+# available methods:
+
+
+- id: goblin_ambush_event_1
+  location_id: goblin_ambush_dead_horses
+  encounter_id: goblin_ambush_encounter_1
   trigger: examine
   description: |
     The saddlebags have been looted. Nearby lies an empty
@@ -17,11 +18,10 @@
     beyond the northern embankment and two from the thickets
     beyond the southern embankment!
   script: |
-    EncounterHandler.new('area_1_encounter_1', players, locations).run
+    EncounterHandler.new('goblin_ambush_encounter_1', players, locations).run
 
-- id: area_1_event_4
-  location_id: area_1_dead_horses
-  encounter_id:
+- id: goblin_ambush_event_2
+  location_id: goblin_ambush_dead_horses
   trigger: search
   description: "You find 10 gold with a sword and shield!"
   script: |

@@ -29,7 +29,7 @@ class Game
     stage_players
     set_current_player
 
-    MainMenuHandler.new(players, locations).run
+    MainMenuHandler.new(players, areas, locations).run
   end
 
   private
@@ -51,6 +51,8 @@ class Game
     areas_data.each do |area|
       new_area = Area.new
       new_area.id = area['id']
+      new_area.entrance = area['entrance']
+      new_area.display_name = area['display_name']
       new_area.description = area['description']
       new_area.map = area['map']
       areas << new_area

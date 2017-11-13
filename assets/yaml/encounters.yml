@@ -1,6 +1,8 @@
 # encounter.yml
 
-- id: area_1_encounter_1
+# engagement_ids must start with 'battle' or 'conversation'
+
+- id: goblin_ambush_encounter_1
   engagement_ids:
-    - battle_4_goblins
-    - conversation_goblin
+    - battle_goblin_ambush_4_goblins
+    - conversation_goblin_ambush_goblin
