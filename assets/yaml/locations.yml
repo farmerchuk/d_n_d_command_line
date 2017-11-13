@@ -103,7 +103,7 @@
     in the briar thickets apperas to have been cleared out. Wooden planks
     cross the stream, providing a path into the hidden clearing.
 
-- id: cragmaw_entrance_cave_entrance
+- id: cragmaw_entrance_east_thickets
   area_id: cragmaw_entrance
   path_ids:
     - cragmaw_entrance_cave_entrance
