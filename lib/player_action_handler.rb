@@ -95,6 +95,7 @@ class PlayerActionHandler
       display_summary
       display_event_description
       eval(script) if script
+      Game.add_completed_event(event.id)
       reset_event
     else
       display_summary
@@ -114,14 +115,18 @@ class PlayerActionHandler
   end
 
   def set_event
+    event = nil
     events.each do |evt|
       if evt.trigger == current_player.action &&
-         evt.location == current_player.location
-        self.event = evt
+           evt.location == current_player.location
+         event = evt
       end
     end
 
-    self.script = event && event.script ? event.script : nil
+    if event
+      self.event = event unless Game.completed_events.include?(event.id)
+      self.script = event && event.script ? event.script : nil
+    end
   end
 
   def reset_event

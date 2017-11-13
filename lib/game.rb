@@ -5,10 +5,20 @@ require_relative 'dnd'
 class Game
   include Helpers::Data
 
+  @@completed_events = [] # Array of String
+
+  def self.completed_events
+    @@completed_events
+  end
+
+  def self.add_completed_event(event_id)
+    @@completed_events << event_id
+  end
+
   def initialize
     @players = PlayerList.new
-    @areas = []
-    @locations = []
+    @areas = [] # Array of Area
+    @locations = [] # Array of Location
 
     build_resources
   end
