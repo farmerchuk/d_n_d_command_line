@@ -3,13 +3,16 @@
 require_relative 'dnd'
 
 class PlayerActionHandler
-  attr_accessor :players, :current_player, :locations,
+  include Helpers::Data
+
+  attr_accessor :players, :current_player, :locations, :areas,
                 :events, :event, :script, :action_success
 
-  def initialize(players, locations)
+  def initialize(players, locations, areas)
     @players = players
     @current_player = players.current
     @locations = locations
+    @areas = areas
     @events = []
     @event = nil
     @script = nil
@@ -140,7 +143,7 @@ class PlayerActionHandler
   end
 
   def display_event_description
-    puts event.description
+    puts event.description if event.description
   end
 
   def player_move

@@ -4,27 +4,58 @@
 
 # available methods:
 
+# Goblin Ambush
 
 - id: goblin_ambush_event_1
   location_id: goblin_ambush_dead_horses
   encounter_id: goblin_ambush_encounter_1
   trigger: examine
   description: |
-    The saddlebags have been looted. Nearby lies an empty
-    leather map case.
-
-    As you're examining the dead horses, your party is suddenly
-    attacked by four vicious goblins. Two burst from the thickets
-    beyond the northern embankment and two from the thickets
-    beyond the southern embankment!
-  script: |
-    EncounterHandler.new('goblin_ambush_encounter_1', players, locations).run
+    The saddlebags have been looted. Nearby lies an empty leather map case.
 
 - id: goblin_ambush_event_2
   location_id: goblin_ambush_dead_horses
   trigger: search
-  description: "You find 10 gold with a sword and shield!"
+  description: |
+    You find 10 gold with a sword and shield!
   script: |
     current_player.backpack.purse + 10
     current_player.backpack.add(Equipment.build_weapon('basic_shortsword'))
     current_player.backpack.add(Equipment.build_armor('basic_shield'))
+
+- id: goblin_ambush_event_3
+  location_id: goblin_ambush_dead_horses
+  trigger: move
+  description: |
+      As you begin to step away from the dead horses, your party is suddenly
+      attacked by four vicious goblins. Two burst from the thickets beyond
+      the northern embankment and two from the thickets beyond the southern
+      embankment!
+  script: |
+    EncounterHandler.new('goblin_ambush_encounter_1',
+                          players,
+                          locations).run
+
+- id: goblin_ambush_event_4
+  location_id: goblin_ambush_north_embankment
+  trigger: examine
+  description: |
+    You notice that the thicket is a bit lighter here. Some of the branches
+    have been broken and it appears as though there are fresh footprints in
+    the dirt.
+
+- id: goblin_ambush_event_5
+  location_id: goblin_ambush_north_embankment
+  trigger: search
+  script: |
+    check = current_player.roll_wis_check
+    if check >= 10
+      area = retrieve("cragmaw_entrance", areas)
+      area.unlock!
+      puts "As you look closer, it's clear there is a trail that leads"
+      puts "north of here deeper into the woods. The trail is well worn and"
+      puts "appears to have been used quite recently."
+    else
+      puts "You look around the thicket but you don't notice anything else"
+      puts "out of the ordinary."
+    end

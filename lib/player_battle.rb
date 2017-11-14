@@ -8,7 +8,7 @@ class PlayerBattle < PlayerActionHandler
   attr_reader :action_type, :enemies, :all_entities
 
   def initialize(players, locations, enemies, all_entities)
-    super(players, locations)
+    super(players, locations, areas)
     @enemies = enemies
     @all_entities = all_entities
     @action_type = 'battle'

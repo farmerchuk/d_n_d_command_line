@@ -3,10 +3,11 @@
 require_relative 'dnd'
 
 class MainMenuHandler
-  MENU_OPTIONS = ['travel to new area',
+  MENU_OPTIONS = ['choose player turn',
+                  'view area map',
                   'view party equipment',
                   'view player profiles',
-                  'choose player turn',
+                  'travel to new area',
                   'save and quit']
 
   attr_reader :players, :areas, :locations
@@ -31,6 +32,7 @@ class MainMenuHandler
     choice = Menu.choose_from_menu(MENU_OPTIONS)
 
     case choice
+    when 'view area map' then view_map
     when 'travel to new area' then travel
     when 'view party equipment' then view_party_equipment
     when 'view player profiles' then view_player_profiles
@@ -39,11 +41,16 @@ class MainMenuHandler
     end
   end
 
+  def view_map
+    players.current.area.display_map
+    Menu.prompt_continue
+  end
+
   def travel
     display_summary(players)
     puts "Where would the party like to travel to?"
     other_areas = areas.select do |area|
-      area.id != players.first.area.id
+      area.id != players.first.area.id && area.unlocked?
     end
     area = Menu.choose_from_menu(other_areas)
     players.set_destination(area, locations)
@@ -81,7 +88,7 @@ class MainMenuHandler
   end
 
   def start_player_turn
-    PlayerExplore.new(players, locations).run
+    PlayerExplore.new(players, locations, areas).run
   end
 
   def display_summary(players)
@@ -103,11 +110,6 @@ class MainMenuHandler
     puts 'AREA DESCRIPTION'
     Menu.draw_line
     puts players.current.area.description
-    puts
-    puts
-    puts 'AREA MAP'
-    Menu.draw_line
-    puts players.first.area.map
     puts
     puts
     puts 'MAIN MENU'

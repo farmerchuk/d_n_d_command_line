@@ -6,7 +6,7 @@ class PlayerExplore < PlayerActionHandler
 
   attr_reader :action_type
 
-  def initialize(players, locations)
+  def initialize(players, locations, areas)
     super
     @action_type = 'explore'
   end

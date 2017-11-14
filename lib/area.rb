@@ -1,11 +1,12 @@
 # area.rb
 
 class Area
-  attr_accessor :id, :entrance, :display_name, :description, :map
+  attr_accessor :id, :locked, :entrance, :display_name, :description, :map
   attr_reader :locations
 
   def initialize
     @id = nil # String
+    @locked = nil # Boolean
     @entrance = nil # String
     @display_name = nil # String
     @description = nil # String
@@ -17,7 +18,24 @@ class Area
     locations << location
   end
 
+  def unlock!
+    self.locked = false
+  end
+
+  def unlocked?
+    !locked
+  end
+
   def to_s
     display_name
+  end
+
+  def display_map
+    Menu.clear_screen
+    puts 'AREA MAP'
+    Menu.draw_line
+    puts map
+    puts
+    puts
   end
 end

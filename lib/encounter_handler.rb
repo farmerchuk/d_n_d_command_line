@@ -17,7 +17,7 @@ class EncounterHandler
 
   def run
     Menu.prompt_encounter_start
-    
+
     engagement_ids.each do |engagement_id|
       if get_engagement_id_prefix(engagement_id) == 'battle'
         BattleHandler.new(

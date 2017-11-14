@@ -3,8 +3,9 @@
 # Goblin Ambush
 
 - id: goblin_ambush
+  locked: false
   entrance: goblin_ambush_west_trail
-  display_name: "Triboar Trail - Goblin Ambush Site"
+  display_name: "Goblin Ambush Site"
   description: |
     You've been on the Triboar Trail for about half a day. As
     you come around a bend, you spot two dead horses sprawled
@@ -13,12 +14,16 @@
     press close to the trail here, with a steep embankment and
     dense thickets to the north and south.
   map: |
-    ~Triboar Trail~
+    GOBLIN AMBUSH SITE:
+
+
+                    CRAGMAW HIDEOUT ENTRANCE
+                                ^
 
             +---------- NORTH EMBANKMENT -----------+
             |                   |                   |
             |                   |                   |
-      WESTERN TRAIL ------ DEAD HORSES ------ EASTERN TRAIL
+      WESTERN TRAIL ------ DEAD HORSES ------ EASTERN TRAIL   > PHANDALIN
             |                   |                   |
             |                   |                   |
             +---------- SOUTH EMBANKMENT -----------+
@@ -26,6 +31,7 @@
 # Cragmaw Entrance
 
 - id: cragmaw_entrance
+  locked: true
   entrance: cragmaw_entrance_goblin_trail
   display_name: "Cragmaw Hideout Entrance"
   description: |
@@ -35,14 +41,32 @@
     of the cave mouth, to your right, are dense briar thickets. To your west,
     the clearing eventually fades into more woods.
   map: |
-    ~Cragmaw Hideout Entrance~
+    CRAGMAW HIDEOUT ENTRANCE:
 
-      CAVE ENTRANCE ------ EASTERN THICKETS
-           |
-           |
-        CLEARING
-           |
-           |
-           |
-           |
-      GOBLIN TRAIL
+
+        CRAGMAW CAVE
+             ^
+
+        CAVE ENTRANCE ------ EASTERN THICKETS
+             |
+             |
+          CLEARING
+             |
+             |
+             |
+             |
+        GOBLIN TRAIL
+
+             v
+       TRIBOAR TRAIL
+     GOBLIN AMBUSH SITE
+
+
+- id: phandalin
+  locked: false
+  entrance: phandalin_north_trail
+  display_name: "Phandalin"
+  description: |
+    Description goes here.
+  map: |
+    PHANDALIN:
