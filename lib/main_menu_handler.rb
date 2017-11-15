@@ -3,6 +3,8 @@
 require_relative 'dnd'
 
 class MainMenuHandler
+  include Helpers::Data
+
   MENU_OPTIONS = ['choose player turn',
                   'view area map',
                   'view party equipment',
@@ -19,6 +21,10 @@ class MainMenuHandler
   end
 
   def run
+    initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
+    starting_area = retrieve(initialize_data['area_id'], areas)
+    display_area_narrative(starting_area)
+
     loop do
       display_summary(players)
       select_from_main_menu
@@ -53,7 +59,17 @@ class MainMenuHandler
       area.id != players.first.area.id && area.unlocked?
     end
     area = Menu.choose_from_menu(other_areas)
+    display_area_narrative(area) if area.narrative
     players.set_destination(area, locations)
+  end
+
+  def display_area_narrative(area)
+    unless Game.completed_area_narratives.include?(area.id)
+      display_narrative_header
+      puts area.narrative
+      Game.add_completed_area_narrative(area.id)
+      Menu.prompt_continue
+    end
   end
 
   def view_party_equipment
@@ -89,6 +105,12 @@ class MainMenuHandler
 
   def start_player_turn
     PlayerExplore.new(players, locations, areas).run
+  end
+
+  def display_narrative_header
+    Menu.clear_screen
+    puts 'NARRATIVE INTERLUDE'
+    Menu.draw_line
   end
 
   def display_summary(players)

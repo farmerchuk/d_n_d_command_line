@@ -6,6 +6,7 @@ class Game
   include Helpers::Data
 
   @@completed_events = [] # Array of String
+  @@completed_area_narratives = [] # Array of String
 
   def self.completed_events
     @@completed_events
@@ -13,6 +14,14 @@ class Game
 
   def self.add_completed_event(event_id)
     @@completed_events << event_id
+  end
+
+  def self.completed_area_narratives
+    @@completed_area_narratives
+  end
+
+  def self.add_completed_area_narrative(area_id)
+    @@completed_area_narratives << area_id
   end
 
   def initialize
@@ -54,6 +63,7 @@ class Game
       new_area.locked = area['locked']
       new_area.entrance = area['entrance']
       new_area.display_name = area['display_name']
+      new_area.narrative = area['narrative']
       new_area.description = area['description']
       new_area.map = area['map']
       areas << new_area
