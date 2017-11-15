@@ -52,9 +52,14 @@
     if check >= 10
       area = retrieve("cragmaw_entrance", areas)
       area.unlock!
+      location = retrieve("cragmaw_entrance_goblin_trail", locations)
+      location.unlock!
+
       puts "As you look closer, it's clear there is a trail that leads"
       puts "north of here deeper into the woods. The trail is well worn and"
       puts "appears to have been used quite recently."
+      puts
+      puts "A new path has opened!"
     else
       puts "You look around the thicket but you don't notice anything else"
       puts "out of the ordinary."

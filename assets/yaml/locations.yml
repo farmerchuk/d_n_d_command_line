@@ -3,6 +3,7 @@
 # Locations for Goblin Ambush
 
 - id: goblin_ambush_west_trail
+  locked: false
   area_id: goblin_ambush
   path_ids:
     - goblin_ambush_dead_horses
@@ -16,6 +17,7 @@
     dense thickets beyond.
 
 - id: goblin_ambush_east_trail
+  locked: false
   area_id: goblin_ambush
   path_ids:
     - goblin_ambush_dead_horses
@@ -30,11 +32,13 @@
     embankments and dense thickets beyond.
 
 - id: goblin_ambush_north_embankment
+  locked: false
   area_id: goblin_ambush
   path_ids:
     - goblin_ambush_dead_horses
     - goblin_ambush_west_trail
     - goblin_ambush_east_trail
+    - cragmaw_entrance_goblin_trail # Connects to Cragmaw Entrance
   display_name: "Northern embankment"
   description: |
     The woods press close here and it's difficult to see further
@@ -43,6 +47,7 @@
     stretches on.
 
 - id: goblin_ambush_south_embankment
+  locked: false
   area_id: goblin_ambush
   path_ids:
     - goblin_ambush_dead_horses
@@ -56,6 +61,7 @@
     continues on.
 
 - id: goblin_ambush_dead_horses
+  locked: false
   area_id: goblin_ambush
   path_ids:
     - goblin_ambush_north_embankment
@@ -73,15 +79,19 @@
 # Locations for Cragmaw Entrance
 
 - id: cragmaw_entrance_goblin_trail
+  locked: true
   area_id: cragmaw_entrance
   path_ids:
     - cragmaw_entrance_clearing
+    - goblin_ambush_north_embankment # Connects to Triboar Trail
   display_name: "Goblin Trail"
   description: |
-    A well used trail through the bush. To the south from where you came is
-    the Triboar Trail. To your north is the large clearing.
+    The woods press close to your sides, but the trail through the bush is
+    well used. It's clear the goblins have been active here for a while. To
+    the south is the Triboar Trail. To your north is the large clearing.
 
 - id: cragmaw_entrance_clearing
+  locked: false
   area_id: cragmaw_entrance
   path_ids:
     - cragmaw_entrance_goblin_trail
@@ -93,6 +103,7 @@
     your righthand side, to the south of the clearing.
 
 - id: cragmaw_entrance_cave_entrance
+  locked: false
   area_id: cragmaw_entrance
   path_ids:
     - cragmaw_entrance_clearing
@@ -104,6 +115,7 @@
     cross the stream, providing a path into the hidden clearing.
 
 - id: cragmaw_entrance_east_thickets
+  locked: false
   area_id: cragmaw_entrance
   path_ids:
     - cragmaw_entrance_cave_entrance

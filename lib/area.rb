@@ -1,7 +1,7 @@
 # area.rb
 
 class Area
-  attr_accessor :id, :locked, :entrance, :display_name, :narrative,
+  attr_accessor :id, :locked, :entrance, :display_name, :introduction,
                 :description, :map, :locations
 
   def initialize
@@ -9,7 +9,7 @@ class Area
     @locked = nil # Boolean
     @entrance = nil # String
     @display_name = nil # String
-    @narrative = nil # String
+    @introduction = nil # String
     @description = nil # String
     @map = nil # String
     @locations = [] # Array of Locations

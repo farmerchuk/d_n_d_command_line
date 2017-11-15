@@ -48,7 +48,7 @@ class PlayerList
     current_player.set_current_turn!
   end
 
-  def set_destination(area, locations)
+  def set_new_area(area, locations)
     players.each do |player|
       player.area = area
       player.location = retrieve(area.entrance, locations)

@@ -92,23 +92,28 @@ class PlayerActionHandler
   end
 
   def execute_player_action
-    set_event
+    if !event && current_player.action != 'move'
+      display_summary
+      execute_chosen_action
+    end
 
+    if current_player.action == 'move'
+      display_summary
+      player_move
+      MainMenuHandler.display_area_introduction(current_player.area)
+    end
+
+    set_event
     if event
       display_summary
       display_event_description
       eval(script) if script
-      Game.add_completed_event(event.id)
       reset_event
-    else
-      display_summary
-      execute_chosen_action
     end
   end
 
   def execute_chosen_action
     case current_player.action
-    when 'move' then player_move
     when 'examine' then player_examine
     when 'search' then player_search
     when 'wait' then player_wait
@@ -122,22 +127,23 @@ class PlayerActionHandler
   end
 
   def set_event
-    event = nil
+    new_event = nil
     events.each do |evt|
       if evt.trigger == current_player.action &&
-           evt.location == current_player.location
-         event = evt
+           evt.location == current_player.location &&
+           !Game.completed_events.include?(evt.id)
+         new_event = evt
+         Game.add_completed_event(evt.id)
       end
     end
 
-    if event
-      self.event = event unless Game.completed_events.include?(event.id)
+    if new_event
+      self.event = new_event
       self.script = event && event.script ? event.script : nil
     end
   end
 
   def reset_event
-    return unless event
     self.event = nil
     self.script = nil
   end
@@ -148,8 +154,30 @@ class PlayerActionHandler
 
   def player_move
     puts "Where would #{current_player.name} like to move to?"
-    available_locations = current_player.location.paths
-    current_player.location = Menu.choose_from_menu(available_locations)
+    available_locations = current_player.available_paths
+    new_location = Menu.choose_from_menu(available_locations)
+
+    if new_location.area_id != current_player.location.area_id
+      display_new_area_alert
+
+      choice = Menu.choose_from_menu(['yes', 'no'])
+      if choice == 'yes'
+        new_area = retrieve(new_location.area_id, areas)
+        players.set_new_area(new_area, locations)
+        puts "You collect your party and move to #{new_area}."
+        Menu.prompt_continue
+      else
+        action_fail
+      end
+    else
+      current_player.location = new_location
+    end
+  end
+
+  def display_new_area_alert
+    display_summary
+    puts "This will move the entire party to a new area. Are you sure you"
+    puts "want to proceed?"
   end
 
   def player_examine

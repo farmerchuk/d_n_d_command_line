@@ -56,7 +56,7 @@ class EnemyBattle
   def get_next_location
     distances = Hash.new { |hash, key| hash[key] = [] }
 
-    current_player.location.paths.each do |location|
+    current_player.available_paths.each do |location|
       players.each do |player|
         distance = location.distance_to(player.location)
         distances[distance] << location

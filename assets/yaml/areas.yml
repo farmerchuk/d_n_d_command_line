@@ -5,8 +5,8 @@
 - id: goblin_ambush
   locked: false
   entrance: goblin_ambush_west_trail
-  display_name: "Goblin Ambush Site"
-  narrative: |
+  display_name: "Triboar Trail - Goblin Ambush Site"
+  introduction: |
     In the city of Neverwinter, a dwarf named Gundren Rockseeker asked you to
     bring a wagonload of provisions to the rough-and-tumble settlement of
     Phandalin, a couple of days' travel southeast of the city. Gundren was
@@ -29,7 +29,7 @@
     press close to the trail here, with a steep embankment and
     dense thickets to the north and south.
   map: |
-    GOBLIN AMBUSH SITE:
+    TRIBOAR TRAIL - GOBLIN AMBUSH SITE:
 
 
                     CRAGMAW HIDEOUT ENTRANCE
@@ -49,6 +49,8 @@
   locked: true
   entrance: cragmaw_entrance_goblin_trail
   display_name: "Cragmaw Hideout Entrance"
+  introduction: |
+    This will be the introduction for Cragmaw Hideout Entrance.
   description: |
     The goblin trail opens up to a large clearing in the woods. At the north
     end of the clearing you see the opening of a cave. A shallow stream flows

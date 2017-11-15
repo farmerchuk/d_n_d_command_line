@@ -221,6 +221,14 @@ class Player
 
   # actions
 
+  def available_paths
+    location.paths.select { |path| path.unlocked? }
+  end
+
+  def available_paths_during_battle
+    available_paths.select { |path| path.area_id == area.id }
+  end
+
   def start_turn
     self.wait = false
   end

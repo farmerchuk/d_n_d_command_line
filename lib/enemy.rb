@@ -99,6 +99,10 @@ class Enemy
 
   # other
 
+  def available_paths
+    location.paths.select { |path| path.area_id == location.area_id }
+  end
+
   def set_current_turn!
     self.current_turn = true
   end

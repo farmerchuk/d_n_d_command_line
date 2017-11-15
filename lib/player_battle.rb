@@ -14,6 +14,13 @@ class PlayerBattle < PlayerActionHandler
     @action_type = 'battle'
   end
 
+  def player_move
+    puts "Where would #{current_player.name} like to move to?"
+    available_locations =
+      current_player.available_paths_during_battle
+    current_player.location = Menu.choose_from_menu(available_locations)
+  end
+
   def player_attack
     targets = targets_in_range(enemies)
 
@@ -27,6 +34,7 @@ class PlayerBattle < PlayerActionHandler
       action_fail
     else
       target_enemy = select_enemy_to_attack(targets)
+      display_summary
       hit = attack_successful?(target_enemy)
       damage = resolve_damage(target_enemy) if hit
       display_attack_summary(hit, damage, target_enemy)

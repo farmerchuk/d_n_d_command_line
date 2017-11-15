@@ -9,7 +9,7 @@ class MainMenuHandler
                   'view area map',
                   'view party equipment',
                   'view player profiles',
-                  'travel to new area',
+                  'fast travel',
                   'save and quit']
 
   attr_reader :players, :areas, :locations
@@ -23,7 +23,7 @@ class MainMenuHandler
   def run
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
     starting_area = retrieve(initialize_data['area_id'], areas)
-    display_area_narrative(starting_area)
+    display_area_introduction(starting_area)
 
     loop do
       display_summary(players)
@@ -39,7 +39,7 @@ class MainMenuHandler
 
     case choice
     when 'view area map' then view_map
-    when 'travel to new area' then travel
+    when 'fast travel' then travel
     when 'view party equipment' then view_party_equipment
     when 'view player profiles' then view_player_profiles
     when 'choose player turn' then player_turn
@@ -59,15 +59,19 @@ class MainMenuHandler
       area.id != players.first.area.id && area.unlocked?
     end
     area = Menu.choose_from_menu(other_areas)
-    display_area_narrative(area) if area.narrative
-    players.set_destination(area, locations)
+    display_area_introduction(area)
+    players.set_new_area(area, locations)
   end
 
-  def display_area_narrative(area)
-    unless Game.completed_area_narratives.include?(area.id)
-      display_narrative_header
-      puts area.narrative
-      Game.add_completed_area_narrative(area.id)
+  def display_area_introduction(area)
+    self.class.display_area_introduction(area)
+  end
+
+  def self.display_area_introduction(area)
+    if area.introduction && !Game.completed_area_introductions.include?(area.id)
+      MainMenuHandler.display_introduction_header
+      puts area.introduction
+      Game.add_completed_area_introduction(area.id)
       Menu.prompt_continue
     end
   end
@@ -107,9 +111,9 @@ class MainMenuHandler
     PlayerExplore.new(players, locations, areas).run
   end
 
-  def display_narrative_header
+  def self.display_introduction_header
     Menu.clear_screen
-    puts 'NARRATIVE INTERLUDE'
+    puts 'AREA INTRODUCTION'
     Menu.draw_line
   end
 
@@ -129,7 +133,7 @@ class MainMenuHandler
     end
     puts
     puts
-    puts 'AREA DESCRIPTION'
+    puts "AREA DESCRIPTION: #{players.current.area}"
     Menu.draw_line
     puts players.current.area.description
     puts

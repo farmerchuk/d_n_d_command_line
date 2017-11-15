@@ -1,11 +1,12 @@
 # location.rb
 
 class Location
-  attr_accessor :id, :area, :area_id, :display_name, :description, :events,
-                :path_ids, :paths
+  attr_accessor :id, :locked, :area, :area_id, :display_name, :description,
+                :events, :path_ids, :paths
 
   def initialize
     @id = nil # String
+    @locked = nil # Boolean
     @area_id = nil # String
     @area = nil # Area
     @display_name = nil # String
@@ -24,6 +25,14 @@ class Location
 
     checked_path_ids = []
     jumps(self, location.id, checked_path_ids)
+  end
+
+  def unlock!
+    self.locked = false
+  end
+
+  def unlocked?
+    !locked
   end
 
   def to_s
