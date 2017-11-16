@@ -27,9 +27,9 @@
   location_id: goblin_ambush_dead_horses
   trigger: move
   description: |
-      As you begin to step away from the dead horses, your party is suddenly
+      As you approach the dead horses for a closer look, your party is suddenly
       attacked by four vicious goblins. Two burst from the thickets beyond
-      the northern embankment and two from the thickets beyond the southern
+      the northern embankment and two more from the thickets beyond the southern
       embankment!
   script: |
     EncounterHandler.new('goblin_ambush_encounter_1',

@@ -24,6 +24,7 @@ class MainMenuHandler
     initialize_data = YAML.load_file('../assets/yaml/initialize.yml')
     starting_area = retrieve(initialize_data['area_id'], areas)
     display_area_introduction(starting_area)
+    Menu.prompt_continue
 
     loop do
       display_summary(players)
@@ -72,7 +73,6 @@ class MainMenuHandler
       MainMenuHandler.display_introduction_header
       puts area.introduction
       Game.add_completed_area_introduction(area.id)
-      Menu.prompt_continue
     end
   end
 
@@ -83,7 +83,7 @@ class MainMenuHandler
 
   def view_player_profiles
     display_summary(players)
-    puts "Who's profile would you like to view?"
+    puts "Whose profile would you like to view?"
     player = Menu.choose_from_menu(players.to_a)
 
     player.view

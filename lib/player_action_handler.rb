@@ -47,16 +47,9 @@ class PlayerActionHandler
 
   def run
     build_events
-
     display_summary
     current_player.start_turn
-
-    2.times do |n|
-      display_summary
-      cycle_action(n)
-      Menu.prompt_continue
-    end
-
+    run_actions
     display_summary
     Menu.prompt_end_player_turn
   end
@@ -68,6 +61,14 @@ class PlayerActionHandler
   def end_action
     current_player.end_action
     self.action_success = true
+  end
+
+  def run_actions
+    2.times do |n|
+      display_summary
+      cycle_action(n)
+      Menu.prompt_continue
+    end
   end
 
   def cycle_action(n)
@@ -92,23 +93,33 @@ class PlayerActionHandler
   end
 
   def execute_player_action
+    execute_non_move_no_event
+    execute_move
+    execute_event
+  end
+
+  def execute_non_move_no_event
     if !event && current_player.action != 'move'
       display_summary
       execute_chosen_action
     end
+  end
 
+  def execute_move
     if current_player.action == 'move'
       display_summary
       player_move
       MainMenuHandler.display_area_introduction(current_player.area)
     end
+  end
 
+  def execute_event
     set_event
     if event
       display_summary
       display_event_description
       eval(script) if script
-      reset_event
+      end_event
     end
   end
 
@@ -137,13 +148,17 @@ class PlayerActionHandler
       end
     end
 
+    set_event_and_script(new_event)
+  end
+
+  def set_event_and_script(new_event)
     if new_event
       self.event = new_event
       self.script = event && event.script ? event.script : nil
     end
   end
 
-  def reset_event
+  def end_event
     self.event = nil
     self.script = nil
   end
@@ -159,16 +174,7 @@ class PlayerActionHandler
 
     if new_location.area_id != current_player.location.area_id
       display_new_area_alert
-
-      choice = Menu.choose_from_menu(['yes', 'no'])
-      if choice == 'yes'
-        new_area = retrieve(new_location.area_id, areas)
-        players.set_new_area(new_area, locations)
-        puts "You collect your party and move to #{new_area}."
-        Menu.prompt_continue
-      else
-        action_fail
-      end
+      confirm_proceed_to_new_location(new_location)
     else
       current_player.location = new_location
     end
@@ -178,6 +184,18 @@ class PlayerActionHandler
     display_summary
     puts "This will move the entire party to a new area. Are you sure you"
     puts "want to proceed?"
+  end
+
+  def confirm_proceed_to_new_location(location)
+    choice = Menu.choose_from_menu(['yes', 'no'])
+    if choice == 'yes'
+      new_area = retrieve(location.area_id, areas)
+      players.set_new_area(new_area, locations)
+      puts "You collect your party and move to #{new_area}."
+      Menu.prompt_continue
+    else
+      action_fail
+    end
   end
 
   def player_examine
