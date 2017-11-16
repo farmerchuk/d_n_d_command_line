@@ -39,7 +39,7 @@
   display_name: "Burning Hands 1"
   dice: 3d6
   effect: damage
-  stat_desc: "3d6 damage to a single target. Range: 0"
+  stat_desc: "3d6 damage to a single target. Range: 0 (from caster)"
   general_desc: |
     As you hold your hands with thumbs touching and fingers spread, a thin
     sheet of flames shoots forth from your outstretched fingertips.
@@ -70,7 +70,7 @@
   display_name: "Cure Wounds 1"
   dice: 1d8 + 3
   effect: heal
-  stat_desc: "Heals a single ally by 1d8 + 3 HP. Range: 0"
+  stat_desc: "Heals a single ally by 1d8 + 3 HP. Range: 0 (from caster)"
   general_desc: |
     As you place your hands on the wounded, they begin to glow with a gentle
     healing light.
@@ -89,3 +89,29 @@
     end
 
     puts "#{caster} heals #{target} by #{hp} HPs."
+
+- id: aid_1
+  level: 1
+  display_name: "Aid 1"
+  effect: status
+  stat_desc: "Boosts max / current HP of all allies by 5. Range: 0 (from target)"
+  general_desc: |
+    Your spell bolsters your allies with toughness as resolve.
+  roles:
+    - cleric
+  when: battle
+  target_type: player
+  range: 0
+  aoe: all
+  script: |
+    affected = []
+    players.each do |player|
+      if player.location.distance_to(target.location) == 0
+        player.add_battle_status_effect(:current_hp, 5)
+        player.add_battle_status_effect(:max_up, 5)
+        affected << player
+      end
+    end
+
+    affected.map! { |player| player.name }
+    puts "#{affected.join(', ')} bolstered!"

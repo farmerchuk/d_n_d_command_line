@@ -28,8 +28,6 @@ class BattleHandler
       set_current_turn(entity)
       entity.instance_of?(Player) ? player_turn : enemy_turn(entity)
     end
-
-    battle_cleanup
   end
 
   private
@@ -64,11 +62,6 @@ class BattleHandler
         entity.unset_current_turn!
       end
     end
-  end
-
-  def battle_cleanup
-    players.set_current_turn!(current_player)
-    players.reset_casts
   end
 
   def player_turn

@@ -21,8 +21,8 @@ class Player
 
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
-                :action, :wait,
-                :current_hp, :spells, :equipped_spell,
+                :action, :wait, :status_effects,
+                :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
 
@@ -36,6 +36,7 @@ class Player
     @current_turn = false # Boolean
     @action = nil # String
     @wait = false # Boolean
+    @status_effects = StatusEffect.new # StatusEffect
     @current_hp = nil # Integer
     @spells = nil # Array of Spell
     @backpack = nil # Backpack
@@ -149,10 +150,16 @@ class Player
 
   # other stats
 
+  def current_hp
+    @current_hp + status_effects.current_hp
+  end
+
+  def current_hp=(new_hp)
+    @current_hp = new_hp
+  end
+
   def max_hp
-    lv_1_hp = role.hit_die + con_mod
-    lv_x_hp = (role.hit_die / 2 + 1 + con_mod) * (role.level - 1)
-    lv_1_hp + lv_x_hp
+    role.hit_die + con_mod + status_effects.max_hp
   end
 
   def armor_class
@@ -259,6 +266,27 @@ class Player
   end
 
   # other methods
+
+  def add_battle_status_effect(attribute, factor)
+    status_effects.add_battle(attribute, factor)
+  end
+
+  def add_long_term_status_effect(attribute, factor)
+    status_effects.add_long_term(attribute, factor)
+  end
+
+  def clear_all_battle_status_effects
+    status_effects.clear_all_battle
+  end
+
+  def clear_all_long_term_status_effects
+    status_effects.clear_all_long_term
+  end
+
+  def clear_all_status_effects
+    clear_all_battle_status_effects
+    clear_all_long_term_status_effects
+  end
 
   def set_current_hp_to_max
     self.current_hp = max_hp

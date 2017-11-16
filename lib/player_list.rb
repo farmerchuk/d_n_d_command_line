@@ -59,6 +59,18 @@ class PlayerList
     players.each { |player| player.unset_current_turn! }
   end
 
+  def clear_all_battle_status_effects
+    players.each do |player|
+      player.clear_all_battle_status_effects
+    end
+  end
+
+  def clear_all_status_effects
+    players.each do |player|
+      player.clear_all_status_effects
+    end
+  end
+
   def reset_casts
     players.each do |player|
       player.reset_casts_remaining if player.caster
