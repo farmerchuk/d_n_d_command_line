@@ -115,6 +115,10 @@ class Enemy
     current_hp > 0
   end
 
+  def dead?
+    current_hp <= 0
+  end
+
   def to_s
     name
   end

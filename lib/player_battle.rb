@@ -21,6 +21,15 @@ class PlayerBattle < PlayerActionHandler
     current_player.location = Menu.choose_from_menu(available_locations)
   end
 
+  def run_actions
+    2.times do |n|
+      next if enemies.all? { |enemy| enemy.dead? }
+      display_summary
+      cycle_action(n)
+      Menu.prompt_continue
+    end
+  end
+
   def player_attack
     targets = targets_in_range(enemies)
 

@@ -25,6 +25,8 @@ class Player
                 :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
+                
+  attr_writer   :current_hp
 
   def initialize
     @name = nil # String
@@ -152,10 +154,6 @@ class Player
 
   def current_hp
     @current_hp + status_effects.current_hp
-  end
-
-  def current_hp=(new_hp)
-    @current_hp = new_hp
   end
 
   def max_hp
