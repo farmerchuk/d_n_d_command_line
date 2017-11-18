@@ -245,7 +245,7 @@ class PlayerActionHandler
 
       if target
         display_summary
-        launch_spell(current_player, spell, target, players, enemies)
+        launch_spell(current_player, spell, target, players)
       else
         display_no_valid_targets
         action_fail
@@ -256,7 +256,7 @@ class PlayerActionHandler
     end
   end
 
-  def launch_spell(current_player, spell, target, players, enemies)
+  def launch_spell(current_player, spell, target, players)
     if action_type == 'explore'
       spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
@@ -270,7 +270,7 @@ class PlayerActionHandler
       current_player.spells.select { |spell| spell.when == action_type }
 
     available_spells.each_with_index do |spell, idx|
-      puts "#{idx}. #{spell.display_name} > " +
+      puts "#{idx}. #{spell.display_name}: " +
            "#{spell.stat_desc}"
     end
 
@@ -290,6 +290,8 @@ class PlayerActionHandler
       select_enemy_to_attack(targets)
     elsif current_player.equipped_spell.target_type == 'player'
       select_player_to_cast_on
+    elsif current_player.equipped_spell.target_type == 'self'
+      current_player
     end
   end
 

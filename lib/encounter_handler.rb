@@ -46,7 +46,6 @@ class EncounterHandler
 
   def clean_up
     players.set_current_turn!(current_player)
-    players.reset_casts
     players.clear_all_battle_status_effects
   end
 end

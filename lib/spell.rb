@@ -5,9 +5,9 @@ require_relative 'dnd'
 class Spell
   include Helpers::Dice
 
-  attr_accessor :id, :level, :save, :display_name, :dice, :effect,
+  attr_accessor :id, :level, :save, :display_name, :dice,
                 :stat_desc, :general_desc, :roles, :when, :target_type,
-                :range, :aoe, :script
+                :range, :script
 
   def self.generate_spells(role)
     spell_data = YAML.load_file('../assets/yaml/spells.yml')
@@ -22,13 +22,11 @@ class Spell
       new_spell.save = spell['save']
       new_spell.display_name = spell['display_name']
       new_spell.dice = spell['dice']
-      new_spell.effect = spell['effect']
       new_spell.stat_desc = spell['stat_desc']
       new_spell.general_desc = spell['general_desc']
       new_spell.when = spell['when']
       new_spell.target_type = spell['target_type']
       new_spell.range = spell['range']
-      new_spell.aoe = spell['aoe']
       new_spell.script = spell['script']
       spells << new_spell
     end
@@ -42,13 +40,11 @@ class Spell
     @save = nil # String
     @display_name = nil # String
     @dice = nil # String
-    @effect = nil # String
     @stat_desc = nil # String
     @general_desc = nil # String
     @when = nil # String
     @target_type = nil # String
     @range = nil # Integer
-    @aoe = nil # String
     @script = nil # String
   end
 

@@ -6,6 +6,7 @@ class MainMenuHandler
   include Helpers::Data
 
   MENU_OPTIONS = ['choose player turn',
+                  'party rest',
                   'view area map',
                   'view party equipment',
                   'view player profiles',
@@ -41,6 +42,7 @@ class MainMenuHandler
     case choice
     when 'view area map' then view_map
     when 'fast travel' then travel
+    when 'party rest' then party_rest
     when 'view party equipment' then view_party_equipment
     when 'view player profiles' then view_player_profiles
     when 'choose player turn' then player_turn
@@ -74,6 +76,12 @@ class MainMenuHandler
       puts area.introduction
       Game.add_completed_area_introduction(area.id)
     end
+  end
+
+  def party_rest
+    display_summary(players)
+    players.rest
+    Menu.prompt_continue
   end
 
   def view_party_equipment

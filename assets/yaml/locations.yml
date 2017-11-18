@@ -9,7 +9,7 @@
     - goblin_ambush_dead_horses
     - goblin_ambush_north_embankment
     - goblin_ambush_south_embankment
-  display_name: "Western trail"
+  display_name: "Western Trail"
   description: |
     An unremarkable stretch of road. You arrived from the west. No need
     to go back that way just now. To the east you see the dead horses.
@@ -23,7 +23,7 @@
     - goblin_ambush_dead_horses
     - goblin_ambush_north_embankment
     - goblin_ambush_south_embankment
-  display_name: "Eastern trail"
+  display_name: "Eastern Trail"
   description: |
     Here the trail is rough and rutted. Clearly the Triboar trail sees
     a lot of travel. To the west you see the dead horses. To to east
@@ -39,7 +39,7 @@
     - goblin_ambush_west_trail
     - goblin_ambush_east_trail
     - cragmaw_entrance_goblin_trail # Connects to Cragmaw Entrance
-  display_name: "Northern embankment"
+  display_name: "Northern Embankment"
   description: |
     The woods press close here and it's difficult to see further
     than a few yards into the thickets. To the south you see
@@ -53,7 +53,7 @@
     - goblin_ambush_dead_horses
     - goblin_ambush_west_trail
     - goblin_ambush_east_trail
-  display_name: "Southern embankment"
+  display_name: "Southern Embankment"
   description: |
     The woods press close here and it's difficult to see further
     than a few yards into the thickets. To the north you see
@@ -68,7 +68,7 @@
     - goblin_ambush_south_embankment
     - goblin_ambush_west_trail
     - goblin_ambush_east_trail
-  display_name: "Dead horses"
+  display_name: "Dead Horses"
   description: |
     The horses appear to have been dead for about a day. It's clear
     that the arrows killed the horses. To the east and west the

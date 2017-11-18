@@ -4,6 +4,7 @@
 # level: 1
 # save: dex
 # display_name: "Burning Hands 1"
+# dice: 3d6
 # stat_desc: "3d6 damage to a single target. Range: 0"
 # general_desc: |
 #   As you hold your hands with thumbs touching and figners spread, a thin
@@ -16,7 +17,6 @@
 #   - explore
 # target: enemy (or ally)
 # range: 0
-# aoe: single (or all)
 # script: |
 #   <code ...>
 
@@ -36,10 +36,9 @@
 - id: burning_hands_1
   level: 1
   save: dex
-  display_name: "Burning Hands 1"
+  display_name: "Burning Hands LV1"
   dice: 3d6
-  effect: damage
-  stat_desc: "3d6 damage to a single target. Range: 0 (from caster)"
+  stat_desc: "3d6 damage to single target. Range: 0 (from caster)"
   general_desc: |
     As you hold your hands with thumbs touching and fingers spread, a thin
     sheet of flames shoots forth from your outstretched fingertips.
@@ -48,7 +47,6 @@
   when: battle
   target_type: enemy
   range: 0
-  aoe: single
   script: |
     saved = enemy_save?(caster, target) if saving_throw?
     damage = roll_dice(dice)
@@ -58,19 +56,54 @@
     if saved
       puts "#{target} saved against #{caster}'s' spell!"
       puts
-      puts "You hit the #{target} and dealt #{damage} damage."
+      puts "You hit the #{target} dealing #{damage} damage."
     else
       puts "#{target}'s save against #{caster}'s spell failed!"
       puts
       puts "You hit the #{target} at full power and dealt #{damage} damage."
     end
 
+- id: magic_missile_1
+  level: 1
+  display_name: "Magic Missile LV1"
+  dice: 1d4 + 1
+  stat_desc: "3 x (1d4 + 1) damage to single target. Range: 2 (from caster)"
+  general_desc: |
+    You create three glowing darts of magical force. After a brief moment
+    suspended in the air in front of you, they streak forward towards their
+    target.
+  roles:
+    - wizard
+  when: battle
+  target_type: enemy
+  range: 2
+  script: |
+    damage = roll_dice(dice) + roll_dice(dice) + roll_dice(dice)
+    target.current_hp -= damage
+
+    puts "You hit the #{target} dealing #{damage} damage."
+
+- id: shield_1
+  level: 1
+  display_name: "Shield LV1"
+  stat_desc: "Raise your AC by 5 for 1 turn. (Range: Self)"
+  general_desc: |
+    An invisible barrier of magical force appears, protecting you from all
+    physical attacks until your next turn.
+  roles:
+    - wizard
+  when: battle
+  target_type: self
+  script: |
+    caster.add_turn_status_effect(:armor_class, 5)
+
+    puts "Barrier is now in force."
+
 - id: cure_wounds_1
   level: 1
-  display_name: "Cure Wounds 1"
+  display_name: "Cure Wounds LV1"
   dice: 1d8 + 3
-  effect: heal
-  stat_desc: "Heals a single ally by 1d8 + 3 HP. Range: 0 (from caster)"
+  stat_desc: "Heal single ally 1d8 + 3 HP. Range: 0 (from caster)"
   general_desc: |
     As you place your hands on the wounded, they begin to glow with a gentle
     healing light.
@@ -79,7 +112,6 @@
   when: battle
   target_type: player
   range: 0
-  aoe: single
   script: |
     hp = roll_dice(dice)
     target.current_hp += hp
@@ -92,23 +124,21 @@
 
 - id: aid_1
   level: 1
-  display_name: "Aid 1"
-  effect: status
-  stat_desc: "Boosts max / current HP of all allies by 5. Range: 0 (from target)"
+  display_name: "Aid LV1"
+  stat_desc: "Boosts Max HP of all allies by 5. Range: 0 (from target)"
   general_desc: |
     Your spell bolsters your allies with toughness as resolve.
   roles:
     - cleric
-  when: battle
+  when: explore
   target_type: player
   range: 0
-  aoe: all
   script: |
     affected = []
     players.each do |player|
       if player.location.distance_to(target.location) == 0
-        player.add_battle_status_effect(:current_hp, 5)
         player.add_battle_status_effect(:max_up, 5)
+        player.current_hp += 5
         affected << player
       end
     end

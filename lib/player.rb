@@ -21,12 +21,10 @@ class Player
 
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
-                :action, :wait, :status_effects,
+                :action, :wait, :status_effects, :current_hp,
                 :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
-                
-  attr_writer   :current_hp
 
   def initialize
     @name = nil # String
@@ -152,16 +150,12 @@ class Player
 
   # other stats
 
-  def current_hp
-    @current_hp + status_effects.current_hp
-  end
-
   def max_hp
     role.hit_die + con_mod + status_effects.max_hp
   end
 
   def armor_class
-    ac_of_equipment + ac_dex_bonus
+    ac_of_equipment + ac_dex_bonus + status_effects.armor_class
   end
 
   def ac_of_equipment
@@ -235,6 +229,7 @@ class Player
   end
 
   def start_turn
+    clear_all_turn_status_effects
     self.wait = false
   end
 
@@ -265,12 +260,20 @@ class Player
 
   # other methods
 
+  def add_turn_status_effect(attribute, factor)
+    status_effects.add_turn(attribute, factor)
+  end
+
   def add_battle_status_effect(attribute, factor)
     status_effects.add_battle(attribute, factor)
   end
 
   def add_long_term_status_effect(attribute, factor)
     status_effects.add_long_term(attribute, factor)
+  end
+
+  def clear_all_turn_status_effects
+    status_effects.clear_all_turn
   end
 
   def clear_all_battle_status_effects
@@ -282,6 +285,7 @@ class Player
   end
 
   def clear_all_status_effects
+    clear_all_turn_status_effects
     clear_all_battle_status_effects
     clear_all_long_term_status_effects
   end
