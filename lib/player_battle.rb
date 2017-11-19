@@ -34,17 +34,13 @@ class PlayerBattle < PlayerActionHandler
     targets = targets_in_range(enemies)
 
     if targets.empty?
-      display_ineffective_action do
-        puts "No enemies are within range. Try moving closer first or"
-        puts "equipping a weapon with greater range."
-        puts
-        puts 'Please select another option...'
-      end
+      display_no_valid_targets
       action_fail
     else
       target_enemy = select_enemy_to_attack(targets)
       display_summary
       hit = attack_successful?(target_enemy)
+      remove_unconscious(target_enemy)
       damage = resolve_damage(target_enemy) if hit
       display_attack_summary(hit, damage, target_enemy)
     end
@@ -53,6 +49,15 @@ class PlayerBattle < PlayerActionHandler
   def select_enemy_to_attack(targets)
     puts "Which enemy would #{current_player.name} like to attack?"
     choose_target_menu_with_location(targets)
+  end
+
+  def display_no_valid_targets
+    display_ineffective_action do
+      puts "No enemies are within range. Try moving closer first or"
+      puts "equipping a weapon with greater range."
+      puts
+      puts 'Please select another option...'
+    end
   end
 
   def display_attack_summary(hit, damage, target)

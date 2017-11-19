@@ -4,17 +4,43 @@ require_relative 'dnd'
 
 module GeneralBattleActions
   def attack_successful?(target)
-    attack_roll = current_player.roll_attack
-    puts "#{current_player} rolled #{attack_roll} to hit " +
-         "versus an armor class of #{target.armor_class}..."
-    puts
-    attack_roll > target.armor_class
+    conditions = target.conditions
+
+    if condition_prevents_defence?(conditions)
+      display_defender_conditions(conditions, target)
+      return true
+    else
+      attack_roll = current_player.roll_attack
+      display_attack_roll(attack_roll, target)
+      attack_roll > target.armor_class
+    end
+  end
+
+  def condition_prevents_defence?(conditions)
+    conditions.include?('unconscious')
+  end
+
+  def display_defender_conditions(conditions, target)
+    if conditions.include?('unconscious')
+      puts "#{target} is unconscious and cannot defend."
+      puts
+    end
   end
 
   def resolve_damage(target)
     damage = current_player.roll_weapon_dmg
     target.current_hp -= damage
     damage
+  end
+
+  def remove_unconscious(target)
+    target.clear_condition('unconscious')
+  end
+
+  def display_attack_roll(attack_roll, target)
+    puts "#{current_player} rolled #{attack_roll} to hit " +
+         "versus an armor class of #{target.armor_class}..."
+    puts
   end
 
   def display_summary

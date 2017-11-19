@@ -15,25 +15,45 @@ class EnemyBattle
   end
 
   def run
-    display_summary
-    targets = targets_in_range(players.to_a)
+    current_player.start_turn
+    conditions = current_player.conditions
 
-    if targets.empty?
-      move_towards_closest_player
+    display_summary
+
+    if condition_prevents_attack?(conditions)
+      display_attack_conditions(conditions)
       Menu.prompt_continue
-      display_summary
-      targets = targets_in_range(players.to_a)
-      attack(targets) unless targets.empty?
     else
-      attack(targets)
+      targets = targets_in_range(players.to_a)
+      targets.empty? ? move_then_attack : attack(targets)
     end
+
     display_summary
     Menu.prompt_end_player_turn
+  end
+
+  def condition_prevents_attack?(conditions)
+    conditions.include?('unconscious')
+  end
+
+  def display_attack_conditions(conditions)
+    if conditions.include?('unconscious')
+      puts "#{current_player} is unconscious and cannot attack or move."
+    end
+  end
+
+  def move_then_attack
+    move_towards_closest_player
+    Menu.prompt_continue
+    display_summary
+    targets = targets_in_range(players.to_a)
+    attack(targets) unless targets.empty?
   end
 
   def attack(targets)
     target_player = targets.sample
     hit = attack_successful?(target_player)
+    remove_unconscious(target_player)
     damage = resolve_damage(target_player) if hit
     display_attack_summary(hit, damage, target_player)
     Menu.prompt_continue

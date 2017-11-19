@@ -1,12 +1,13 @@
 # status_effect.rb
 
 class StatusEffect
-  attr_accessor :turn, :battle, :long_term
+  attr_accessor :turn, :battle, :long_term, :conditions
 
   def initialize
     @turn = StatusTurn.new
     @battle = StatusBattle.new
     @long_term = StatusLong.new
+    @conditions = [] # Array of String
   end
 
   def add_turn(attribute, factor)
@@ -21,12 +22,27 @@ class StatusEffect
     long_term.add(attribute, factor)
   end
 
+  def add_condition(condition)
+    case condition
+    when 'blinded' then conditions << 'blinded'
+    when 'unconscious' then conditions << 'unconscious'
+    when 'paralyzed' then conditions << 'paralyzed'
+    when 'invisible' then conditions << 'invisible'
+    when 'poisoned' then conditions << 'poisoned'
+    end
+  end
+
+  def clear_condition(condition)
+    conditions.reject! { |cond| cond == condition }
+  end
+
   def clear_all_turn
     turn.clear_all
   end
 
   def clear_all_battle
     battle.clear_all
+    conditions.clear
   end
 
   def clear_all_long_term

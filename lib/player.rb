@@ -260,6 +260,18 @@ class Player
 
   # other methods
 
+  def conditions
+    status_effects.conditions
+  end
+
+  def add_condition(condition)
+    status_effects.add_condition(condition)
+  end
+
+  def clear_condition(condition)
+    status_effects.clear_condition(condition)
+  end
+
   def add_turn_status_effect(attribute, factor)
     status_effects.add_turn(attribute, factor)
   end
