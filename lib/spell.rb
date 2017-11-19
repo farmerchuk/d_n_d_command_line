@@ -50,6 +50,7 @@ class Spell
 
   def cast_explore(caster, target, players)
     spell = caster.equipped_spell
+
     puts general_desc
     puts
     eval(spell.script)
@@ -57,9 +58,14 @@ class Spell
 
   def cast_battle(caster, target, players, enemies)
     spell = caster.equipped_spell
+    
     puts general_desc
     puts
     eval(spell.script)
+
+    if spell.target_type == 'enemy'
+      target.clear_condition('unconscious')
+    end
   end
 
   private
