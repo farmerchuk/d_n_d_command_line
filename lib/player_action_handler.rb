@@ -229,34 +229,46 @@ class PlayerActionHandler
   end
 
   def player_magic
-    valid_spells =
-      current_player.spells.any? { |spell| spell.when == action_type }
-
     if current_player.casts_exhausted?
       display_no_casts_remaining
       action_fail
-    elsif valid_spells
-      puts "What spell would #{current_player.name} like to use? " +
-           "(#{current_player.casts_remaining} " +
-           "cast#{'s' if current_player.casts_remaining > 1} remaining)"
-      choose_and_equip_spell
-      spell = current_player.equipped_spell
-      target = choose_spell_target
-
-      if target
-        display_summary
-        launch_spell(current_player, spell, target, players)
-      else
-        display_no_valid_targets
-        action_fail
-      end
+    elsif valid_spells?
+      attempt_cast
     else
       display_no_useful_spells
       action_fail
     end
   end
 
-  def launch_spell(current_player, spell, target, players)
+  def valid_spells?
+    current_player.spells.any? do |spell|
+      spell.when == action_type
+    end
+  end
+
+  def attempt_cast
+    prepare_spell
+    target = choose_spell_target
+
+    if target
+      display_summary
+      launch_spell(current_player, target, players)
+    else
+      display_no_valid_targets
+      action_fail
+    end
+  end
+
+  def prepare_spell
+    puts "What spell would #{current_player.name} like to use? " +
+         "(#{current_player.casts_remaining} " +
+         "cast#{'s' if current_player.casts_remaining > 1} remaining)"
+    choose_and_equip_spell
+  end
+
+  def launch_spell(current_player, target, players)
+    spell = current_player.equipped_spell
+
     if action_type == 'explore'
       spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
@@ -266,8 +278,9 @@ class PlayerActionHandler
   end
 
   def choose_and_equip_spell
-    available_spells =
-      current_player.spells.select { |spell| spell.when == action_type }
+    available_spells = current_player.spells.select do |spell|
+      spell.when == action_type
+    end
 
     available_spells.each_with_index do |spell, idx|
       puts "#{idx}. #{spell.display_name}: " +
