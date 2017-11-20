@@ -47,22 +47,24 @@ module GeneralBattleActions
     Menu.clear_screen
     puts 'BATTLE TURN ORDER & PLAYER LOCATIONS'
     Menu.draw_line
+    puts "NAME".ljust(14) +
+         "RACE".ljust(12) +
+         "ROLE".ljust(12) +
+         "HP".rjust(4) + ' / '.ljust(3) +
+         "MAX".ljust(8) +
+         "CONDITIONS".ljust(14) +
+         "LOCATION".ljust(24)
+    puts
     all_entities.each do |entity|
-      if entity.alive?
-        if entity.instance_of?(Player)
-          puts "#{entity.to_s.ljust(12)}" +
-               "#{entity.race} #{entity.role} / #{entity.current_hp} HP".ljust(28) +
-               "is at the #{entity.location.display_name}".ljust(33) +
-               (entity.current_turn ? "<< Current Player" : "")
-        elsif entity.instance_of?(Enemy)
-          puts "#{entity.to_s.ljust(12)}" +
-               "Monster / #{entity.current_hp} HP".ljust(28) +
-               "is at the #{entity.location.display_name}".ljust(33) +
-               (entity.current_turn ? "<< Current Player" : "")
-        end
-      else
-        puts "#{entity.to_s.ljust(12)}" + "DEAD".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33)
+      if entity.instance_of?(Player) || entity.alive?
+        puts entity.name.ljust(14) +
+             entity.race.to_s.ljust(12) +
+             entity.role.to_s.capitalize.ljust(12) +
+             entity.current_hp.to_s.rjust(4) + ' / '.ljust(3) +
+             entity.max_hp.to_s.ljust(8) +
+             entity.cond_acronym.join(' ').ljust(14) +
+             entity.location.display_name.ljust(24) +
+             (entity.current_turn ? '<< Current Player' : '')
       end
     end
     puts

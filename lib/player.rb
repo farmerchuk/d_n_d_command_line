@@ -264,6 +264,10 @@ class Player
     status_effects.conditions
   end
 
+  def cond_acronym
+    status_effects.cond_acronym
+  end
+
   def add_condition(condition)
     status_effects.add_condition(condition)
   end

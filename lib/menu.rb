@@ -2,7 +2,7 @@
 
 class Menu
   def self.draw_line
-    puts '-' * 90
+    puts '-' * 108
   end
 
   def self.clear_screen

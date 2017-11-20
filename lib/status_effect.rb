@@ -1,6 +1,14 @@
 # status_effect.rb
 
 class StatusEffect
+  CONDITION_ACRONYMS = {
+    'blinded' => 'BLD',
+    'unconscious' => 'UNC',
+    'paralyzed' => 'PAR',
+    'invisible' => 'INV',
+    'poisoned' => 'PSN'
+  }
+
   attr_accessor :turn, :battle, :long_term, :conditions
 
   def initialize
@@ -34,6 +42,11 @@ class StatusEffect
 
   def clear_condition(condition)
     conditions.reject! { |cond| cond == condition }
+  end
+
+  def cond_acronym
+    return ['NONE'] if conditions.empty?
+    conditions.map { |condition| CONDITION_ACRONYMS[condition] }
   end
 
   def clear_all_turn

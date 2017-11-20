@@ -5,8 +5,8 @@ require_relative 'dnd'
 class Enemy
   include Helpers::Dice
 
-  attr_accessor :id, :name, :description, :location, :current_turn,
-                :current_hp, :status_effects,
+  attr_accessor :id, :name, :race, :role, :description, :location,
+                :current_turn, :current_hp, :status_effects,
                 :melee_attack_bonus, :ranged_attack_bonus,
                 :equipped_weapon
 
@@ -16,6 +16,8 @@ class Enemy
   def initialize
     @id = nil # String
     @name = nil # String
+    @race = nil # String
+    @role = nil # String
     @description = nil # String
     @location = nil # Location
     @current_turn = false # Boolean
@@ -137,6 +139,10 @@ class Enemy
 
   def conditions
     status_effects.conditions
+  end
+
+  def cond_acronym
+    status_effects.cond_acronym
   end
 
   def add_condition(condition)

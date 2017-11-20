@@ -272,8 +272,9 @@ class PlayerActionHandler
     if action_type == 'explore'
       spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
+      living_enemies = enemies.reject { |enemy| enemy.dead? }
       current_player.spend_cast
-      spell.cast_battle(current_player, target, players, enemies)
+      spell.cast_battle(current_player, target, players, living_enemies)
     end
   end
 
