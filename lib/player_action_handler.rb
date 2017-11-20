@@ -274,7 +274,9 @@ class PlayerActionHandler
     elsif action_type == 'battle'
       living_enemies = enemies.reject { |enemy| enemy.dead? }
       current_player.spend_cast
-      spell.cast_battle(current_player, target, players, living_enemies)
+      clear_conditions_if_hurt(target) do
+        spell.cast_battle(current_player, target, players, living_enemies)
+      end
     end
   end
 

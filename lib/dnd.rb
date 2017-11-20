@@ -27,4 +27,5 @@ require_relative 'location'
 require_relative 'event'
 
 require 'yaml'
+require 'colorize'
 require 'pry'

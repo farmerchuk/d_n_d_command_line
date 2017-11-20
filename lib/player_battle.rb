@@ -40,8 +40,10 @@ class PlayerBattle < PlayerActionHandler
       target_enemy = select_enemy_to_attack(targets)
       display_summary
       hit = attack_successful?(target_enemy)
-      remove_unconscious(target_enemy)
-      damage = resolve_damage(target_enemy) if hit
+      damage = nil
+      clear_conditions_if_hurt(target_enemy) do
+        damage = resolve_damage(target_enemy) if hit
+      end
       display_attack_summary(hit, damage, target_enemy)
     end
   end

@@ -53,8 +53,10 @@ class EnemyBattle
   def attack(targets)
     target_player = targets.sample
     hit = attack_successful?(target_player)
-    remove_unconscious(target_player)
-    damage = resolve_damage(target_player) if hit
+    damage = nil
+    clear_conditions_if_hurt(target_player) do
+      damage = resolve_damage(target_player) if hit
+    end
     display_attack_summary(hit, damage, target_player)
     Menu.prompt_continue
   end
