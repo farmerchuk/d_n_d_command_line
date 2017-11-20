@@ -61,10 +61,12 @@ module GeneralBattleActions
     puts
     all_entities.each do |entity|
       if entity.instance_of?(Player)
+        entity_hps = entity.current_hp <= 0 ? 'DEAD' : entity.current_hp
+
         puts entity.name.ljust(14) +
              entity.race.to_s.ljust(12) +
              entity.role.to_s.capitalize.ljust(12) +
-             entity.current_hp.to_s.rjust(4) + ' / '.ljust(3) +
+             entity_hps.to_s.rjust(4) + ' / '.ljust(3) +
              entity.max_hp.to_s.ljust(8) +
              entity.cond_acronym.join(' ').ljust(14) +
              entity.location.display_name.ljust(24) +
