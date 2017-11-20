@@ -33,8 +33,12 @@ module GeneralBattleActions
     damage
   end
 
-  def remove_unconscious(target)
-    target.clear_condition('unconscious')
+  def clear_conditions_if_hurt(target, &block)
+    starting_hp = target.current_hp
+    block.call
+    if target.current_hp < starting_hp
+      target.clear_condition('unconscious')
+    end
   end
 
   def display_attack_roll(attack_roll, target)
@@ -56,7 +60,7 @@ module GeneralBattleActions
          "LOCATION".ljust(24)
     puts
     all_entities.each do |entity|
-      if entity.instance_of?(Player) || entity.alive?
+      if entity.instance_of?(Player)
         puts entity.name.ljust(14) +
              entity.race.to_s.ljust(12) +
              entity.role.to_s.capitalize.ljust(12) +
@@ -64,6 +68,16 @@ module GeneralBattleActions
              entity.max_hp.to_s.ljust(8) +
              entity.cond_acronym.join(' ').ljust(14) +
              entity.location.display_name.ljust(24) +
+             (entity.current_turn ? '<< Current Player' : '')
+      elsif entity.instance_of?(Enemy) && entity.alive?
+        puts entity.name.ljust(14).colorize(:red) +
+             entity.race.to_s.ljust(12).colorize(:red) +
+             entity.role.to_s.capitalize.ljust(12).colorize(:red) +
+             entity.current_hp.to_s.rjust(4).colorize(:red) +
+             ' / '.ljust(3).colorize(:red) +
+             entity.max_hp.to_s.ljust(8).colorize(:red) +
+             entity.cond_acronym.join(' ').ljust(14).colorize(:red) +
+             entity.location.display_name.ljust(24).colorize(:red) +
              (entity.current_turn ? '<< Current Player' : '')
       end
     end
