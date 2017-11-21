@@ -60,27 +60,28 @@ module GeneralBattleActions
          "LOCATION".ljust(24)
     puts
     all_entities.each do |entity|
-      if entity.instance_of?(Player)
+      if entity.instance_of?(Player) || entity.alive?
         entity_hps = entity.current_hp <= 0 ? 'DEAD' : entity.current_hp
 
-        puts entity.name.ljust(14) +
-             entity.race.to_s.ljust(12) +
-             entity.role.to_s.capitalize.ljust(12) +
-             entity_hps.to_s.rjust(4) + ' / '.ljust(3) +
-             entity.max_hp.to_s.ljust(8) +
-             entity.cond_acronym.join(' ').ljust(14) +
-             entity.location.display_name.ljust(24) +
-             (entity.current_turn ? '<< Current Player' : '')
-      elsif entity.instance_of?(Enemy) && entity.alive?
-        puts entity.name.ljust(14).colorize(:red) +
-             entity.race.to_s.ljust(12).colorize(:red) +
-             entity.role.to_s.capitalize.ljust(12).colorize(:red) +
-             entity.current_hp.to_s.rjust(4).colorize(:red) +
-             ' / '.ljust(3).colorize(:red) +
-             entity.max_hp.to_s.ljust(8).colorize(:red) +
-             entity.cond_acronym.join(' ').ljust(14).colorize(:red) +
-             entity.location.display_name.ljust(24).colorize(:red) +
-             (entity.current_turn ? '<< Current Player' : '')
+        if entity.current_turn
+          color = :yellow
+        elsif entity.instance_of?(Enemy)
+          color = :red
+        else
+          color = :white
+        end
+
+        line =
+          entity.name.ljust(14) +
+          entity.race.to_s.ljust(12) +
+          entity.role.to_s.capitalize.ljust(12) +
+          entity_hps.to_s.rjust(4) + ' / '.ljust(3) +
+          entity.max_hp.to_s.ljust(8) +
+          entity.cond_acronym.join(' ').ljust(14) +
+          entity.location.display_name.ljust(24) +
+          (entity.current_turn ? '<< Current Player' : '')
+
+        puts line.colorize(color)
       end
     end
     puts

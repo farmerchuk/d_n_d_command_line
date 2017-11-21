@@ -86,10 +86,20 @@ class PlayerActionHandler
   def player_selects_action(n)
     puts "What action would #{current_player.name} like to take? " +
          "(Action #{n + 1} of 2)"
-    role = current_player.role.to_s
 
-    options = eval "#{role.capitalize}::#{action_type.upcase}_ACTIONS"
-    current_player.action = Menu.choose_from_menu(options)
+    role = current_player.role.to_s
+    options = eval("#{role.capitalize}::#{action_type.upcase}_ACTIONS")
+    current_player.action =
+      Menu.choose_from_menu(options) do
+        options.each_with_index do |el, idx|
+          if el == 'magic'
+            casts = current_player.casts_remaining
+            puts "#{idx}. #{el} (#{casts} cast#{'s' if casts > 1} remaining)"
+          else
+            puts "#{idx}. #{el}"
+          end
+        end
+      end
   end
 
   def execute_player_action
@@ -260,9 +270,7 @@ class PlayerActionHandler
   end
 
   def prepare_spell
-    puts "What spell would #{current_player.name} like to use? " +
-         "(#{current_player.casts_remaining} " +
-         "cast#{'s' if current_player.casts_remaining > 1} remaining)"
+    puts "What spell would #{current_player.name} like to use?"
     choose_and_equip_spell
   end
 
@@ -285,18 +293,13 @@ class PlayerActionHandler
       spell.when == action_type
     end
 
-    available_spells.each_with_index do |spell, idx|
-      puts "#{idx}. #{spell.display_name}: " +
-           "#{spell.stat_desc}"
-    end
-
-    choice = nil
-    loop do
-      choice = Menu.prompt.to_i
-      break if (0..available_spells.size - 1).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
-    current_player.equipped_spell = available_spells[choice]
+    current_player.equipped_spell =
+      Menu.choose_from_menu(available_spells) do
+        available_spells.each_with_index do |spell, idx|
+          puts "#{idx}. #{spell.display_name}: " +
+               "#{spell.stat_desc}"
+        end
+      end
   end
 
   def choose_spell_target
@@ -332,18 +335,12 @@ class PlayerActionHandler
   end
 
   def choose_target_menu_with_location(targets)
-    targets.each_with_index do |target, idx|
-      puts "#{idx}. #{target} at #{target.location.display_name} " +
-           "(#{target.current_hp} HP)"
+    Menu.choose_from_menu(targets) do
+      targets.each_with_index do |target, idx|
+        puts "#{idx}. #{target} at #{target.location.display_name} " +
+             "(#{target.current_hp} HP)"
+      end
     end
-
-    choice = nil
-    loop do
-      choice = Menu.prompt.to_i
-      break if (0..targets.size - 1).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
-    targets[choice]
   end
 
   def player_equip

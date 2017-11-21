@@ -26,14 +26,23 @@ class PlayerExplore < PlayerActionHandler
     players.each do |player|
       player_hps = player.current_hp <= 0 ? 'DEAD' : player.current_hp
 
-      puts player.name.ljust(14) +
-           player.race.to_s.ljust(12) +
-           player.role.to_s.capitalize.ljust(12) +
-           player_hps.to_s.rjust(4) + ' / '.ljust(3) +
-           player.max_hp.to_s.ljust(8) +
-           player.cond_acronym.join(' ').ljust(14) +
-           player.location.display_name.ljust(24) +
-           (player.current_turn ? '<< Current Player' : '')
+      if player.current_turn
+        color = :yellow
+      else
+        color = :white
+      end
+
+      line =
+        player.name.ljust(14) +
+        player.race.to_s.ljust(12) +
+        player.role.to_s.capitalize.ljust(12) +
+        player_hps.to_s.rjust(4) + ' / '.ljust(3) +
+        player.max_hp.to_s.ljust(8) +
+        player.cond_acronym.join(' ').ljust(14) +
+        player.location.display_name.ljust(24) +
+        (player.current_turn ? '<< Current Player' : '')
+
+      puts line.colorize(color)
     end
     puts
     puts
