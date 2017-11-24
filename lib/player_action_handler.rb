@@ -103,12 +103,12 @@ class PlayerActionHandler
   end
 
   def execute_player_action
-    execute_non_move_no_event
+    execute_no_move_no_event
     execute_move
     execute_event
   end
 
-  def execute_non_move_no_event
+  def execute_no_move_no_event
     if !event && current_player.action != 'move'
       display_summary
       execute_chosen_action
