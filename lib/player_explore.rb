@@ -11,6 +11,12 @@ class PlayerExplore < PlayerActionHandler
     @action_type = 'explore'
   end
 
+  def player_hide
+    puts "#{current_player} disappears into the shadows."
+    puts
+    current_player.add_condition('hidden')
+  end
+
   def display_summary
     Menu.clear_screen
     puts 'ALL PLAYERS & DETAILS'

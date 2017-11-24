@@ -6,7 +6,8 @@ class StatusEffect
     'unconscious' => 'UNC',
     'paralyzed' => 'PAR',
     'invisible' => 'INV',
-    'poisoned' => 'PSN'
+    'poisoned' => 'PSN',
+    'hidden' => 'HID'
   }
 
   attr_accessor :turn, :battle, :long_term, :conditions
@@ -37,6 +38,7 @@ class StatusEffect
     when 'paralyzed' then conditions << 'paralyzed'
     when 'invisible' then conditions << 'invisible'
     when 'poisoned' then conditions << 'poisoned'
+    when 'hidden' then conditions << 'hidden'
     end
   end
 

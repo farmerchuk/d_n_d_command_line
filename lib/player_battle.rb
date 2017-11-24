@@ -53,6 +53,28 @@ class PlayerBattle < PlayerActionHandler
     choose_target_menu_with_location(targets)
   end
 
+  def player_hide
+    if hide_successful?
+      puts "#{current_player} disappears into the shadows."
+      puts
+      current_player.add_condition('hidden')
+    else
+      puts "#{current_player} was unable to evade the enemies attention."
+      puts
+    end
+  end
+
+  def hide_successful?
+    nearby_enemies = enemies.select do |enemy|
+      enemy.location.distance_to(current_player.location) == 0
+    end
+
+    return true if nearby_enemies.empty?
+
+    player_hide_roll = current_player.roll_dex_check
+    nearby_enemies.all? { |enemy| enemy.roll_wis_check < player_hide_roll }
+  end
+
   def display_no_valid_targets
     display_ineffective_action do
       puts "No enemies are within range. Try moving closer first or"

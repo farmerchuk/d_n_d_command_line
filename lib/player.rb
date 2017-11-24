@@ -357,7 +357,7 @@ class Player
     puts
     puts 'GENERAL INFO'
     Menu.draw_line
-    puts "NAME: #{name.ljust(29)}ROLE:      #{role.capitalize}"
+    puts "NAME: #{name.ljust(29)}ROLE:      #{role.to_s.capitalize}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
     puts

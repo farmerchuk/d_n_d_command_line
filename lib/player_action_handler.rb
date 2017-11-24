@@ -138,12 +138,12 @@ class PlayerActionHandler
     when 'examine' then player_examine
     when 'search' then player_search
     when 'wait' then player_wait
-    when 'skill' then player_use_skill
     when 'item' then player_use_item
-    when 'rest' then player_rest
     when 'equip' then player_equip
     when 'attack' then player_attack
+    when 'talk' then player_talk
     when 'magic' then player_magic
+    when 'hide' then player_hide
     end
   end
 
@@ -223,19 +223,13 @@ class PlayerActionHandler
     puts
   end
 
-  def player_use_skill
-    puts "#{current_player} uses a skill."
-    puts
-  end
-
   def player_use_item
     puts "#{current_player} uses an item."
     puts
   end
 
-  def player_rest
-    puts "#{current_player} rests."
-    puts
+  def player_talk
+
   end
 
   def player_magic

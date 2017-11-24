@@ -16,17 +16,17 @@ class PlayerRole
 end
 
 class Fighter < PlayerRole
-  EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
-  BATTLE_ACTIONS = %w[move attack wait skill item equip]
+  EXPLORE_ACTIONS = %w[move examine search wait item equip talk]
+  BATTLE_ACTIONS = %w[move attack wait item equip]
 
   def initialize
     super
-    @str = 14
-    @dex = 16
+    @str = 16
+    @dex = 13
     @con = 15
     @int = 11
     @wis = 13
-    @cha = 9
+    @cha = 10
     @hit_die = 10
     @caster = false
     @proficiency = ['str', 'con']
@@ -34,8 +34,8 @@ class Fighter < PlayerRole
 end
 
 class Rogue < PlayerRole
-  EXPLORE_ACTIONS = %w[move examine search wait skill item equip rest engage]
-  BATTLE_ACTIONS = %w[move attack wait skill item equip]
+  EXPLORE_ACTIONS = %w[move examine search wait item equip talk hide]
+  BATTLE_ACTIONS = %w[move attack wait item equip hide]
 
   def initialize
     super
@@ -43,8 +43,8 @@ class Rogue < PlayerRole
     @dex = 16
     @con = 12
     @int = 13
-    @wis = 10
-    @cha = 16
+    @wis = 12
+    @cha = 14
     @hit_die = 8
     @caster = false
     @proficiency = ['dex', 'int']
@@ -52,19 +52,19 @@ class Rogue < PlayerRole
 end
 
 class Cleric < PlayerRole
-  EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
-  BATTLE_ACTIONS = %w[move attack magic wait skill item equip]
+  EXPLORE_ACTIONS = %w[move examine search wait item equip talk magic]
+  BATTLE_ACTIONS = %w[move attack wait item equip magic]
 
   attr_accessor :casts_max, :casts_remaining
 
   def initialize
     super
-    @str = 14
+    @str = 13
     @dex = 8
-    @con = 15
+    @con = 14
     @int = 10
     @wis = 16
-    @cha = 12
+    @cha = 15
     @hit_die = 8
     @caster = true
     @casts_max = 2
@@ -74,8 +74,8 @@ class Cleric < PlayerRole
 end
 
 class Wizard < PlayerRole
-  EXPLORE_ACTIONS = %w[move magic examine search wait skill item equip rest engage]
-  BATTLE_ACTIONS = %w[move attack magic wait skill item equip]
+  EXPLORE_ACTIONS = %w[move examine search wait item equip talk magic]
+  BATTLE_ACTIONS = %w[move attack wait item equip magic]
 
   attr_accessor :casts_max, :casts_remaining
 

@@ -25,7 +25,12 @@ class EnemyBattle
       Menu.prompt_continue
     else
       targets = targets_in_range(players.to_a)
-      targets.empty? ? move_then_attack : attack(targets)
+      if players.all_hidden?
+        display_enemy_confused
+        Menu.prompt_continue
+      else
+        targets.empty? ? move_then_attack : attack(targets)
+      end
     end
 
     display_summary
@@ -65,7 +70,9 @@ class EnemyBattle
     targets.select do |target|
       weapon_range = current_player.equipped_weapon.range
       distance = current_player.location.distance_to(target.location)
-      weapon_range >= distance && target.alive?
+      weapon_range >= distance &&
+        target.alive? &&
+        !target.conditions.include?('hidden')
     end
   end
 
@@ -86,6 +93,10 @@ class EnemyBattle
     end
 
     distances.sort.first[1].sample
+  end
+
+  def display_enemy_confused
+    puts "#{current_player} can't find a player to attack."
   end
 
   def display_attack_summary(hit, damage, target)

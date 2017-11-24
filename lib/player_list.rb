@@ -99,4 +99,8 @@ class PlayerList
     raise 'PlayerList empty' if players.empty?
     players.sort_by { |player| player.initiative }.last
   end
+
+  def all_hidden?
+    players.all? { |player| player.conditions.include?('hidden') }
+  end
 end
