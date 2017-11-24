@@ -46,6 +46,7 @@ class PlayerBattle < PlayerActionHandler
       end
       display_attack_summary(hit, damage, target_enemy)
     end
+    current_player.clear_condition('hidden')
   end
 
   def select_enemy_to_attack(targets)
@@ -86,14 +87,24 @@ class PlayerBattle < PlayerActionHandler
 
   def display_attack_summary(hit, damage, target)
     if hit
-      puts "#{current_player}'s attack was successful!"
-      puts
+      if current_player.hidden?
+        puts "#{current_player} attacked from hiding dealing double damage!"
+        puts
+      else
+        puts "#{current_player}'s attack was successful!"
+        puts
+      end
       puts "You hit the #{target} with a " +
            "#{current_player.equipped_weapon.display_name} " +
            "and dealt #{damage} damage."
     else
       puts "#{current_player} attacks #{target} with a " +
            "#{current_player.equipped_weapon.display_name} and missed!"
+    end
+
+    if current_player.hidden?
+      puts
+      puts "#{current_player} is no longer hidden."
     end
   end
 end

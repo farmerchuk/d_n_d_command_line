@@ -341,6 +341,10 @@ class Player
     [equipped_weapon, equipped_armor, equipped_shield].compact
   end
 
+  def hidden?
+    status_effects.conditions.include?('hidden')
+  end
+
   def alive?
     current_hp > 0
   end

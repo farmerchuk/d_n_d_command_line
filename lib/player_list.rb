@@ -101,6 +101,6 @@ class PlayerList
   end
 
   def all_hidden?
-    players.all? { |player| player.conditions.include?('hidden') }
+    players.all? { |player| player.hidden? }
   end
 end

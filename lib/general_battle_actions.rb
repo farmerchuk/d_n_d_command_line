@@ -11,6 +11,7 @@ module GeneralBattleActions
       return true
     else
       attack_roll = current_player.roll_attack
+      attack_roll += 5 if current_player.hidden?
       display_attack_roll(attack_roll, target)
       attack_roll > target.armor_class
     end
@@ -29,6 +30,7 @@ module GeneralBattleActions
 
   def resolve_damage(target)
     damage = current_player.roll_weapon_dmg
+    damage *= 2 if current_player.hidden?
     target.current_hp -= damage
     damage
   end
