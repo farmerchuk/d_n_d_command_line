@@ -1,7 +1,9 @@
 # enemies.yml
 
 - id: goblin_with_scimitar
-  name: Goblin
+  name: "Monster"
+  race: "Goblin"
+  role: "Henchman"
   description: |
     Goblins are black-hearted, gather in overwhelming numbers,
     and crave power, which they abuse.
@@ -19,7 +21,9 @@
   equipped_weapon: goblin_scimitar
 
 - id: goblin_with_shortbow
-  name: Goblin
+  name: "Monster"
+  race: "Goblin"
+  role: "Archer"
   description: |
     Goblins are black-hearted, gather in overwhelming numbers,
     and crave power, which they abuse.

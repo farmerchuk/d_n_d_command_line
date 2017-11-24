@@ -15,26 +15,53 @@ class EnemyBattle
   end
 
   def run
-    display_summary
-    targets = targets_in_range(players.to_a)
+    current_player.start_turn
+    conditions = current_player.conditions
 
-    if targets.empty?
-      move_towards_closest_player
+    display_summary
+
+    if condition_prevents_attack?(conditions)
+      display_attack_conditions(conditions)
       Menu.prompt_continue
-      display_summary
-      targets = targets_in_range(players.to_a)
-      attack(targets) unless targets.empty?
     else
-      attack(targets)
+      targets = targets_in_range(players.to_a)
+      if players.all_hidden?
+        display_enemy_confused
+        Menu.prompt_continue
+      else
+        targets.empty? ? move_then_attack : attack(targets)
+      end
     end
+
     display_summary
     Menu.prompt_end_player_turn
+  end
+
+  def condition_prevents_attack?(conditions)
+    conditions.include?('unconscious')
+  end
+
+  def display_attack_conditions(conditions)
+    if conditions.include?('unconscious')
+      puts "#{current_player} is unconscious and cannot attack or move."
+    end
+  end
+
+  def move_then_attack
+    move_towards_closest_player
+    Menu.prompt_continue
+    display_summary
+    targets = targets_in_range(players.to_a)
+    attack(targets) unless targets.empty?
   end
 
   def attack(targets)
     target_player = targets.sample
     hit = attack_successful?(target_player)
-    damage = resolve_damage(target_player) if hit
+    damage = nil
+    clear_conditions_if_hurt(target_player) do
+      damage = resolve_damage(target_player) if hit
+    end
     display_attack_summary(hit, damage, target_player)
     Menu.prompt_continue
   end
@@ -43,7 +70,9 @@ class EnemyBattle
     targets.select do |target|
       weapon_range = current_player.equipped_weapon.range
       distance = current_player.location.distance_to(target.location)
-      weapon_range >= distance && target.alive?
+      weapon_range >= distance &&
+        target.alive? &&
+        !target.conditions.include?('hidden')
     end
   end
 
@@ -64,6 +93,10 @@ class EnemyBattle
     end
 
     distances.sort.first[1].sample
+  end
+
+  def display_enemy_confused
+    puts "#{current_player} can't find a player to attack."
   end
 
   def display_attack_summary(hit, damage, target)

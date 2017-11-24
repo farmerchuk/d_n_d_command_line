@@ -4,39 +4,86 @@ require_relative 'dnd'
 
 module GeneralBattleActions
   def attack_successful?(target)
-    attack_roll = current_player.roll_attack
-    puts "#{current_player} rolled #{attack_roll} to hit " +
-         "versus an armor class of #{target.armor_class}..."
-    puts
-    attack_roll > target.armor_class
+    conditions = target.conditions
+
+    if condition_prevents_defence?(conditions)
+      display_defender_conditions(conditions, target)
+      return true
+    else
+      attack_roll = current_player.roll_attack
+      attack_roll += 5 if current_player.hidden?
+      display_attack_roll(attack_roll, target)
+      attack_roll > target.armor_class
+    end
+  end
+
+  def condition_prevents_defence?(conditions)
+    conditions.include?('unconscious')
+  end
+
+  def display_defender_conditions(conditions, target)
+    if conditions.include?('unconscious')
+      puts "#{target} is unconscious and cannot defend."
+      puts
+    end
   end
 
   def resolve_damage(target)
     damage = current_player.roll_weapon_dmg
+    damage *= 2 if current_player.hidden?
     target.current_hp -= damage
     damage
+  end
+
+  def clear_conditions_if_hurt(target, &block)
+    starting_hp = target.current_hp
+    block.call
+    if target.current_hp < starting_hp
+      target.clear_condition('unconscious')
+    end
+  end
+
+  def display_attack_roll(attack_roll, target)
+    puts "#{current_player} rolled #{attack_roll} to hit " +
+         "versus an armor class of #{target.armor_class}..."
+    puts
   end
 
   def display_summary
     Menu.clear_screen
     puts 'BATTLE TURN ORDER & PLAYER LOCATIONS'
     Menu.draw_line
+    puts "NAME".ljust(14) +
+         "RACE".ljust(12) +
+         "ROLE".ljust(12) +
+         "HP".rjust(4) + ' / '.ljust(3) +
+         "MAX".ljust(8) +
+         "CONDITIONS".ljust(14) +
+         "LOCATION".ljust(24)
+    puts
     all_entities.each do |entity|
-      if entity.alive?
-        if entity.instance_of?(Player)
-          puts "#{entity.to_s.ljust(12)}" +
-               "#{entity.race} #{entity.role} / #{entity.current_hp} HP".ljust(28) +
-               "is at the #{entity.location.display_name}".ljust(33) +
-               (entity.current_turn ? "<< Current Player" : "")
+      if entity.instance_of?(Player) || entity.alive?
+        entity_hps = entity.current_hp <= 0 ? 'DEAD' : entity.current_hp
+
+        if entity.current_turn
+          color = :yellow
         elsif entity.instance_of?(Enemy)
-          puts "#{entity.to_s.ljust(12)}" +
-               "Monster / #{entity.current_hp} HP".ljust(28) +
-               "is at the #{entity.location.display_name}".ljust(33) +
-               (entity.current_turn ? "<< Current Player" : "")
+          color = :red
+        else
+          color = :white
         end
-      else
-        puts "#{entity.to_s.ljust(12)}" + "DEAD".ljust(28) +
-             "is at the #{entity.location.display_name}".ljust(33)
+
+        line =
+          entity.name.ljust(14) +
+          entity.race.to_s.ljust(12) +
+          entity.role.to_s.capitalize.ljust(12) +
+          entity_hps.to_s.rjust(4) + ' / '.ljust(3) +
+          entity.max_hp.to_s.ljust(8) +
+          entity.cond_acronym.join(' ').ljust(14) +
+          entity.location.display_name.ljust(24) +
+          (entity.current_turn ? '<< Current Player' : '')
+
+        puts line.colorize(color)
       end
     end
     puts

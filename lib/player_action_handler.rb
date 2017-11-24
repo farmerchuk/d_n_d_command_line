@@ -86,19 +86,29 @@ class PlayerActionHandler
   def player_selects_action(n)
     puts "What action would #{current_player.name} like to take? " +
          "(Action #{n + 1} of 2)"
-    role = current_player.role.to_s
 
-    options = eval "#{role.capitalize}::#{action_type.upcase}_ACTIONS"
-    current_player.action = Menu.choose_from_menu(options)
+    role = current_player.role.to_s
+    options = eval("#{role.capitalize}::#{action_type.upcase}_ACTIONS")
+    current_player.action =
+      Menu.choose_from_menu(options) do
+        options.each_with_index do |el, idx|
+          if el == 'magic'
+            casts = current_player.casts_remaining
+            puts "#{idx}. #{el} (#{casts} cast#{'s' if casts > 1} remaining)"
+          else
+            puts "#{idx}. #{el}"
+          end
+        end
+      end
   end
 
   def execute_player_action
-    execute_non_move_no_event
+    execute_no_move_no_event
     execute_move
     execute_event
   end
 
-  def execute_non_move_no_event
+  def execute_no_move_no_event
     if !event && current_player.action != 'move'
       display_summary
       execute_chosen_action
@@ -128,12 +138,12 @@ class PlayerActionHandler
     when 'examine' then player_examine
     when 'search' then player_search
     when 'wait' then player_wait
-    when 'skill' then player_use_skill
     when 'item' then player_use_item
-    when 'rest' then player_rest
     when 'equip' then player_equip
     when 'attack' then player_attack
+    when 'talk' then player_talk
     when 'magic' then player_magic
+    when 'hide' then player_hide
     end
   end
 
@@ -213,74 +223,78 @@ class PlayerActionHandler
     puts
   end
 
-  def player_use_skill
-    puts "#{current_player} uses a skill."
-    puts
-  end
-
   def player_use_item
     puts "#{current_player} uses an item."
     puts
   end
 
-  def player_rest
-    puts "#{current_player} rests."
-    puts
+  def player_talk
+
   end
 
   def player_magic
-    valid_spells =
-      current_player.spells.any? { |spell| spell.when == action_type }
-
     if current_player.casts_exhausted?
       display_no_casts_remaining
       action_fail
-    elsif valid_spells
-      puts "What spell would #{current_player.name} like to use? " +
-           "(#{current_player.casts_remaining} " +
-           "cast#{'s' if current_player.casts_remaining > 1} remaining)"
-      choose_and_equip_spell
-      spell = current_player.equipped_spell
-      target = choose_spell_target
-
-      if target
-        display_summary
-        launch_spell(current_player, spell, target, players, enemies)
-      else
-        display_no_valid_targets
-        action_fail
-      end
+    elsif valid_spells?
+      attempt_cast
     else
       display_no_useful_spells
       action_fail
     end
   end
 
-  def launch_spell(current_player, spell, target, players, enemies)
+  def valid_spells?
+    current_player.spells.any? do |spell|
+      spell.when == action_type
+    end
+  end
+
+  def attempt_cast
+    prepare_spell
+    target = choose_spell_target
+
+    if target
+      display_summary
+      launch_spell(current_player, target, players)
+    else
+      display_no_valid_targets
+      action_fail
+    end
+  end
+
+  def prepare_spell
+    puts "What spell would #{current_player.name} like to use?"
+    choose_and_equip_spell
+  end
+
+  def launch_spell(current_player, target, players)
+    spell = current_player.equipped_spell
+
     if action_type == 'explore'
+      current_player.spend_cast
       spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
+      living_enemies = enemies.reject { |enemy| enemy.dead? }
       current_player.spend_cast
-      spell.cast_battle(current_player, target, players, enemies)
+      clear_conditions_if_hurt(target) do
+        spell.cast_battle(current_player, target, players, living_enemies)
+      end
     end
   end
 
   def choose_and_equip_spell
-    available_spells =
-      current_player.spells.select { |spell| spell.when == action_type }
-
-    available_spells.each_with_index do |spell, idx|
-      puts "#{idx}. #{spell.display_name} > " +
-           "#{spell.stat_desc}"
+    available_spells = current_player.spells.select do |spell|
+      spell.when == action_type
     end
 
-    choice = nil
-    loop do
-      choice = Menu.prompt.to_i
-      break if (0..available_spells.size - 1).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
-    current_player.equipped_spell = available_spells[choice]
+    current_player.equipped_spell =
+      Menu.choose_from_menu(available_spells) do
+        available_spells.each_with_index do |spell, idx|
+          puts "#{idx}. #{spell.display_name.ljust(20)}: " +
+               "#{spell.stat_desc}"
+        end
+      end
   end
 
   def choose_spell_target
@@ -290,6 +304,8 @@ class PlayerActionHandler
       select_enemy_to_attack(targets)
     elsif current_player.equipped_spell.target_type == 'player'
       select_player_to_cast_on
+    elsif current_player.equipped_spell.target_type == 'self'
+      current_player
     end
   end
 
@@ -314,18 +330,12 @@ class PlayerActionHandler
   end
 
   def choose_target_menu_with_location(targets)
-    targets.each_with_index do |target, idx|
-      puts "#{idx}. #{target} at #{target.location.display_name} " +
-           "(#{target.current_hp} HP)"
+    Menu.choose_from_menu(targets) do
+      targets.each_with_index do |target, idx|
+        puts "#{idx}. #{target} at #{target.location.display_name} " +
+             "(#{target.current_hp} HP)"
+      end
     end
-
-    choice = nil
-    loop do
-      choice = Menu.prompt.to_i
-      break if (0..targets.size - 1).include?(choice)
-      puts 'Sorry, that is not a valid choice...'
-    end
-    targets[choice]
   end
 
   def player_equip

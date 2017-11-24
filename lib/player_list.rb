@@ -59,6 +59,36 @@ class PlayerList
     players.each { |player| player.unset_current_turn! }
   end
 
+  def rest
+    clear_all_status_effects
+    reset_casts
+    reset_current_hps
+
+    puts "The party rests and recovers from their adventures."
+    puts
+    puts "- All status effects cleared"
+    puts "- Current HP reset to max"
+    puts "- Spell user casts reset to max"
+  end
+
+  def clear_all_battle_status_effects
+    players.each do |player|
+      player.clear_all_battle_status_effects
+    end
+  end
+
+  def clear_all_status_effects
+    players.each do |player|
+      player.clear_all_status_effects
+    end
+  end
+
+  def reset_current_hps
+    players.each do |player|
+      player.set_current_hp_to_max
+    end
+  end
+
   def reset_casts
     players.each do |player|
       player.reset_casts_remaining if player.caster
@@ -68,5 +98,9 @@ class PlayerList
   def highest_initiative
     raise 'PlayerList empty' if players.empty?
     players.sort_by { |player| player.initiative }.last
+  end
+
+  def all_hidden?
+    players.all? { |player| player.hidden? }
   end
 end

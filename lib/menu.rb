@@ -2,7 +2,7 @@
 
 class Menu
   def self.draw_line
-    puts '-' * 90
+    puts '-' * 108
   end
 
   def self.clear_screen
@@ -36,17 +36,21 @@ class Menu
   end
 
   def self.choose_from_menu(options)
-    options.each_with_index do |el, idx|
-      puts "#{idx}. #{el}"
+    if block_given?
+      yield
+    else
+      options.each_with_index do |el, idx|
+        puts "#{idx}. #{el}"
+      end
     end
 
     choice = nil
     loop do
-      choice = self.prompt.to_i
-      break if (0..options.size - 1).include?(choice)
+      choice = self.prompt
+      break if (0..options.size - 1).include?(choice.to_i) && choice.match(/\d/)
       puts 'Sorry, that is not a valid choice...'
     end
-    options[choice]
+    options[choice.to_i]
   end
 
   def self.num_with_commas(int)

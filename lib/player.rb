@@ -21,8 +21,8 @@ class Player
 
   attr_accessor :name, :race, :role, :alignment,
                 :area, :location, :current_turn,
-                :action, :wait,
-                :current_hp, :spells, :equipped_spell,
+                :action, :wait, :status_effects, :current_hp,
+                :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
 
@@ -36,6 +36,7 @@ class Player
     @current_turn = false # Boolean
     @action = nil # String
     @wait = false # Boolean
+    @status_effects = StatusEffect.new # StatusEffect
     @current_hp = nil # Integer
     @spells = nil # Array of Spell
     @backpack = nil # Backpack
@@ -54,27 +55,27 @@ class Player
   # attributes
 
   def str
-    race.str + role.str
+    race.str + role.str + status_effects.str
   end
 
   def dex
-    race.dex + role.dex
+    race.dex + role.dex + status_effects.dex
   end
 
   def con
-    race.con + role.con
+    race.con + role.con + status_effects.con
   end
 
   def int
-    race.int + role.int
+    race.int + role.int + status_effects.int
   end
 
   def wis
-    race.wis + role.wis
+    race.wis + role.wis + status_effects.wis
   end
 
   def cha
-    race.cha + role.cha
+    race.cha + role.cha + status_effects.cha
   end
 
   # attribute modifiers
@@ -150,13 +151,11 @@ class Player
   # other stats
 
   def max_hp
-    lv_1_hp = role.hit_die + con_mod
-    lv_x_hp = (role.hit_die / 2 + 1 + con_mod) * (role.level - 1)
-    lv_1_hp + lv_x_hp
+    role.hit_die + con_mod + status_effects.max_hp
   end
 
   def armor_class
-    ac_of_equipment + ac_dex_bonus
+    ac_of_equipment + ac_dex_bonus + status_effects.armor_class
   end
 
   def ac_of_equipment
@@ -230,6 +229,7 @@ class Player
   end
 
   def start_turn
+    clear_all_turn_status_effects
     self.wait = false
   end
 
@@ -259,6 +259,52 @@ class Player
   end
 
   # other methods
+
+  def conditions
+    status_effects.conditions
+  end
+
+  def cond_acronym
+    status_effects.cond_acronym
+  end
+
+  def add_condition(condition)
+    status_effects.add_condition(condition)
+  end
+
+  def clear_condition(condition)
+    status_effects.clear_condition(condition)
+  end
+
+  def add_turn_status_effect(attribute, factor)
+    status_effects.add_turn(attribute, factor)
+  end
+
+  def add_battle_status_effect(attribute, factor)
+    status_effects.add_battle(attribute, factor)
+  end
+
+  def add_long_term_status_effect(attribute, factor)
+    status_effects.add_long_term(attribute, factor)
+  end
+
+  def clear_all_turn_status_effects
+    status_effects.clear_all_turn
+  end
+
+  def clear_all_battle_status_effects
+    status_effects.clear_all_battle
+  end
+
+  def clear_all_long_term_status_effects
+    status_effects.clear_all_long_term
+  end
+
+  def clear_all_status_effects
+    clear_all_turn_status_effects
+    clear_all_battle_status_effects
+    clear_all_long_term_status_effects
+  end
 
   def set_current_hp_to_max
     self.current_hp = max_hp
@@ -295,6 +341,10 @@ class Player
     [equipped_weapon, equipped_armor, equipped_shield].compact
   end
 
+  def hidden?
+    status_effects.conditions.include?('hidden')
+  end
+
   def alive?
     current_hp > 0
   end
@@ -311,7 +361,7 @@ class Player
     puts
     puts 'GENERAL INFO'
     Menu.draw_line
-    puts "NAME: #{name.ljust(29)}ROLE:      #{role}"
+    puts "NAME: #{name.ljust(29)}ROLE:      #{role.to_s.capitalize}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
     puts

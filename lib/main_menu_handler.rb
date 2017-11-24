@@ -6,6 +6,7 @@ class MainMenuHandler
   include Helpers::Data
 
   MENU_OPTIONS = ['choose player turn',
+                  'party rest',
                   'view area map',
                   'view party equipment',
                   'view player profiles',
@@ -41,6 +42,7 @@ class MainMenuHandler
     case choice
     when 'view area map' then view_map
     when 'fast travel' then travel
+    when 'party rest' then party_rest
     when 'view party equipment' then view_party_equipment
     when 'view player profiles' then view_player_profiles
     when 'choose player turn' then player_turn
@@ -74,6 +76,12 @@ class MainMenuHandler
       puts area.introduction
       Game.add_completed_area_introduction(area.id)
     end
+  end
+
+  def party_rest
+    display_summary(players)
+    players.rest
+    Menu.prompt_continue
   end
 
   def view_party_equipment
@@ -121,15 +129,24 @@ class MainMenuHandler
     Menu.clear_screen
     puts 'ALL PLAYERS & DETAILS'
     Menu.draw_line
+    puts "NAME".ljust(14) +
+         "RACE".ljust(12) +
+         "ROLE".ljust(12) +
+         "HP".rjust(4) + ' / '.ljust(3) +
+         "MAX".ljust(8) +
+         "CONDITIONS".ljust(14) +
+         "LOCATION".ljust(24)
+    puts
     players.each do |player|
-      if player.alive?
-        puts "#{player.to_s.ljust(12)}" +
-             "#{player.race} #{player.role} / #{player.current_hp} HP".ljust(28) +
-             "is at the #{player.location.display_name}"
-      else
-        puts "#{player.to_s.ljust(12)}" + "DEAD".ljust(28) +
-             "is at the #{player.location.display_name}".ljust(33)
-      end
+      player_hps = player.current_hp <= 0 ? 'DEAD' : player.current_hp
+
+      puts player.name.ljust(14) +
+           player.race.to_s.ljust(12) +
+           player.role.to_s.capitalize.ljust(12) +
+           player_hps.to_s.rjust(4) + ' / '.ljust(3) +
+           player.max_hp.to_s.ljust(8) +
+           player.cond_acronym.join(' ').ljust(14) +
+           player.location.display_name.ljust(24)
     end
     puts
     puts

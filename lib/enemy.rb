@@ -5,22 +5,26 @@ require_relative 'dnd'
 class Enemy
   include Helpers::Dice
 
-  attr_accessor :id, :name, :description, :location, :current_turn,
-                :max_hp, :current_hp, :armor_class,
+  attr_accessor :id, :name, :race, :role, :description, :location,
+                :current_turn, :current_hp, :status_effects,
                 :melee_attack_bonus, :ranged_attack_bonus,
                 :equipped_weapon
 
-  attr_writer   :str_mod, :dex_mod, :con_mod, :int_mod, :wis_mod, :cha_mod
+  attr_writer   :str_mod, :dex_mod, :con_mod, :int_mod, :wis_mod, :cha_mod,
+                :max_hp, :armor_class
 
   def initialize
     @id = nil # String
     @name = nil # String
+    @race = nil # String
+    @role = nil # String
     @description = nil # String
     @location = nil # Location
     @current_turn = false # Boolean
     @max_hp = nil # Integer
     @current_hp = nil # Integer
     @armor_class = nil # Integer
+    @status_effects = StatusEffect.new
     @str_mod = nil # String
     @dex_mod = nil # String
     @con_mod = nil # String
@@ -31,6 +35,16 @@ class Enemy
     @ranged_attack_bonus = nil # Integer
     @equipped_weapon = nil # Weapon
   end
+
+  def max_hp
+    @max_hp + status_effects.max_hp
+  end
+
+  def armor_class
+    @armor_class + status_effects.armor_class
+  end
+
+  # attributes
 
   def str_mod
     @str_mod.to_i
@@ -103,6 +117,10 @@ class Enemy
     location.paths.select { |path| path.area_id == location.area_id }
   end
 
+  def start_turn
+    clear_all_turn_status_effects
+  end
+
   def set_current_turn!
     self.current_turn = true
   end
@@ -111,8 +129,57 @@ class Enemy
     self.current_turn = false
   end
 
+  def hidden?
+    status_effects.conditions.include?('hidden')
+  end
+
   def alive?
     current_hp > 0
+  end
+
+  def dead?
+    current_hp <= 0
+  end
+
+  def conditions
+    status_effects.conditions
+  end
+
+  def cond_acronym
+    status_effects.cond_acronym
+  end
+
+  def add_condition(condition)
+    status_effects.add_condition(condition)
+  end
+
+  def clear_condition(condition)
+    status_effects.clear_condition(condition)
+  end
+
+  def add_turn_status_effect(attribute, factor)
+    status_effects.add_turn(attribute, factor)
+  end
+
+  def add_battle_status_effect(attribute, factor)
+    status_effects.add_battle(attribute, factor)
+  end
+
+  def clear_all_turn_status_effects
+    status_effects.clear_all_turn
+  end
+
+  def clear_all_turn_status_effects
+    status_effects.clear_all_turn
+  end
+
+  def clear_all_battle_status_effects
+    status_effects.clear_all_battle
+  end
+
+  def clear_all_status_effects
+    clear_all_turn_status_effects
+    clear_all_battle_status_effects
   end
 
   def to_s

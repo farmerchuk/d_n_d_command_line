@@ -27,6 +27,8 @@ class Battle
           new_enemy = Enemy.new
           new_enemy.id = enemy_id
           new_enemy.name = enemy['name']
+          new_enemy.race = enemy['race']
+          new_enemy.role = enemy['role']
           new_enemy.description = enemy['description']
           new_enemy.location = get_enemy_location(enemy_location_id)
           new_enemy.max_hp = enemy['max_hp']

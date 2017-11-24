@@ -4,6 +4,7 @@
 # level: 1
 # save: dex
 # display_name: "Burning Hands 1"
+# dice: 3d6
 # stat_desc: "3d6 damage to a single target. Range: 0"
 # general_desc: |
 #   As you hold your hands with thumbs touching and figners spread, a thin
@@ -16,7 +17,6 @@
 #   - explore
 # target: enemy (or ally)
 # range: 0
-# aoe: single (or all)
 # script: |
 #   <code ...>
 
@@ -36,20 +36,22 @@
 - id: burning_hands_1
   level: 1
   save: dex
-  display_name: "Burning Hands 1"
+  display_name: "Burning Hands LV1"
   dice: 3d6
-  effect: damage
-  stat_desc: "3d6 damage to a single target. Range: 0"
+  stat_desc: "3d6 damage to single target. Range: 0"
   general_desc: |
-    As you hold your hands with thumbs touching and fingers spread, a thin
-    sheet of flames shoots forth from your outstretched fingertips.
+    Deal 3d6 damage to a single target. If the target successfully saves
+    against the spell, damage is reduced by half. Range: 0
   roles:
     - wizard
   when: battle
   target_type: enemy
   range: 0
-  aoe: single
   script: |
+    puts "As you hold your hands with thumbs touching and fingers spread, a"
+    puts "thin sheet of flames shoots forth from your outstretched fingertips."
+    puts
+
     saved = enemy_save?(caster, target) if saving_throw?
     damage = roll_dice(dice)
     damage /= 2 if saved
@@ -58,29 +60,111 @@
     if saved
       puts "#{target} saved against #{caster}'s' spell!"
       puts
-      puts "You hit the #{target} and dealt #{damage} damage."
+      puts "You hit the #{target} dealing #{damage} damage."
     else
       puts "#{target}'s save against #{caster}'s spell failed!"
       puts
       puts "You hit the #{target} at full power and dealt #{damage} damage."
     end
 
+- id: magic_missile_1
+  level: 1
+  display_name: "Magic Missile LV1"
+  dice: 1d4 + 1
+  stat_desc: "3 x (1d4 + 1) damage to single target. Range: 2"
+  general_desc: |
+    Three magic missiles shoot forward, each dealing 1d4 + 1 damage to a single
+    target. Range: 2
+  roles:
+    - wizard
+  when: battle
+  target_type: enemy
+  range: 2
+  script: |
+    puts "You create three glowing darts of magical force. After a brief moment"
+    puts "suspended in the air in front of you, they streak forward towards"
+    puts "their target."
+    puts
+
+    damage = roll_dice(dice) + roll_dice(dice) + roll_dice(dice)
+    target.current_hp -= damage
+
+    puts "You hit the #{target} dealing #{damage} damage."
+
+- id: shield_1
+  level: 1
+  display_name: "Shield LV1"
+  stat_desc: "Raise your AC by 5 for 1 turn. Range: Self"
+  general_desc: |
+    Raises the casters Armor Class by 5 points for a single turn. Range: Self
+  roles:
+    - wizard
+  when: battle
+  target_type: self
+  script: |
+    puts "An invisible barrier of magical force appears, protecting you from"
+    puts "all physical attacks until your next turn."
+    puts
+
+    caster.add_turn_status_effect(:armor_class, 5)
+
+- id: sleep_1
+  level: 1
+  display_name: "Sleep LV1"
+  dice: 5d8
+  stat_desc: "All enemies in range of target fall unconscious. Range: 1 / AOE: 1"
+  general_desc: |
+    All enemies affected by the spell are rendered unconscious. The effect lasts
+    for the duration of battle or until the creature takes damage. Range: 1 / AOE: 1
+  roles:
+    - wizard
+  when: battle
+  target_type: enemy
+  range: 1
+  script: |
+    puts "As you wave your hand across the battlefield, all creatures affected"
+    puts "by the spell collapse into an unconscious state."
+    puts
+
+    enemy_max_hp_affect = roll_dice(dice)
+    affected = []
+
+    targets = enemies.select do |enemy|
+      enemy.location.distance_to(target.location) <= 1
+    end
+
+    targets.each do |enemy|
+      if enemy.max_hp <= enemy_max_hp_affect
+        enemy.status_effects.add_condition('unconscious')
+        affected << enemy
+      end
+    end
+
+    if affected.empty?
+      puts "No creatures were affected."
+    else
+      affected.each do |enemy|
+        puts "#{enemy} (#{enemy.location.display_name}) falls asleep."
+      end
+    end
+
 - id: cure_wounds_1
   level: 1
-  display_name: "Cure Wounds 1"
+  display_name: "Cure Wounds LV1"
   dice: 1d8 + 3
-  effect: heal
-  stat_desc: "Heals a single ally by 1d8 + 3 HP. Range: 0"
+  stat_desc: "Heal single ally 1d8 + 3 HP. Range: 0"
   general_desc: |
-    As you place your hands on the wounded, they begin to glow with a gentle
-    healing light.
+    Heals a single ally by 1d8 + 3 HPs. Range: 0
   roles:
     - cleric
   when: battle
   target_type: player
   range: 0
-  aoe: single
   script: |
+    puts "As you place your hands on the wounded, they begin to glow with a"
+    puts "gentle healing light."
+    puts
+
     hp = roll_dice(dice)
     target.current_hp += hp
 
@@ -89,3 +173,77 @@
     end
 
     puts "#{caster} heals #{target} by #{hp} HPs."
+
+- id: aid_1
+  level: 1
+  display_name: "Aid LV1"
+  stat_desc: "Boosts Max HP of all allies by 3. Range: 0 / AOE: 0"
+  general_desc: |
+    Boosts the Max HP of all allies within range by 3 points. The effect lasts
+    until the next rest. Range: 0 / AOE: 0
+  roles:
+    - cleric
+  when: explore
+  target_type: player
+  range: 0
+  script: |
+    puts "You close your eyes and place your hands by your side, palms facing"
+    puts "forward. You being to raise your hands into the air, and as you do,"
+    puts "your allies feel a sudden surge of health spring from within."
+    puts
+
+    affected = []
+    players.each do |player|
+      if player.location.distance_to(target.location) == 0
+        player.add_battle_status_effect(:max_hp, 3)
+        player.current_hp += 3
+        affected << player
+      end
+    end
+
+    affected.map! { |player| player.name }
+    puts "#{affected.join(', ')} bolstered!"
+
+- id: bless_1
+  level: 1
+  display_name: "Bless LV1"
+  stat_desc: "Boosts ally attributes by 1. Range: 0"
+  general_desc: |
+    Boosts all attributes of a single ally within range by 1 point. The effect
+    lasts until the next rest. Range: 0
+  roles:
+    - cleric
+  when: explore
+  target_type: player
+  range: 0
+  script: |
+    puts "You place your hands on your companion and murmur a short incantation."
+    puts "Shortly thereafter, your companion feels as though all of their senses"
+    puts "have been hightened."
+    puts
+
+    target.add_long_term_status_effect(:str, 1)
+    target.add_long_term_status_effect(:dex, 1)
+    target.add_long_term_status_effect(:con, 1)
+    target.add_long_term_status_effect(:int, 1)
+    target.add_long_term_status_effect(:wis, 1)
+    target.add_long_term_status_effect(:cha, 1)
+
+- id: shield_of_faith_1
+  level: 1
+  display_name: "Shield of Faith LV1"
+  stat_desc: "Raises ally AC by 2. Range: 2"
+  general_desc: |
+    Boosts a single ally's Armor Class by 2 points. The effect lasts
+    until the end of battle. Range: 0
+  roles:
+    - cleric
+  when: battle
+  target_type: player
+  range: 0
+  script: |
+    puts "You point to your companion and loudly shout a command. They immediately"
+    puts "being to glow with a soft white light of protection."
+    puts
+
+    target.add_battle_status_effect(:ac, 2)
