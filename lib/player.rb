@@ -55,27 +55,27 @@ class Player
   # attributes
 
   def str
-    race.str + role.str
+    race.str + role.str + status_effects.str
   end
 
   def dex
-    race.dex + role.dex
+    race.dex + role.dex + status_effects.dex
   end
 
   def con
-    race.con + role.con
+    race.con + role.con + status_effects.con
   end
 
   def int
-    race.int + role.int
+    race.int + role.int + status_effects.int
   end
 
   def wis
-    race.wis + role.wis
+    race.wis + role.wis + status_effects.wis
   end
 
   def cha
-    race.cha + role.cha
+    race.cha + role.cha + status_effects.cha
   end
 
   # attribute modifiers
@@ -357,7 +357,7 @@ class Player
     puts
     puts 'GENERAL INFO'
     Menu.draw_line
-    puts "NAME: #{name.ljust(29)}ROLE:      #{role}"
+    puts "NAME: #{name.ljust(29)}ROLE:      #{role.capitalize}"
     puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
     puts
     puts

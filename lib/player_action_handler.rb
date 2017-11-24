@@ -278,6 +278,7 @@ class PlayerActionHandler
     spell = current_player.equipped_spell
 
     if action_type == 'explore'
+      current_player.spend_cast
       spell.cast_explore(current_player, target, players)
     elsif action_type == 'battle'
       living_enemies = enemies.reject { |enemy| enemy.dead? }
@@ -296,7 +297,7 @@ class PlayerActionHandler
     current_player.equipped_spell =
       Menu.choose_from_menu(available_spells) do
         available_spells.each_with_index do |spell, idx|
-          puts "#{idx}. #{spell.display_name}: " +
+          puts "#{idx}. #{spell.display_name.ljust(20)}: " +
                "#{spell.stat_desc}"
         end
       end
