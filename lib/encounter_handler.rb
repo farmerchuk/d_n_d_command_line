@@ -5,14 +5,15 @@ require_relative 'dnd'
 class EncounterHandler
   include Helpers::Data
 
-  attr_reader :engagement_ids, :players, :current_player, :locations
+  attr_reader :engagement_ids, :players, :current_player, :areas, :locations
 
-  def initialize(encounter_id, players, locations)
+  def initialize(encounter_id, players, areas, locations)
     encounters_data = YAML.load_file('../assets/yaml/encounters.yml')
 
     @engagement_ids = get_engagement_ids(encounter_id, encounters_data)
     @players = players
     @current_player = players.current
+    @areas = areas
     @locations = locations
   end
 
@@ -22,8 +23,8 @@ class EncounterHandler
     engagement_ids.each do |engagement_id|
       if get_engagement_id_prefix(engagement_id) == 'battle'
         BattleHandler.new(engagement_id, players, locations).run
-      elsif get_engagement_id_prefix(engagement_id) == 'conversation'
-        ConversationHandler.new(engagement_id, players, locations).run
+      elsif get_engagement_id_prefix(engagement_id) == 'dialogue'
+        DialogueHandler.new(engagement_id, players, areas, locations).run
       end
     end
 

@@ -8,7 +8,6 @@
 
 - id: goblin_ambush_event_1
   location_id: goblin_ambush_dead_horses
-  encounter_id: goblin_ambush_encounter_1
   trigger: examine
   description: |
     The saddlebags have been looted. Nearby lies an empty leather map case.
@@ -32,9 +31,7 @@
       the northern embankment and two more from the thickets beyond the southern
       embankment!
   script: |
-    EncounterHandler.new('goblin_ambush_encounter_1',
-                          players,
-                          locations).run
+    EncounterHandler.new('goblin_ambush_encounter_1', players, areas, locations).run
 
 - id: goblin_ambush_event_4
   location_id: goblin_ambush_north_embankment

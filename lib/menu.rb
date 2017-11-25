@@ -29,6 +29,12 @@ class Menu
     gets
   end
 
+  def self.prompt_end_dialogue
+    puts
+    print "Hit RETURN to end the dialogue..."
+    gets
+  end
+
   def self.prompt_end_player_turn
     puts
     print "Hit RETURN to end player's turn..."
