@@ -47,7 +47,7 @@ class PlayerExplore < PlayerActionHandler
          "ROLE".ljust(12) +
          "HP".rjust(4) + ' / '.ljust(3) +
          "MAX".ljust(8) +
-         "CONDITIONS".ljust(14) +
+         "CONDITIONS".ljust(20) +
          "LOCATION".ljust(24)
     puts
     players.each do |player|
@@ -65,9 +65,8 @@ class PlayerExplore < PlayerActionHandler
         player.role.to_s.capitalize.ljust(12) +
         player_hps.to_s.rjust(4) + ' / '.ljust(3) +
         player.max_hp.to_s.ljust(8) +
-        player.cond_acronym.join(' ').ljust(14) +
-        player.location.display_name.ljust(24) +
-        (player.current_turn ? '<< Current Player' : '')
+        player.cond_acronym.join(' ').ljust(20) +
+        player.location.display_name
 
       puts line.colorize(color)
     end

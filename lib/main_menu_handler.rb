@@ -127,14 +127,14 @@ class MainMenuHandler
 
   def display_summary(players)
     Menu.clear_screen
-    puts 'ALL PLAYERS & DETAILS'
+    puts 'ALL PLAYERS SUMMARY'
     Menu.draw_line
     puts "NAME".ljust(14) +
          "RACE".ljust(12) +
          "ROLE".ljust(12) +
          "HP".rjust(4) + ' / '.ljust(3) +
          "MAX".ljust(8) +
-         "CONDITIONS".ljust(14) +
+         "CONDITIONS".ljust(20) +
          "LOCATION".ljust(24)
     puts
     players.each do |player|
@@ -145,7 +145,7 @@ class MainMenuHandler
            player.role.to_s.capitalize.ljust(12) +
            player_hps.to_s.rjust(4) + ' / '.ljust(3) +
            player.max_hp.to_s.ljust(8) +
-           player.cond_acronym.join(' ').ljust(14) +
+           player.cond_acronym.join(' ').ljust(20) +
            player.location.display_name.ljust(24)
     end
     puts

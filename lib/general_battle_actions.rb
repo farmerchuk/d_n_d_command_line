@@ -80,8 +80,7 @@ module GeneralBattleActions
           entity_hps.to_s.rjust(4) + ' / '.ljust(3) +
           entity.max_hp.to_s.ljust(8) +
           entity.cond_acronym.join(' ').ljust(14) +
-          entity.location.display_name.ljust(24) +
-          (entity.current_turn ? '<< Current Player' : '')
+          entity.location.display_name
 
         puts line.colorize(color)
       end
