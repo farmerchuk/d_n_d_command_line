@@ -21,6 +21,17 @@ class PlayerBattle < PlayerActionHandler
     current_player.location = Menu.choose_from_menu(available_locations)
   end
 
+  def player_defend
+    unless current_player.defending
+      current_player.add_turn_status_effect(:armor_class, 1)
+      current_player.defending = true
+    end
+    puts "#{current_player} is defending!"
+    puts
+    puts "Player receives bonus to Armor Class until next turn."
+    puts
+  end
+
   def run_actions
     2.times do |n|
       next if enemies.all? { |enemy| enemy.dead? }

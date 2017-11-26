@@ -20,8 +20,8 @@ class Player
                         17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
   attr_accessor :name, :race, :role, :alignment,
-                :area, :location, :current_turn,
-                :action, :wait, :status_effects, :current_hp,
+                :area, :location, :current_turn, :alert, :defending,
+                :action, :status_effects, :current_hp,
                 :spells, :equipped_spell,
                 :backpack,
                 :equipped_weapon, :equipped_armor, :equipped_shield
@@ -34,8 +34,9 @@ class Player
     @area = nil # Area
     @location = nil # Location
     @current_turn = false # Boolean
+    @alert = false # Boolean
+    @defending = false # Boolean
     @action = nil # String
-    @wait = false # Boolean
     @status_effects = StatusEffect.new # StatusEffect
     @current_hp = nil # Integer
     @spells = nil # Array of Spell
@@ -139,7 +140,7 @@ class Player
   end
 
   def initiative
-    roll_dex_check
+    roll_dex_check + status_effects.initiative
   end
 
   # passive checks
@@ -230,20 +231,13 @@ class Player
 
   def start_turn
     clear_all_turn_status_effects
-    self.wait = false
+    self.alert = false
+    self.defending = false
   end
 
   def end_action
     self.action = nil
     self.equipped_spell = nil
-  end
-
-  def wait!
-    self.wait = true
-  end
-
-  def wait?
-    wait
   end
 
   def use_skill(skill)
@@ -252,10 +246,6 @@ class Player
 
   def use_item(item)
     # code
-  end
-
-  def rest!
-
   end
 
   # other methods

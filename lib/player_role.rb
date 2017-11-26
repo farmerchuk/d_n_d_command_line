@@ -16,8 +16,8 @@ class PlayerRole
 end
 
 class Fighter < PlayerRole
-  EXPLORE_ACTIONS = %w[move examine search wait item equip talk]
-  BATTLE_ACTIONS = %w[move attack wait item equip]
+  EXPLORE_ACTIONS = %w[move examine search alert item equip talk]
+  BATTLE_ACTIONS = %w[move attack defend item equip]
 
   def initialize
     super
@@ -34,8 +34,8 @@ class Fighter < PlayerRole
 end
 
 class Rogue < PlayerRole
-  EXPLORE_ACTIONS = %w[move examine search wait item equip talk hide]
-  BATTLE_ACTIONS = %w[move attack wait item equip hide]
+  EXPLORE_ACTIONS = %w[move examine search alert item equip talk hide]
+  BATTLE_ACTIONS = %w[move attack defend item equip hide]
 
   def initialize
     super
@@ -52,8 +52,8 @@ class Rogue < PlayerRole
 end
 
 class Cleric < PlayerRole
-  EXPLORE_ACTIONS = %w[move examine search wait item equip talk magic]
-  BATTLE_ACTIONS = %w[move attack wait item equip magic]
+  EXPLORE_ACTIONS = %w[move examine search alert item equip talk magic]
+  BATTLE_ACTIONS = %w[move attack defend item equip magic]
 
   attr_accessor :casts_max, :casts_remaining
 
@@ -74,8 +74,8 @@ class Cleric < PlayerRole
 end
 
 class Wizard < PlayerRole
-  EXPLORE_ACTIONS = %w[move examine search wait item equip talk magic]
-  BATTLE_ACTIONS = %w[move attack wait item equip magic]
+  EXPLORE_ACTIONS = %w[move examine search alert item equip talk magic]
+  BATTLE_ACTIONS = %w[move attack defend item equip magic]
 
   attr_accessor :casts_max, :casts_remaining
 

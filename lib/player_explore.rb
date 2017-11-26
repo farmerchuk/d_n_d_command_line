@@ -11,6 +11,27 @@ class PlayerExplore < PlayerActionHandler
     @action_type = 'explore'
   end
 
+  def player_examine
+    puts "You see nothing else of interest."
+    puts
+  end
+
+  def player_search
+    puts "You find nothing of value."
+    puts
+  end
+
+  def player_alert
+    unless current_player.alert
+      current_player.add_turn_status_effect(:initiative, 1)
+      current_player.alert = true
+    end
+    puts "#{current_player} is on alert!"
+    puts
+    puts "Player receives bonus to Initiative until next turn."
+    puts
+  end
+
   def player_hide
     puts "#{current_player} disappears into the shadows."
     puts

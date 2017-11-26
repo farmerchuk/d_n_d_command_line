@@ -137,10 +137,11 @@ class PlayerActionHandler
     case current_player.action
     when 'examine' then player_examine
     when 'search' then player_search
-    when 'wait' then player_wait
+    when 'alert' then player_alert
     when 'item' then player_use_item
     when 'equip' then player_equip
     when 'attack' then player_attack
+    when 'defend' then player_defend
     when 'magic' then player_magic
     when 'hide' then player_hide
     end
@@ -205,21 +206,6 @@ class PlayerActionHandler
     else
       action_fail
     end
-  end
-
-  def player_examine
-    puts "You see nothing else of interest."
-    puts
-  end
-
-  def player_search
-    puts "You find nothing of value."
-    puts
-  end
-
-  def player_wait
-    puts "#{current_player} is on alert!"
-    puts
   end
 
   def player_use_item

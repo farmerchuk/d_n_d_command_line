@@ -76,6 +76,10 @@ class StatusEffect
     turn.armor_class + battle.armor_class + long_term.armor_class
   end
 
+  def initiative
+    turn.initiative + battle.initiative + long_term.initiative
+  end
+
   def str
     turn.str + battle.str + long_term.str
   end
@@ -102,12 +106,13 @@ class StatusEffect
 end
 
 class Status
-  attr_accessor :max_hp, :armor_class,
+  attr_accessor :max_hp, :armor_class, :initiative,
                 :str, :dex, :con, :int, :wis, :cha
 
   def initialize
     @max_hp = 0 # Integer
     @armor_class = 0 # Integer
+    @initiative = 0 # Integer
     @str = 0 # Integer
     @dex = 0 # Integer
     @con = 0 # Integer
@@ -120,6 +125,7 @@ class Status
     case attribute
     when :max_hp then self.max_hp += factor
     when :armor_class then self.armor_class += factor
+    when :initiative then self.initiative += factor
     when :str then self.str += factor
     when :dex then self.dex += factor
     when :con then self.con += factor
@@ -132,6 +138,7 @@ class Status
   def clear_all
     self.max_hp = 0
     self.armor_class = 0
+    self.initiative = 0
     self.str = 0
     self.dex = 0
     self.con = 0
