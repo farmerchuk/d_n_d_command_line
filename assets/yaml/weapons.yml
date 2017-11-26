@@ -14,7 +14,6 @@
 - id: basic_greatsword
   type: melee
   display_name: "Basic greatsword"
-  description: "A basic greatsword"
   cost: 50
   damage_die: 2d6
   range: 0

@@ -41,37 +41,41 @@ class Backpack
     sort_all_equipment_by_type!
 
     Menu.clear_screen
-    puts "Party Equipment:                             GOLD: #{purse}"
+    puts "Party Equipment:"
     Menu.draw_line
+    puts "GOLD: #{purse}"
+    puts
     puts
     puts 'WEAPONS'
     Menu.draw_line
-    puts 'name                     type      damage    equipped by'
-    puts '----                     ----      ------    -----------'
+    puts 'NAME                     TYPE        DAMAGE      EQUIPPED BY         SPECIAL EFFECTS'
+    puts
     weapons.each do |weapon|
       puts "#{weapon.display_name.ljust(25)}" +
-           "#{weapon.type.ljust(10)}" +
-           "#{weapon.damage_die.ljust(10)}" +
-           "#{weapon.equipped_by.name.ljust(20) if weapon.equipped_by}"
+           "#{weapon.type.ljust(12)}" +
+           "#{weapon.damage_die.ljust(12)}" +
+           "#{weapon.equipped_by.name.ljust(20) if weapon.equipped_by}" +
+           "#{weapon.description}"
     end
     puts
     puts
     puts 'ARMOR'
     Menu.draw_line
-    puts 'name                     type      AC        equipped by'
-    puts '----                     ----      --        -----------'
+    puts 'NAME                     TYPE        A/C         EQUIPPED BY         SPECIAL EFFECTS'
+    puts
     armors.each do |armor|
       puts "#{armor.display_name.ljust(25)}" +
-           "#{armor.type.ljust(10)}" +
-           "#{armor.armor_class.to_s.ljust(10)}" +
-           "#{armor.equipped_by.name.ljust(20) if armor.equipped_by}"
+           "#{armor.type.ljust(12)}" +
+           "#{armor.armor_class.to_s.ljust(12)}" +
+           "#{armor.equipped_by.name.ljust(20) if armor.equipped_by}" +
+           "#{armor.description}"
     end
     puts
     puts
     puts 'GEAR'
     Menu.draw_line
-    puts 'name                     type'
-    puts '----                     ----'
+    puts 'NAME                     TYPE'
+    puts
     gears.each do |gear|
       print gear.display_name.ljust(25)
       puts gear.type.ljust(10)
@@ -80,8 +84,8 @@ class Backpack
     puts
     puts 'TOOLS'
     Menu.draw_line
-    puts 'name                     type'
-    puts '----                     ----'
+    puts 'NAME                     TYPE'
+    puts 
     tools.each do |tool|
       print tool.display_name.ljust(25)
       puts tool.type.ljust(10)
