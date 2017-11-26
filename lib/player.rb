@@ -19,7 +19,7 @@ class Player
                         13 => 5, 14 => 5, 15 => 5, 16 => 5,
                         17 => 6, 18 => 6, 19 => 6, 20 => 6 }
 
-  attr_accessor :name, :race, :role, :alignment,
+  attr_accessor :name, :race, :role,
                 :area, :location, :current_turn, :alert, :defending,
                 :action, :status_effects, :current_hp,
                 :spells, :equipped_spell,
@@ -30,7 +30,6 @@ class Player
     @name = nil # String
     @race = nil # Race
     @role = nil # Role
-    @alignment = nil # TBD
     @area = nil # Area
     @location = nil # Location
     @current_turn = false # Boolean
@@ -349,45 +348,53 @@ class Player
     puts "PLAYER PROFILE:"
     Menu.draw_line
     puts
-    puts 'GENERAL INFO'
-    Menu.draw_line
-    puts "NAME: #{name.ljust(29)}ROLE:      #{role.to_s.capitalize}"
-    puts "RACE: #{race.to_s.ljust(29)}ALIGNMENT: #{alignment}"
+
+    puts "GENERAL".ljust(52) +
+      Menu.margin_inner +
+      "CONDITION".ljust(52)
+    puts Menu.half_line +
+      Menu.margin_inner +
+      Menu.half_line
+    puts "NAME:  #{name.ljust(50)}" +
+      "HIT POINTS:   #{current_hp} / #{max_hp}"
+    puts "ROLE:  #{role.to_s.capitalize.ljust(50)}" +
+      "SPELL CASTS:  #{casts_remaining} / #{casts_max}"
+    puts "RACE:  #{race.to_s.ljust(50)}" +
+      "CONDITIONS:   #{cond_acronym.join(' ')}"
     puts
     puts
-    puts 'CONDITION'
-    Menu.draw_line
-    puts "CURRENT HIT POINTS: #{current_hp}"
-    puts "MAXIMUM HIT POINTS: #{max_hp}"
+
+    puts "ABILITY SCORES".ljust(52) +
+      Menu.margin_inner +
+      "ABILITY ROLL MODIFIERS".ljust(52)
+    puts Menu.half_line +
+      Menu.margin_inner +
+      Menu.half_line
+
+    puts "STRENGTH:      #{str.to_s.ljust(10)}DEXTERITY:     #{dex.to_s}".ljust(56) +
+      "STRENGTH:      #{str_mod.to_s.ljust(10)}DEXTERITY:     #{dex_mod.to_s}"
+    puts "CONSTITUTION:  #{con.to_s.ljust(10)}INTELLIGENCE:  #{int.to_s}".ljust(56) +
+      "CONSTITUTION:  #{con_mod.to_s.ljust(10)}INTELLIGENCE:  #{int_mod.to_s}"
+    puts "WISDOM:        #{wis.to_s.ljust(10)}CHARISMA:      #{cha.to_s}".ljust(56) +
+      "WISDOM:        #{wis_mod.to_s.ljust(10)}CHARISMA:      #{cha_mod.to_s}"
     puts
-    puts
-    puts 'ABILITY SCORES'
-    Menu.draw_line
-    puts "STR: #{str.to_s.ljust(5)}DEX: #{dex.to_s.ljust(5)}" +
-         "CON: #{con.to_s.ljust(5)}INT: #{int.to_s.ljust(5)}" +
-         "WIS: #{wis.to_s.ljust(5)}CHA: #{cha.to_s.ljust(5)}"
-    puts
-    puts
-    puts "ABILITY ROLL MODIFIERS                  PROF BONUS: " +
-         "+#{prof_bonus} #{role.proficiency[0].upcase} & " +
-         "#{role.proficiency[1].upcase}"
-    Menu.draw_line
-    puts "STR: #{str_mod.to_s.ljust(5)}DEX: #{dex_mod.to_s.ljust(5)}" +
-         "CON: #{con_mod.to_s.ljust(5)}INT: #{int_mod.to_s.ljust(5)}" +
-         "WIS: #{wis_mod.to_s.ljust(5)}CHA: #{cha_mod.to_s.ljust(5)}"
+    puts Menu.half_line_spacer +
+      "PROFICIENCY BONUS:  " +
+      "+#{prof_bonus} (#{role.proficiency[0].upcase} & " +
+      "#{role.proficiency[1].upcase})"
     puts
     puts
     puts 'EQUIPPED WEAPON'
     Menu.draw_line
-    puts 'name                     type           damage'
-    puts '----                     ----           ------'
+    puts 'NAME                     TYPE           DAMAGE         SPECIAL EFFECTS'
+    puts
     puts "#{equipped_weapon.display_in_profile}" if equipped_weapon
     puts
     puts
     puts "EQUIPPED ARMOR                          TOTAL AC: #{armor_class}"
     Menu.draw_line
-    puts 'name                     type           AC'
-    puts '----                     ----           --'
+    puts 'NAME                     TYPE           ARMOR CLASS    SPECIAL EFFECTS'
+    puts
     puts "#{equipped_armor.display_in_profile}" if equipped_armor
     puts "#{equipped_shield.display_in_profile}" if equipped_shield
     puts

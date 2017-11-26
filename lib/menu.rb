@@ -5,6 +5,18 @@ class Menu
     puts '-' * 108
   end
 
+  def self.half_line
+    '-' * 52
+  end
+
+  def self.half_line_spacer
+    ' ' * 56
+  end
+
+  def self.margin_inner
+    ' ' * 4
+  end
+
   def self.clear_screen
     system 'clear'
   end

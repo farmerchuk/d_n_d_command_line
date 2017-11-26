@@ -81,7 +81,7 @@ class Armor < Equipment
   end
 
   def display_in_profile
-    "#{display_name.ljust(25)}#{type.ljust(15)}#{armor_class.to_s.ljust(15)}"
+    "#{display_name.ljust(25)}#{type.ljust(15)}#{armor_class.to_s.ljust(20)}#{description}"
   end
 end
 
@@ -98,7 +98,7 @@ class Weapon < Equipment
   end
 
   def display_in_profile
-    "#{display_name.ljust(25)}#{type.ljust(15)}#{damage_die.ljust(15)}"
+    "#{display_name.ljust(25)}#{type.ljust(15)}#{damage_die.ljust(20)}#{description}"
   end
 end
 
