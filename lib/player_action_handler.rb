@@ -141,7 +141,6 @@ class PlayerActionHandler
     when 'item' then player_use_item
     when 'equip' then player_equip
     when 'attack' then player_attack
-    when 'talk' then player_talk
     when 'magic' then player_magic
     when 'hide' then player_hide
     end
@@ -226,10 +225,6 @@ class PlayerActionHandler
   def player_use_item
     puts "#{current_player} uses an item."
     puts
-  end
-
-  def player_talk
-
   end
 
   def player_magic

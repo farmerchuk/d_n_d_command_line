@@ -1,8 +1,8 @@
 # encounter.yml
 
-# engagement_ids must start with 'battle' or 'conversation'
+# engagement_ids must start with 'battle' or 'dialogue'
 
 - id: goblin_ambush_encounter_1
   engagement_ids:
     - battle_goblin_ambush_4_goblins
-    - conversation_goblin_ambush_goblin
+    - dialogue_goblin_ambush_interrogate

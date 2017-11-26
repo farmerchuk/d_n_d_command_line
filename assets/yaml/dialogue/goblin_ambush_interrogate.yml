@@ -1,0 +1,55 @@
+# goblin_ambush_interrogate.yml
+
+npc:
+  banter_1:
+    text: |
+      As you finish striking down the last of the goblins, you notice that one of
+      them is still alive. He appears to be crawling towards the Northern Embankment.
+    continue: true
+
+  banter_2:
+    text: |
+      You decide the goblin is no longer a threat and choose to have mercy. He
+      whimpers something that come across as gratitude and scampers off into
+      the woods.
+    continue: false
+
+  banter_3:
+    text: |
+      You interrogate the goblin and learn that there is a secret trail in
+      the thicket at the Northern Embankment. This trail leads to a goblin
+      hideout where their leader, a bugbear named Klarg, dwells. You also learn
+      the following bits of information:
+        - Fewer than 20 goblins currently dwell in the lair.
+        - Klarg answers to King Grol, chief of the Cragmaw tribe, who dwells in
+          Cragmaw castle. Cragmaw castle is about twenty miles northeast of the
+          Cragmaw hideout, in Neverwinter Wood.
+        - Klarg received a messenger goblin from King Grol a few days ago. The
+          messenger told him that someone named the Black Spider was paying the
+          Cragmaws to watch out for the dwarf Gundren Rockseeker, capture him,
+          and send him and anything he was carrying back to King Grol. Klarg
+          followed his orders. Gundren was ambushed and taken along with his
+          personal effects, including a map.
+        - The dwarf and his map were delivered to King Grol, as instructed. The
+          dwarf's human companion is being held in the 'eating cave'.
+    continue: false
+    script: |
+      area = retrieve("cragmaw_entrance", areas)
+      area.unlock!
+      location = retrieve("cragmaw_entrance_goblin_trail", locations)
+      location.unlock!
+
+  banter_4:
+    text: |
+      You decide that the only safe goblin is a dead goblin and finish him
+      off for good. (Players can role play the rest.)
+    continue: false
+
+party:
+  banter_1:
+    - text: "Leave the goblin be."
+      next_banter: banter_2
+    - text: "Attempt to interrogate the goblin."
+      next_banter: banter_3
+    - text: "Finish the goblin off for good."
+      next_banter: banter_4
