@@ -26,6 +26,8 @@ class EncounterHandler
       elsif get_engagement_id_prefix(engagement_id) == 'dialogue'
         DialogueHandler.new(engagement_id, players, areas, locations).run
       end
+
+      break if players.all_dead?
     end
 
     clean_up

@@ -48,6 +48,10 @@ class PlayerList
     current_player.set_current_turn!
   end
 
+  def all_dead?
+    players.all? { |player| player.dead? }
+  end
+
   def set_new_area(area, locations)
     players.each do |player|
       player.area = area
