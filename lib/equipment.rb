@@ -1,13 +1,13 @@
 # equipment.rb
 
 class Equipment
-  attr_accessor :id, :type, :display_name, :description, :cost, :script,
-                :equipped_by
+  attr_accessor :id, :type, :display_name, :description, :cost,
+                :equip_script, :unequip_script, :equipped_by
 
   def self.build_weapon(weapon_id)
     weapon_data = YAML.load_file('../assets/yaml/weapons.yml')
 
-    weapon = weapon_data.select { |wep| wep['id'] == weapon_id }.first
+    weapon = weapon_data.find { |wep| wep['id'] == weapon_id }
     new_weapon = Weapon.new
     new_weapon.id = weapon['id']
     new_weapon.type = weapon['type']
@@ -16,14 +16,15 @@ class Equipment
     new_weapon.cost = weapon['cost']
     new_weapon.damage_die = weapon['damage_die']
     new_weapon.range = weapon['range']
-    new_weapon.script = weapon['script']
+    new_weapon.equip_script = weapon['equip_script']
+    new_weapon.unequip_script = weapon['unequip_script']
     new_weapon
   end
 
   def self.build_armor(armor_id)
     armor_data = YAML.load_file('../assets/yaml/armors.yml')
 
-    armor = armor_data.select { |arm| arm['id'] == armor_id }.first
+    armor = armor_data.find { |arm| arm['id'] == armor_id }
     new_armor = Armor.new
     new_armor.id = armor['id']
     new_armor.type = armor['type']
@@ -35,8 +36,24 @@ class Equipment
     new_armor.stealth_penalty = armor['stealth_penalty']
     new_armor.dex_bonus_max =
       armor['dex_bonus_max'] == 'nil' ? nil : armor['dex_bonus_max']
-    new_armor.script = armor['script']
+    new_armor.equip_script = armor['equip_script']
+    new_armor.unequip_script = armor['unequip_script']
     new_armor
+  end
+
+  def self.build_accessory(accessory_id)
+    accessory_data = YAML.load_file('../assets/yaml/accessories.yml')
+
+    accessory = accessory_data.find { |acc| acc['id'] == accessory_id }
+    new_accessory = Accessory.new
+    new_accessory.id = accessory['id']
+    new_accessory.type = accessory['type']
+    new_accessory.display_name = accessory['display_name']
+    new_accessory.description = accessory['description']
+    new_accessory.cost = accessory['cost']
+    new_accessory.equip_script = accessory['equip_script']
+    new_accessory.unequip_script = accessory['unequip_script']
+    new_accessory
   end
 
   def initialize
@@ -45,7 +62,8 @@ class Equipment
     @display_name = nil # String
     @description = nil # String
     @cost = nil # Integer
-    @script = nil # String
+    @equip_script = nil # String
+    @unequip_script = nil # String
     @equipped_by = nil # Player
   end
 
@@ -102,6 +120,20 @@ class Weapon < Equipment
   end
 end
 
-class Gear < Equipment; end
+class Accessory < Equipment
+  def display_in_profile
+    "#{display_name.ljust(25)}#{type.ljust(15)}#{description}"
+  end
+end
 
-class Tool < Equipment; end
+class Item < Equipment
+  def display_in_profile
+    "#{display_name.ljust(25)}#{description}"
+  end
+end
+
+class Tool < Equipment
+  def display_in_profile
+    "#{display_name.ljust(25)}#{description}"
+  end
+end

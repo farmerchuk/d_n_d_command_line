@@ -1,0 +1,24 @@
+# accessories.yml
+
+# id: ring_of_protection
+# type: ring
+# display_name: "Ring of Protection"
+# description: "Grants the bearer +1 to Armor Class"
+# cost: 150
+# equip_script: <code>
+# unequip_script: <code>
+
+- id: ring_plain
+  type: ring
+  display_name: "Plain Ring"
+  cost: 5
+
+- id: ring_of_protection
+  type: ring
+  display_name: "Ring of Protection"
+  description: "Grants the bearer +1 to Armor Class"
+  cost: 150
+  equip_script: |
+    self.add_permanent_status_effect(:armor_class, 1)
+  unequip_script: |
+    self.clear_permanent_status_effect(:armor_class)

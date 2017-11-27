@@ -177,7 +177,7 @@ class Enemy
     status_effects.clear_all_battle
   end
 
-  def clear_all_status_effects
+  def clear_all_temp_status_effects
     clear_all_turn_status_effects
     clear_all_battle_status_effects
   end

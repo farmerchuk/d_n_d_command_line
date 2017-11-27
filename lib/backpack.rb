@@ -3,13 +3,14 @@
 require_relative 'dnd'
 
 class Backpack
-  attr_reader :armors, :weapons, :gears, :tools
+  attr_reader :armors, :weapons, :accessories, :items, :tools
   attr_accessor :purse
 
   def initialize
     @armors = []
     @weapons = []
-    @gears = []
+    @accessories = []
+    @items = []
     @tools = []
     @purse = nil
   end
@@ -19,8 +20,10 @@ class Backpack
       armors << equipment
     elsif equipment.instance_of?(Weapon)
       weapons << equipment
-    elsif equipment.instance_of?(Gear)
-      gears << equipment
+    elsif equipment.instance_of?(Accessory)
+      accessories << equipment
+    elsif equipment.instance_of?(Item)
+      items << equipment
     elsif equipment.instance_of?(Tool)
       tools << equipment
     else
@@ -29,7 +32,7 @@ class Backpack
   end
 
   def all_equipment
-    all = armors + weapons + gears + tools
+    all = armors + weapons + accessories + items + tools
     all.sort_by! { |equipment| equipment.classifier }
   end
 
@@ -72,23 +75,34 @@ class Backpack
     end
     puts
     puts
-    puts 'GEAR'
+    puts 'ACCESSORIES'
     Menu.draw_line
-    puts 'NAME                     TYPE'
+    puts 'NAME                     TYPE        SPECIAL EFFECTS'
     puts
-    gears.each do |gear|
-      print gear.display_name.ljust(25)
-      puts gear.type.ljust(10)
+    accessories.each do |accessory|
+      puts accessory.display_name.ljust(25) +
+           accessory.type.ljust(12) +
+           "#{accessory.description}"
+    end
+    puts
+    puts
+    puts 'ITEMS'
+    Menu.draw_line
+    puts 'NAME                     SPECIAL EFFECTS'
+    puts
+    items.each do |item|
+      puts item.display_name.ljust(25) +
+           "#{item.description}"
     end
     puts
     puts
     puts 'TOOLS'
     Menu.draw_line
-    puts 'NAME                     TYPE'
-    puts 
+    puts 'NAME                     SPECIAL EFFECTS'
+    puts
     tools.each do |tool|
-      print tool.display_name.ljust(25)
-      puts tool.type.ljust(10)
+      puts tool.display_name.ljust(25) +
+           "#{tool.description}"
     end
     puts
   end
@@ -97,33 +111,37 @@ class Backpack
     Menu.clear_screen
     puts "CURRENTLY EQUIPPED BY: #{current_player}"
     Menu.draw_line
-    puts 'name                     class             details'
-    puts '----                     -----             -------'
+    puts 'NAME                     CLASS             DETAILS'
+    puts
     current_player.all_equipped.each do |eq|
       puts "#{eq.display_name.ljust(25)}#{eq.classifier.ljust(18)}" +
       if eq.instance_of?(Weapon)
-        "#{eq.damage_die.ljust(8)}damage"
+        "#{eq.damage_die} Damage"
       elsif eq.instance_of?(Armor)
-        "#{eq.armor_class.to_s.ljust(8)}AC"
+        "#{eq.armor_class.to_s} A/C"
+      elsif eq.instance_of?(Accessory)
+        "#{eq.description}"
       end
     end
     puts
     puts
     puts 'ALL AVAILABLE EQUIPMENT'
     Menu.draw_line
-    puts 'name                     class             details'
-    puts '----                     -----             -------'
+    puts 'NAME                     CLASS             DETAILS'
+    puts
     all_unequipped_equipment.each do |eq|
       puts "#{eq.display_name.ljust(25)}#{eq.classifier.ljust(18)}" +
       if eq.instance_of?(Weapon)
-        "#{eq.damage_die.ljust(8)}damage"
+        "#{eq.damage_die} Damage"
       elsif eq.instance_of?(Armor)
-        "#{eq.armor_class.to_s.ljust(8)}AC"
+        "#{eq.armor_class.to_s} A/C"
+      elsif eq.instance_of?(Accessory)
+        "#{eq.description}"
       end
     end
     puts
     puts
-    puts 'EQUIPMENT DETAILS'
+    puts 'EQUIPMENT CHOICES'
     Menu.draw_line
   end
 
@@ -132,7 +150,8 @@ class Backpack
   def sort_all_equipment_by_type!
     armors.sort_by! { |armor| armor.type }
     weapons.sort_by! { |weapon| weapon.type }
-    gears.sort_by! { |gear| gear.type }
-    tools.sort_by! { |tool| tool.type }
+    accessories.sort_by! { |accessory| accessory.type }
+    items.sort_by! { |item| item.display_name }
+    tools.sort_by! { |tool| tool.display_name }
   end
 end

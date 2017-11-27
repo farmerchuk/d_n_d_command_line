@@ -6,8 +6,8 @@
 # description: "Nothing special."
 # cost: 50
 # damage_die: 2d6
-# script: |
-#   <code...>
+# equip_script: <code>
+# unequip_script: <code>
 
 # basic
 

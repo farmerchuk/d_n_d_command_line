@@ -9,8 +9,8 @@
 # str_required: 0
 # stealth_penalty: false
 # dex_bonus_max: nil (always nil, unless present)
-# script: |
-#   <code ...>
+# equip_script: <code>
+# unequip_script: <code>
 
 # basic
 

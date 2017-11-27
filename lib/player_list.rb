@@ -60,7 +60,7 @@ class PlayerList
   end
 
   def rest
-    clear_all_status_effects
+    clear_all_temp_status_effects
     reset_casts
     reset_current_hps
 
@@ -77,9 +77,9 @@ class PlayerList
     end
   end
 
-  def clear_all_status_effects
+  def clear_all_temp_status_effects
     players.each do |player|
-      player.clear_all_status_effects
+      player.clear_all_temp_status_effects
     end
   end
 

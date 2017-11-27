@@ -23,7 +23,7 @@ class Player
                 :area, :location, :current_turn, :alert, :defending,
                 :action, :status_effects, :current_hp,
                 :spells, :equipped_spell,
-                :backpack,
+                :backpack, :equipped_accessory,
                 :equipped_weapon, :equipped_armor, :equipped_shield
 
   def initialize
@@ -43,6 +43,7 @@ class Player
     @equipped_weapon = nil # Weapon
     @equipped_armor = nil # Armor
     @equipped_shield = nil # Armor
+    @equipped_accessory = nil # Accessory
     @equipped_spell = nil # Spell
   end
 
@@ -239,10 +240,6 @@ class Player
     self.equipped_spell = nil
   end
 
-  def use_skill(skill)
-    # code
-  end
-
   def use_item(item)
     # code
   end
@@ -277,6 +274,10 @@ class Player
     status_effects.add_long_term(attribute, factor)
   end
 
+  def add_permanent_status_effect(attribute, factor)
+    status_effects.add_permanent(attribute, factor)
+  end
+
   def clear_all_turn_status_effects
     status_effects.clear_all_turn
   end
@@ -289,7 +290,15 @@ class Player
     status_effects.clear_all_long_term
   end
 
-  def clear_all_status_effects
+  def clear_all_permanent_status_effects
+    status_effects.clear_all_permanent
+  end
+
+  def clear_permanent_status_effect(attribute)
+    status_effects.clear_permanent(attribute)
+  end
+
+  def clear_all_temp_status_effects
     clear_all_turn_status_effects
     clear_all_battle_status_effects
     clear_all_long_term_status_effects
@@ -319,15 +328,22 @@ class Player
       self.equipped_shield = item
     elsif item.instance_of?(Armor)
       self.equipped_armor = item
+    elsif item.instance_of?(Accessory)
+      self.equipped_accessory = item
     end
+
+    eval item.equip_script if item.equip_script
   end
 
   def unequip(equipment)
-    equipment.checkin_equipment if equipment
+    if equipment
+      equipment.checkin_equipment
+      eval equipment.unequip_script if equipment.unequip_script
+    end
   end
 
   def all_equipped
-    [equipped_weapon, equipped_armor, equipped_shield].compact
+    [equipped_weapon, equipped_armor, equipped_shield, equipped_accessory].compact
   end
 
   def hidden?
@@ -391,12 +407,19 @@ class Player
     puts "#{equipped_weapon.display_in_profile}" if equipped_weapon
     puts
     puts
-    puts "EQUIPPED ARMOR                          TOTAL AC: #{armor_class}"
+    puts "EQUIPPED ARMOR                          ARMOR CLASS TOTAL: #{armor_class}"
     Menu.draw_line
     puts 'NAME                     TYPE           ARMOR CLASS    SPECIAL EFFECTS'
     puts
     puts "#{equipped_armor.display_in_profile}" if equipped_armor
     puts "#{equipped_shield.display_in_profile}" if equipped_shield
+    puts
+    puts
+    puts 'EQUIPPED ACCESSORY'
+    Menu.draw_line
+    puts 'NAME                     TYPE           SPECIAL EFFECTS'
+    puts
+    puts "#{equipped_accessory.display_in_profile}" if equipped_accessory
     puts
   end
 end

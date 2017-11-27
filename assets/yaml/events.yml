@@ -16,11 +16,10 @@
   location_id: goblin_ambush_dead_horses
   trigger: search
   description: |
-    You find 10 gold with a sword and shield!
+    You find 10 gold and a plain ring.
   script: |
     current_player.backpack.purse + 10
-    current_player.backpack.add(Equipment.build_weapon('basic_shortsword'))
-    current_player.backpack.add(Equipment.build_armor('basic_shield'))
+    current_player.backpack.add(Equipment.build_accessory('ring_plain'))
 
 - id: goblin_ambush_event_3
   location_id: goblin_ambush_dead_horses

@@ -128,7 +128,7 @@ class PlayerActionHandler
     if event
       display_summary
       display_event_description
-      eval(script) if script
+      eval script if script
       end_event
     end
   end
@@ -336,6 +336,8 @@ class PlayerActionHandler
         current_player.unequip(current_player.equipped_shield)
       elsif choice.instance_of?(Armor)
         current_player.unequip(current_player.equipped_armor)
+      elsif choice.instance_of?(Accessory)
+        current_player.unequip(current_player.equipped_accessory)
       end
 
       current_player.equip(choice.id)
