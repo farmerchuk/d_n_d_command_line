@@ -119,7 +119,6 @@ class PlayerActionHandler
     if current_player.action == 'move'
       display_summary
       player_move
-      MainMenuHandler.display_area_introduction(current_player.area)
     end
   end
 
@@ -185,6 +184,9 @@ class PlayerActionHandler
     if new_location.area_id != current_player.location.area_id
       display_new_area_alert
       confirm_proceed_to_new_location(new_location)
+      if action_success
+        MainMenuHandler.display_area_introduction(new_location.area)
+      end
     else
       current_player.location = new_location
     end
@@ -200,6 +202,7 @@ class PlayerActionHandler
     choice = Menu.choose_from_menu(['yes', 'no'])
     if choice == 'yes'
       new_area = retrieve(location.area_id, areas)
+      new_area.unlock! unless new_area.unlocked?
       players.set_new_area(new_area, locations)
       puts "You collect your party and move to #{new_area}."
       Menu.prompt_continue

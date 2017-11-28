@@ -35,8 +35,6 @@ npc:
     continue: false
     script: |
       Game.add_completed_event('goblin_ambush_event_5')
-      area = retrieve("cragmaw_entrance", areas)
-      area.unlock!
       location = retrieve("cragmaw_entrance_goblin_trail", locations)
       location.unlock!
 

@@ -46,8 +46,6 @@
   script: |
     check = current_player.roll_wis_check
     if check >= 10
-      area = retrieve("cragmaw_entrance", areas)
-      area.unlock!
       location = retrieve("cragmaw_entrance_goblin_trail", locations)
       location.unlock!
 

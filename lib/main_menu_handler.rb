@@ -62,7 +62,6 @@ class MainMenuHandler
       area.id != players.first.area.id && area.unlocked?
     end
     area = Menu.choose_from_menu(other_areas)
-    display_area_introduction(area)
     players.set_new_area(area, locations)
   end
 
