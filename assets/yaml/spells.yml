@@ -188,7 +188,7 @@
   range: 0
   script: |
     puts "You close your eyes and place your hands by your side, palms facing"
-    puts "forward. You being to raise your hands into the air, and as you do,"
+    puts "forward. You begin to raise your hands into the air, and as you do,"
     puts "your allies feel a sudden surge of health spring from within."
     puts
 

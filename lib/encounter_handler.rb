@@ -25,6 +25,8 @@ class EncounterHandler
         BattleHandler.new(engagement_id, players, locations).run
       elsif get_engagement_id_prefix(engagement_id) == 'dialogue'
         DialogueHandler.new(engagement_id, players, areas, locations).run
+      elsif get_engagement_id_prefix(engagement_id) == 'loot'
+        LootHandler.new(engagement_id, players).run
       end
 
       break if players.all_dead?

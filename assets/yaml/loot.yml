@@ -1,0 +1,11 @@
+# loot.yml
+
+- id: loot_goblin_ambush_encounter_1
+  gold: 10
+  weapons:
+    - goblin_scimitar
+    - goblin_shortbow
+  armors:
+    - basic_shield
+  accessories:
+    - ring_plain
