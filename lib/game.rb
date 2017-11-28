@@ -13,7 +13,9 @@ class Game
   end
 
   def self.add_completed_event(event_id)
-    @@completed_events << event_id
+    unless @@completed_events.include?(event_id)
+      @@completed_events << event_id
+    end
   end
 
   def self.completed_area_introductions
@@ -21,7 +23,9 @@ class Game
   end
 
   def self.add_completed_area_introduction(area_id)
-    @@completed_area_introductions << area_id
+    unless @@completed_area_introductions.include?(area_id)
+      @@completed_area_introductions << area_id
+    end
   end
 
   def initialize
